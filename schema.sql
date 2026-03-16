@@ -70,7 +70,20 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS stripe_customer_id        TEXT,
   ADD COLUMN IF NOT EXISTS stripe_checkout_session_id TEXT;
 
--- Política RLS: solo el service role puede actualizar has_paid y stripe_*
--- (el webhook usa la service role key, no la anon key)
--- La política profiles_update_own existente es suficiente para datos de perfil;
--- el webhook actualiza con service role que bypasea RLS automáticamente.
+-- ============================================================
+-- FASE 2b — Sistema de roles
+-- Ejecutar este bloque en el SQL Editor de Supabase
+-- ============================================================
+
+-- Roles disponibles:
+--   founder  → fundadores del proyecto (asignado manualmente)
+--   admin    → administradores con acceso total
+--   member   → usuarios que han pagado (se asigna por webhook)
+--   free     → usuarios registrados sin pago (por defecto)
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'free'
+    CHECK (role IN ('founder', 'admin', 'member', 'free'));
+
+-- Para asignarte a ti como fundador, ejecuta:
+-- UPDATE public.profiles SET role = 'founder' WHERE id = 'tu-user-id-aqui';

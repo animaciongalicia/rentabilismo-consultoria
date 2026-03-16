@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
       .from('profiles')
       .update({
         has_paid: true,
+        role: 'member',
         stripe_customer_id: session.customer as string ?? null,
         stripe_checkout_session_id: session.id,
       })
