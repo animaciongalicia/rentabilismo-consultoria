@@ -26,7 +26,7 @@ const MODULOS_PAGO = [
   { area: "Publicidad/Marketing", texto: "Cómo atraes clientes y qué hace que te elijan a ti." },
   { area: "Procesos/Operaciones", texto: "Cómo dejar de ser imprescindible para todo." },
   { area: "Personas/Equipo", texto: "Si tienes las personas correctas en los puestos correctos." },
-  { area: "Marketing", texto: "Cómo te posicionas y qué percepción genera tu negocio." },
+  { area: "Ventas", texto: "Cómo convertir interés en clientes que pagan de verdad." },
   { area: "Estrategia", texto: "Hacia dónde vas y si el camino tiene sentido." },
   { area: "Plan de acción", texto: "Qué vas a hacer, en qué orden y con qué recursos." },
 ];

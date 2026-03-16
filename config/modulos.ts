@@ -16,7 +16,7 @@ export const MODULOS: ModuloConfig[] = [
   { slug: "modulo-5-operaciones",  titulo: "Módulo 5 – Publicidad y Marketing" },
   { slug: "modulo-6-equipo",       titulo: "Módulo 6 – Procesos y Operaciones" },
   { slug: "modulo-7-ventas",       titulo: "Módulo 7 – Personas y Equipo" },
-  { slug: "modulo-8-marketing",    titulo: "Módulo 8 – Marketing y Posicionamiento" },
+  { slug: "modulo-8-ventas",       titulo: "Módulo 8 – Ventas" },
   { slug: "modulo-9-estrategia",   titulo: "Módulo 9 – Estrategia y Crecimiento" },
   { slug: "modulo-10-plan-accion", titulo: "Módulo 10 – Tu Plan de Acción" },
 ];
