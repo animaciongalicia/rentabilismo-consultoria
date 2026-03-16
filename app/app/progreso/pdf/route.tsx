@@ -1,4 +1,4 @@
-// app/app/progreso/pdf/route.ts
+// app/app/progreso/pdf/route.tsx  ← .tsx para poder usar JSX directamente
 // GET /app/progreso/pdf — genera y devuelve el informe PDF del usuario autenticado.
 //
 // REQUISITOS:
@@ -6,9 +6,13 @@
 // - Usuario con has_paid = true (o fundador/admin).
 // - La librería @react-pdf/renderer necesita runtime Node.js (no Edge).
 //   Configurado en next.config.ts con serverExternalPackages.
+//
+// NOTA sobre el tipo: renderToBuffer() espera ReactElement<DocumentProps>.
+// Usando JSX (<ProgressReportPDF data={...} />) TypeScript infiere el tipo
+// correcto directamente, evitando el error que da React.createElement() con
+// tipos genéricos cuando el archivo es .ts en lugar de .tsx.
 
 import { NextResponse } from "next/server";
-import React from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { createClient } from "@/lib/supabase/server";
 import { getReportData } from "@/lib/reports";
@@ -59,10 +63,8 @@ export async function GET() {
   // ── Generar PDF ────────────────────────────────────────────
   let pdfBuffer: Buffer;
   try {
-    // renderToBuffer recibe un elemento React JSX — requiere React en scope.
-    pdfBuffer = await renderToBuffer(
-      React.createElement(ProgressReportPDF, { data: reportData })
-    );
+    // .tsx permite usar JSX directamente → TypeScript infiere DocumentProps sin cast.
+    pdfBuffer = await renderToBuffer(<ProgressReportPDF data={reportData} />);
   } catch (err) {
     console.error("[PDF] Error generando PDF:", err);
     return NextResponse.json(
@@ -72,8 +74,8 @@ export async function GET() {
   }
 
   // ── Responder con el PDF como descarga ─────────────────────
-  const fecha     = new Date().toISOString().slice(0, 10);  // YYYY-MM-DD
-  const filename  = `rentabilismo-informe-${fecha}.pdf`;
+  const fecha    = new Date().toISOString().slice(0, 10);
+  const filename = `rentabilismo-informe-${fecha}.pdf`;
 
   return new Response(pdfBuffer, {
     status: 200,
@@ -81,7 +83,6 @@ export async function GET() {
       "Content-Type":        "application/pdf",
       "Content-Disposition": `attachment; filename="${filename}"`,
       "Content-Length":      String(pdfBuffer.length),
-      // Sin caché — cada descarga genera datos frescos
       "Cache-Control":       "no-store",
     },
   });

@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { ExternalLink, ArrowRight, Cpu } from "lucide-react";
+import { ExternalLink, ArrowRight, Cpu, Lock } from "lucide-react";
 import { AGENTES, HERRAMIENTAS_EXTERNAS } from "@/config/agentes";
 import { hasFullAccess } from "@/config/roles";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 
 export const metadata = {
   title: "Cuartel General — Rentabilismo",
@@ -22,8 +23,6 @@ export default async function CuartelGeneralPage() {
     .single();
 
   const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
-
-  if (!hasPaid) redirect("/programa");
 
   return (
     <div className="page-content" style={{ maxWidth: "920px" }}>
@@ -46,9 +45,20 @@ export default async function CuartelGeneralPage() {
       {/* ── BLOQUE A: AGENTES RENTABILISTAS ──────────────── */}
       <section>
         <div style={{ marginBottom: "1.5rem" }}>
-          <h2 style={{ fontSize: "1rem", fontWeight: 800, marginBottom: "0.375rem" }}>
-            Agentes Rentabilistas
-          </h2>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.375rem" }}>
+            <h2 style={{ fontSize: "1rem", fontWeight: 800, margin: 0 }}>
+              Agentes Rentabilistas
+            </h2>
+            {!hasPaid && (
+              <span style={{
+                fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.06em",
+                textTransform: "uppercase", padding: "0.15rem 0.5rem",
+                border: "1px solid var(--border)", color: "var(--muted)",
+              }}>
+                Acceso completo
+              </span>
+            )}
+          </div>
           <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7 }}>
             Una serie de asistentes de IA entrenados para tareas concretas:
             analizar competencia, fijar precios, calcular escandallos, revisar ideas…
@@ -57,12 +67,34 @@ export default async function CuartelGeneralPage() {
           </p>
         </div>
 
+        {!hasPaid && (
+          <div style={{
+            padding: "1rem 1.25rem",
+            border: "1px solid var(--border)",
+            backgroundColor: "var(--card)",
+            marginBottom: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+          }}>
+            <p style={{ fontSize: "0.875rem", margin: 0 }}>
+              Los agentes de IA forman parte del acceso completo al programa.
+            </p>
+            <Link href="/programa" className="btn-primary" style={{ whiteSpace: "nowrap", fontSize: "0.8rem" }}>
+              Desbloquear — {PRECIO_PROGRAMA} €
+            </Link>
+          </div>
+        )}
+
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
           gap: "1px",
           border: "1px solid var(--border)",
           backgroundColor: "var(--border)",
+          opacity: hasPaid ? 1 : 0.5,
         }}>
           {AGENTES.map((agente, i) => (
             <div
@@ -83,7 +115,10 @@ export default async function CuartelGeneralPage() {
                 }}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <Cpu size={13} style={{ color: "var(--muted)" }} />
+                {hasPaid
+                  ? <Cpu size={13} style={{ color: "var(--muted)" }} />
+                  : <Lock size={12} style={{ color: "var(--muted)" }} />
+                }
               </div>
 
               {/* Nombre */}
@@ -99,18 +134,20 @@ export default async function CuartelGeneralPage() {
                 {agente.modulo}
               </div>
 
-              {/* CTA */}
-              <Link
-                href={`/app/cuartel-general/${agente.slug}`}
-                className="btn-outline"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "0.375rem",
-                  fontSize: "0.75rem", padding: "0.4rem 0.875rem",
-                  alignSelf: "flex-start",
-                }}
-              >
-                Abrir <ArrowRight size={11} />
-              </Link>
+              {/* CTA — solo si ha pagado */}
+              {hasPaid && (
+                <Link
+                  href={`/app/cuartel-general/${agente.slug}`}
+                  className="btn-outline"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "0.375rem",
+                    fontSize: "0.75rem", padding: "0.4rem 0.875rem",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  Abrir <ArrowRight size={11} />
+                </Link>
+              )}
             </div>
           ))}
         </div>

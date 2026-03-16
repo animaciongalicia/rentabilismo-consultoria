@@ -204,23 +204,32 @@ export default function SidebarModulos({
 
       {/* Bottom links */}
       <div style={{ borderTop: "1px solid #1e1e1e" }}>
-        {/* Cuartel General — solo usuarios pagados */}
-        {(hasPaid) && (
-          <Link
-            href="/app/cuartel-general"
-            style={{
-              display: "flex", alignItems: "center", gap: "0.5rem",
-              padding: "0.625rem 1.25rem",
-              fontSize: "0.75rem",
-              color: pathname.startsWith("/app/cuartel-general") ? "#fff" : "#666",
-              backgroundColor: pathname.startsWith("/app/cuartel-general") ? "#1a1a1a" : "transparent",
-              textDecoration: "none",
-              borderLeft: pathname.startsWith("/app/cuartel-general") ? "2px solid #fff" : "2px solid transparent",
-            }}
-          >
-            <Cpu size={13} /> Cuartel General
-          </Link>
-        )}
+        {/* Cuartel General — visible para todos; herramientas gratuitas + agentes (pago) */}
+        <Link
+          href="/app/cuartel-general"
+          style={{
+            display: "flex", alignItems: "center", gap: "0.5rem",
+            padding: "0.625rem 1.25rem",
+            fontSize: "0.75rem",
+            color: pathname.startsWith("/app/cuartel-general") ? "#fff" : "#666",
+            backgroundColor: pathname.startsWith("/app/cuartel-general") ? "#1a1a1a" : "transparent",
+            textDecoration: "none",
+            borderLeft: pathname.startsWith("/app/cuartel-general") ? "2px solid #fff" : "2px solid transparent",
+          }}
+        >
+          <Cpu size={13} />
+          <span style={{ flex: 1 }}>Cuartel General</span>
+          {!hasPaid && (
+            <span style={{
+              fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.06em",
+              textTransform: "uppercase", color: "#4ade80",
+              border: "1px solid #4ade80", padding: "0.1rem 0.3rem",
+              borderRadius: "2px",
+            }}>
+              Gratis
+            </span>
+          )}
+        </Link>
         {/* Comunidad — visible para todos los usuarios logueados */}
         <Link
           href="/app/comunidad"
