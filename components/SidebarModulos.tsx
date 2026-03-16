@@ -67,7 +67,7 @@ export default function SidebarModulos({
           const isLocked = !hasPaid && !isModulo1;
 
           if (isLocked) {
-            // Módulos 2-10 bloqueados para usuarios sin pago
+            // Módulos 1-10 bloqueados para usuarios sin pago
             return (
               <Link
                 key={mod.slug}
@@ -97,7 +97,7 @@ export default function SidebarModulos({
                     marginBottom: "0.15rem",
                     textTransform: "uppercase",
                   }}>
-                    {String(i + 1).padStart(2, "0")}
+                    {String(i).padStart(2, "0")}
                   </span>
                   {mod.titulo.replace(/^Módulo \d+ – /, "")}
                 </span>
@@ -134,7 +134,7 @@ export default function SidebarModulos({
                   marginBottom: "0.15rem",
                   textTransform: "uppercase",
                 }}>
-                  {String(i + 1).padStart(2, "0")}
+                  {String(i).padStart(2, "0")}
                 </span>
                 {mod.titulo.replace(/^Módulo \d+ – /, "")}
               </span>
@@ -180,7 +180,7 @@ export default function SidebarModulos({
           backgroundColor: "#111",
         }}>
           <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#fff", marginBottom: "0.375rem" }}>
-            9 módulos bloqueados
+            10 módulos bloqueados
           </div>
           <div style={{ fontSize: "0.65rem", color: "#666", lineHeight: 1.5, marginBottom: "0.625rem" }}>
             Acceso completo con un solo pago.
