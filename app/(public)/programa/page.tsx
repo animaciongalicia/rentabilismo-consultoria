@@ -19,11 +19,11 @@ const PARA_QUIEN = [
 const QUE_TRABAJAMOS = [
   { area: "Mentalidad", texto: "El punto de partida. Sin esto, lo demás no sirve.", gratis: true },
   { area: "Diagnóstico", texto: "Qué está funcionando, qué no y por qué.", gratis: false },
-  { area: "Finanzas", texto: "Dónde entra y dónde se va el dinero realmente.", gratis: false },
+  { area: "Producto/Servicio", texto: "Qué vendes, a quién y si lo estás enfocando bien.", gratis: false },
   { area: "Precios", texto: "Si estás cobrando lo que vale lo que haces.", gratis: false },
-  { area: "Operaciones", texto: "Cómo dejar de ser imprescindible para todo.", gratis: false },
-  { area: "Equipo", texto: "Si tienes las personas correctas en los puestos correctos.", gratis: false },
-  { area: "Ventas", texto: "Cómo conseguir clientes que valgan la pena.", gratis: false },
+  { area: "Publicidad/Marketing", texto: "Cómo atraes clientes y qué hace que te elijan a ti.", gratis: false },
+  { area: "Procesos/Operaciones", texto: "Cómo dejar de ser imprescindible para todo.", gratis: false },
+  { area: "Personas/Equipo", texto: "Si tienes las personas correctas en los puestos correctos.", gratis: false },
   { area: "Marketing", texto: "Cómo te posicionas y qué percepción genera tu negocio.", gratis: false },
   { area: "Estrategia", texto: "Hacia dónde vas y si el camino tiene sentido.", gratis: false },
   { area: "Plan de acción", texto: "Qué vas a hacer, en qué orden y con qué recursos.", gratis: false },
@@ -44,7 +44,7 @@ export default function ProgramaPage({
         </div>
 
         <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "1rem" }}>
-          Solo para empresarios<br />que quieren cambiar de verdad.
+          Solo para empresarios que quieren cambiar de verdad.
         </h1>
 
         <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "680px" }}>

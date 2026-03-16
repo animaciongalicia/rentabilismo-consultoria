@@ -39,7 +39,6 @@ export default async function ComoFuncionaPage() {
           fontSize: "1.1rem",
           color: "#333",
           lineHeight: 1.8,
-          maxWidth: "680px",
         }}>
           No vas a ver vídeos y ya está. Aquí vienes a sentarte una vez a la semana,
           mirar tu negocio con calma y tomar decisiones que se noten en la cuenta corriente.
@@ -164,7 +163,7 @@ export default async function ComoFuncionaPage() {
           Cada módulo tiene cuatro capas.
         </h2>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)", marginBottom: "1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)", marginBottom: "1.5rem" }}>
           {[
             {
               n: "01",
@@ -211,7 +210,6 @@ export default async function ComoFuncionaPage() {
           padding: "1.5rem",
           border: "1px solid var(--foreground)",
           backgroundColor: "var(--card)",
-          maxWidth: "600px",
         }}>
           <p style={{ fontSize: "0.925rem", lineHeight: 1.8, margin: 0 }}>
             Si solo ves el vídeo, te inspiras un rato.
@@ -351,7 +349,7 @@ export default async function ComoFuncionaPage() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
           {[
-            "Entras a los 10 módulos del programa (Mentalidad, Diagnóstico, Finanzas, Precios, Operaciones, Equipo, Ventas, Marketing, Estrategia y Plan de Acción).",
+            "Entras a los 10 módulos del programa (Mentalidad, Diagnóstico, Producto/Servicio, Precios, Publicidad y Marketing, Procesos y Operaciones, Personas y Equipo, Estrategia y Plan de Acción).",
             "Acceso de por vida al programa, a las mejoras que vaya añadiendo y a nuevos casos prácticos.",
             "Puedes volver a usar la plataforma cada vez que quieras revisar tu negocio, abrir una línea nueva o ajustar precios.",
           ].map((item, i, arr) => (
