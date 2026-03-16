@@ -19,7 +19,7 @@ export default async function ComoFuncionaPage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "5rem 3.5rem 4rem",
+        padding: "3rem 3.5rem 2.5rem",
         maxWidth: "920px",
       }}>
         <div style={{
@@ -37,7 +37,7 @@ export default async function ComoFuncionaPage() {
         </h1>
         <p style={{
           fontSize: "1.1rem",
-          color: "var(--muted)",
+          color: "#333",
           lineHeight: 1.8,
           maxWidth: "680px",
         }}>
@@ -49,7 +49,7 @@ export default async function ComoFuncionaPage() {
       {/* ── 1. QUÉ ES UNA CONSULTORÍA GUIADA ────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -79,10 +79,10 @@ export default async function ComoFuncionaPage() {
 
         <p style={{
           fontSize: "0.95rem",
-          color: "var(--muted)",
+          color: "#333",
           lineHeight: 1.8,
           maxWidth: "680px",
-          padding: "1.5rem",
+          padding: "1.25rem",
           border: "1px solid var(--border)",
           backgroundColor: "var(--card)",
         }}>
@@ -95,7 +95,7 @@ export default async function ComoFuncionaPage() {
       {/* ── 2. EL RITMO DE TRABAJO ───────────────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -105,53 +105,53 @@ export default async function ComoFuncionaPage() {
           El ritmo
         </div>
         <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", marginBottom: "1.5rem" }}>
-          2 horas a la semana, durante 1 mes.
+          3 horas a la semana. En 2 meses, mejoras notables.
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0", marginBottom: "1.5rem" }}>
           {[
-            "Cada módulo empieza con un vídeo de 10–12 minutos donde te explico qué vas a trabajar, qué dolores vamos a tocar y qué cambios puedes esperar.",
-            "Después, entras en las lecciones: textos claros, ejemplos y, sobre todo, ejercicios prácticos.",
-            "Si haces dos módulos por semana, en 4–5 semanas habrás revisado tu empresa de arriba a abajo.",
+            { n: "01", txt: "Cada módulo arranca con un vídeo de 10–12 minutos: el problema, el enfoque y qué puedes esperar cambiar." },
+            { n: "02", txt: "Después vienen 4–5 lecciones de teoría y trabajo real: textos claros, ejemplos de empresa y ejercicios con tus datos." },
+            { n: "03", txt: "Si reservas 3 horas a la semana, en el primer mes implementas mejoras concretas. En el segundo mes ajustas y refinas." },
+            { n: "04", txt: "En 2 meses tienes mejoras notables. No promesas: decisiones tomadas, números revisados y procesos cambiados." },
           ].map((item, i, arr) => (
             <div key={i} style={{
               display: "flex",
               gap: "1.25rem",
-              padding: "1.25rem 0",
+              padding: "1rem 0",
               borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none",
             }}>
               <div style={{
-                width: "28px", height: "28px", flexShrink: 0,
+                width: "26px", height: "26px", flexShrink: 0,
                 backgroundColor: "var(--foreground)", color: "var(--background)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.7rem", fontWeight: 800,
+                fontSize: "0.65rem", fontWeight: 800,
               }}>
-                {i + 1}
+                {item.n}
               </div>
-              <p style={{ fontSize: "0.925rem", color: "var(--muted)", lineHeight: 1.75, margin: 0, paddingTop: "3px" }}>
-                {item}
+              <p style={{ fontSize: "0.9rem", color: "#333", lineHeight: 1.7, margin: 0, paddingTop: "2px" }}>
+                {item.txt}
               </p>
             </div>
           ))}
         </div>
 
         <p style={{
-          marginTop: "2rem",
-          fontSize: "0.925rem",
+          fontSize: "0.9rem",
           color: "var(--foreground)",
           lineHeight: 1.75,
-          maxWidth: "640px",
+          maxWidth: "620px",
           fontWeight: 500,
         }}>
-          No se trata de encontrar tiempo, se trata de reservarlo. Dos horas a la semana
-          para pensar, decidir y arreglar cosas que llevas años posponiendo.
+          No se trata de encontrar tiempo, se trata de reservarlo. Tres horas a la semana
+          para pensar, decidir y arreglar cosas que llevas meses posponiendo.
         </p>
       </section>
 
       {/* ── 3. DENTRO DE CADA MÓDULO ─────────────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -160,42 +160,47 @@ export default async function ComoFuncionaPage() {
         }}>
           Dentro de cada módulo
         </div>
-        <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", marginBottom: "2rem" }}>
-          Cada módulo tiene tres capas.
+        <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", marginBottom: "1.5rem" }}>
+          Cada módulo tiene cuatro capas.
         </h2>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)", marginBottom: "2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)", marginBottom: "1.5rem" }}>
           {[
             {
               n: "01",
               titulo: "Entender",
-              texto: "Un vídeo corto donde te explico el problema y el enfoque que vamos a usar.",
+              texto: "Vídeo de 10–12 minutos. El problema, el enfoque, qué vas a trabajar.",
             },
             {
               n: "02",
-              titulo: "Verte",
-              texto: "Lecciones pensadas para que te veas reflejado: preguntas, ejemplos y errores típicos.",
+              titulo: "Procesar",
+              texto: "Lecciones para que te veas reflejado: preguntas, casos reales y errores típicos.",
             },
             {
               n: "03",
               titulo: "Actuar",
-              texto: "1 o 2 ejercicios por lección donde metes tus datos reales: precios, gastos, equipo, procesos, márgenes…",
+              texto: "Ejercicios con tus datos reales: precios, gastos, equipo, procesos, márgenes.",
+            },
+            {
+              n: "04",
+              titulo: "Revisar y ajustar",
+              texto: "Vuelves al módulo cuando tu empresa cambia y actualizas tus respuestas. El ciclo no termina.",
             },
           ].map((capa) => (
             <div key={capa.n} style={{
-              padding: "1.75rem",
+              padding: "1.25rem",
               backgroundColor: "var(--background)",
             }}>
               <div style={{
                 fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em",
-                textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.625rem",
+                textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem",
               }}>
                 {capa.n}
               </div>
-              <div style={{ fontSize: "1rem", fontWeight: 800, marginBottom: "0.625rem" }}>
+              <div style={{ fontSize: "0.95rem", fontWeight: 800, marginBottom: "0.5rem" }}>
                 {capa.titulo}.
               </div>
-              <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, margin: 0 }}>
+              <p style={{ fontSize: "0.825rem", color: "#444", lineHeight: 1.65, margin: 0 }}>
                 {capa.texto}
               </p>
             </div>
@@ -219,7 +224,7 @@ export default async function ComoFuncionaPage() {
       {/* ── 4. QUÉ PASA CON TUS DATOS ────────────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -240,12 +245,12 @@ export default async function ComoFuncionaPage() {
           ].map((item, i) => (
             <div key={i} style={{ display: "flex", gap: "0.75rem", fontSize: "0.9rem", lineHeight: 1.7 }}>
               <span style={{ color: "var(--foreground)", fontWeight: 700, flexShrink: 0 }}>—</span>
-              <span style={{ color: "var(--muted)" }}>{item}</span>
+              <span style={{ color: "#333" }}>{item}</span>
             </div>
           ))}
         </div>
 
-        <p style={{ fontSize: "0.925rem", color: "var(--foreground)", lineHeight: 1.8, maxWidth: "640px", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "0.925rem", color: "#333", lineHeight: 1.8, maxWidth: "640px", marginBottom: "1.5rem" }}>
           No son tareas para &laquo;entregarle al profe&raquo;. Es un cuaderno de trabajo vivo
           sobre tu empresa, que solo tú ves y que puedes revisar cuando quieras.
         </p>
@@ -255,7 +260,7 @@ export default async function ComoFuncionaPage() {
           border: "1px solid var(--border)",
           backgroundColor: "var(--card)",
           fontSize: "0.8rem",
-          color: "var(--muted)",
+          color: "#444",
           display: "inline-block",
           maxWidth: "540px",
         }}>
@@ -266,7 +271,7 @@ export default async function ComoFuncionaPage() {
       {/* ── 5. MÓDULO 1 GRATIS ───────────────────────────────── */}
       <section style={{
         borderBottom: "1px solid var(--border)",
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -300,7 +305,7 @@ export default async function ComoFuncionaPage() {
         </div>
 
         <p style={{
-          fontSize: "0.925rem", color: "var(--muted)", lineHeight: 1.8,
+          fontSize: "0.925rem", color: "#333", lineHeight: 1.8,
           maxWidth: "620px", marginBottom: "2rem",
         }}>
           El Módulo 1 es para que tú decidas si estás preparado. Yo no voy a perseguirte.
@@ -331,7 +336,7 @@ export default async function ComoFuncionaPage() {
 
       {/* ── 6. ACCESO COMPLETO ───────────────────────────────── */}
       <section style={{
-        padding: "4rem 3.5rem",
+        padding: "2.5rem 3.5rem",
         maxWidth: "860px",
       }}>
         <div style={{
@@ -362,7 +367,7 @@ export default async function ComoFuncionaPage() {
               }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <p style={{ fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontSize: "0.9rem", color: "#333", lineHeight: 1.75, margin: 0 }}>
                 {item}
               </p>
             </div>
