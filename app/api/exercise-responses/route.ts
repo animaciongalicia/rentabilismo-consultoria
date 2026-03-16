@@ -78,6 +78,16 @@ export async function POST(request: Request) {
   // Recalculate module progress ─────────────────────────────────────────────
   // A lesson is "completed" when ALL its exercises have non-empty responses.
   // This matches the completion badge shown in LessonExercises.tsx.
+
+  // Snapshot BEFORE the save to detect transitions (lesson/module just completed)
+  const { data: prevProgress } = await supabase
+    .from("module_progress")
+    .select("completed_lessons")
+    .eq("user_id", user.id)
+    .eq("module_slug", moduleSlug)
+    .single();
+  const prevCompletedLessons = prevProgress?.completed_lessons ?? 0;
+
   const { data: moduleResponses } = await supabase
     .from("exercise_responses")
     .select("lesson_slug, exercise_key")
@@ -96,6 +106,10 @@ export async function POST(request: Request) {
   }).length;
 
   const totalLessons = getLessonsForModule(moduleSlug).length || 4;
+
+  // Detect completion transitions
+  const lessonJustCompleted = completedLessons > prevCompletedLessons;
+  const moduleJustCompleted = completedLessons >= totalLessons && prevCompletedLessons < totalLessons;
 
   await supabase
     .from("module_progress")
@@ -129,5 +143,5 @@ export async function POST(request: Request) {
       .eq("id", user.id);
   }
 
-  return NextResponse.json({ ok: true, completedLessons, totalLessons });
+  return NextResponse.json({ ok: true, completedLessons, totalLessons, lessonJustCompleted, moduleJustCompleted });
 }

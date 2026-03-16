@@ -9,7 +9,7 @@ interface Props {
   prompt: string;
   initialValue: string;
   /** Called after a successful save so the parent can update completion state */
-  onSaved?: (exerciseKey: string) => void;
+  onSaved?: (exerciseKey: string, meta: { lessonJustCompleted: boolean; moduleJustCompleted: boolean }) => void;
 }
 
 type Status = "idle" | "saving" | "saved" | "error";
@@ -42,8 +42,12 @@ export default function ExerciseBox({
     });
 
     if (res.ok) {
+      const data = await res.json().catch(() => ({}));
       setStatus("saved");
-      onSaved?.(exerciseKey);
+      onSaved?.(exerciseKey, {
+        lessonJustCompleted: data.lessonJustCompleted ?? false,
+        moduleJustCompleted: data.moduleJustCompleted ?? false,
+      });
     } else {
       const data = await res.json().catch(() => ({}));
       setErrorMsg(data.error ?? "Error al guardar. Inténtalo de nuevo.");

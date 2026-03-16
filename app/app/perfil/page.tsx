@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import PerfilForm from "./PerfilForm";
+import { MODULOS } from "@/config/modulos";
+import { getLessonsForModule } from "@/config/lessons";
 
 export const metadata = {
   title: "Mi perfil — Rentabilismo",
@@ -25,13 +27,50 @@ export default async function PerfilPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, country, pain_phrase, sector, business_size, objetivo_60_dias, role, has_paid, created_at")
-    .eq("id", user.id)
-    .single();
+  const [profileResult, moduleProgressResult, recentActivityResult] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("full_name, country, pain_phrase, sector, business_size, objetivo_60_dias, role, has_paid, created_at, global_progress_pct")
+      .eq("id", user.id)
+      .single(),
+    supabase
+      .from("module_progress")
+      .select("module_slug, completed_lessons, total_lessons")
+      .eq("user_id", user.id),
+    supabase
+      .from("exercise_responses")
+      .select("module_slug, lesson_slug, updated_at")
+      .eq("user_id", user.id)
+      .neq("response", "")
+      .order("updated_at", { ascending: false })
+      .limit(15),
+  ]);
 
+  const profile = profileResult.data;
   if (!profile) redirect("/login");
+
+  // Build module progress map
+  const progressMap = new Map(
+    (moduleProgressResult.data ?? []).map(p => [p.module_slug, p])
+  );
+
+  // Deduplicate recent activity by lessonSlug, keep 3 most recent
+  const seen = new Set<string>();
+  const recentLessons = (recentActivityResult.data ?? [])
+    .filter(r => {
+      if (seen.has(r.lesson_slug)) return false;
+      seen.add(r.lesson_slug);
+      return true;
+    })
+    .slice(0, 3);
+
+  // Find lesson title from config
+  function getLessonTitle(moduleSlug: string, lessonSlug: string): string {
+    const lessons = getLessonsForModule(moduleSlug);
+    return lessons.find(l => l.lessonSlug === lessonSlug)?.title ?? lessonSlug;
+  }
+
+  const globalPct = profile.global_progress_pct ?? 0;
 
   const joinDate = new Date(profile.created_at).toLocaleDateString("es-ES", {
     year: "numeric",
@@ -110,6 +149,137 @@ export default async function PerfilPage() {
             <span><strong style={{ color: "var(--foreground)" }}>País</strong> — {profile.country}</span>
           )}
         </div>
+      </div>
+
+      {/* ── Progreso ─────────────────────────────────────────── */}
+      <div style={{ marginBottom: "3rem" }}>
+        <div style={{
+          fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
+          textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem",
+        }}>
+          Progreso en el programa
+        </div>
+
+        {/* Global progress bar */}
+        <div style={{ marginBottom: "1.75rem" }}>
+          <div style={{
+            display: "flex", justifyContent: "space-between",
+            alignItems: "baseline", marginBottom: "0.5rem",
+          }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 600 }}>Avance global</span>
+            <span style={{ fontSize: "1.1rem", fontWeight: 900 }}>{globalPct}%</span>
+          </div>
+          <div style={{
+            height: "4px", backgroundColor: "var(--border)",
+            overflow: "hidden",
+          }}>
+            <div style={{
+              height: "100%",
+              width: `${globalPct}%`,
+              backgroundColor: "var(--foreground)",
+              transition: "width 0.4s ease",
+            }} />
+          </div>
+        </div>
+
+        {/* Module checkpoints */}
+        <div style={{
+          border: "1px solid var(--border)",
+          overflow: "hidden",
+          marginBottom: "1.5rem",
+        }}>
+          {MODULOS.map((mod, i) => {
+            const p = progressMap.get(mod.slug);
+            const completed = p ? p.completed_lessons >= p.total_lessons : false;
+            const inProgress = p ? p.completed_lessons > 0 && !completed : false;
+            const pct = p ? Math.round((p.completed_lessons / Math.max(p.total_lessons, 1)) * 100) : 0;
+            const totalLessons = p?.total_lessons ?? getLessonsForModule(mod.slug).length;
+            const shortTitle = mod.titulo.replace(/^Módulo \d+ – /, "");
+
+            return (
+              <div key={mod.slug} style={{
+                display: "flex", alignItems: "center", gap: "0.875rem",
+                padding: "0.625rem 1rem",
+                borderBottom: i < MODULOS.length - 1 ? "1px solid var(--border)" : "none",
+                backgroundColor: completed ? "var(--card)" : "var(--background)",
+              }}>
+                {/* Status marker */}
+                <div style={{
+                  width: "20px", height: "20px", flexShrink: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "0.65rem", fontWeight: 900,
+                  border: completed ? "none" : "1px solid var(--border)",
+                  backgroundColor: completed ? "var(--foreground)" : "transparent",
+                  color: completed ? "var(--background)" : "var(--muted)",
+                }}>
+                  {completed ? "✓" : String(i + 1).padStart(2, "0")}
+                </div>
+
+                {/* Title + progress */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    fontSize: "0.8rem",
+                    fontWeight: completed ? 700 : 400,
+                    color: completed ? "var(--foreground)" : inProgress ? "var(--foreground)" : "var(--muted)",
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  }}>
+                    {shortTitle}
+                  </div>
+                </div>
+
+                {/* Right label */}
+                <div style={{
+                  fontSize: "0.65rem", fontWeight: 700,
+                  letterSpacing: "0.06em", textTransform: "uppercase", flexShrink: 0,
+                  color: completed ? "var(--foreground)" : inProgress ? "var(--muted)" : "#ccc",
+                }}>
+                  {completed
+                    ? "Completado"
+                    : inProgress
+                    ? `${p!.completed_lessons}/${totalLessons}`
+                    : "—"}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Recent activity */}
+        {recentLessons.length > 0 && (
+          <div>
+            <div style={{
+              fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
+              textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
+            }}>
+              Último trabajo
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              {recentLessons.map((r, i) => {
+                const modTitulo = MODULOS.find(m => m.slug === r.module_slug)?.titulo
+                  .replace(/^Módulo \d+ – /, "") ?? r.module_slug;
+                const lessonTitle = getLessonTitle(r.module_slug, r.lesson_slug);
+                const date = new Date(r.updated_at).toLocaleDateString("es-ES", {
+                  day: "numeric", month: "short",
+                });
+                return (
+                  <div key={r.lesson_slug} style={{
+                    display: "flex", alignItems: "center", gap: "0.75rem",
+                    padding: "0.625rem 0",
+                    borderBottom: i < recentLessons.length - 1 ? "1px solid var(--border)" : "none",
+                    fontSize: "0.8rem",
+                  }}>
+                    <span style={{ color: "var(--muted)", fontWeight: 700, flexShrink: 0 }}>—</span>
+                    <span style={{ flex: 1, color: "var(--foreground)" }}>
+                      {lessonTitle}
+                      <span style={{ color: "var(--muted)", fontWeight: 400 }}> · {modTitulo}</span>
+                    </span>
+                    <span style={{ color: "var(--muted)", fontSize: "0.7rem", flexShrink: 0 }}>{date}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Edit form */}

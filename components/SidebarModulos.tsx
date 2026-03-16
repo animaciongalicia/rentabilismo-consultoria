@@ -245,22 +245,20 @@ export default function SidebarModulos({
         >
           <Users size={13} /> Comunidad
         </Link>
-        {hasPaid && (
-          <Link
-            href="/app/progreso"
-            style={{
-              display: "flex", alignItems: "center", gap: "0.5rem",
-              padding: "0.625rem 1.25rem",
-              fontSize: "0.75rem",
-              color: pathname === "/app/progreso" ? "#fff" : "#666",
-              backgroundColor: pathname === "/app/progreso" ? "#1a1a1a" : "transparent",
-              textDecoration: "none",
-              borderLeft: pathname === "/app/progreso" ? "2px solid #fff" : "2px solid transparent",
-            }}
-          >
-            <BarChart2 size={13} /> Mi progreso
-          </Link>
-        )}
+        <Link
+          href="/app/progreso"
+          style={{
+            display: "flex", alignItems: "center", gap: "0.5rem",
+            padding: "0.625rem 1.25rem",
+            fontSize: "0.75rem",
+            color: pathname === "/app/progreso" ? "#fff" : "#666",
+            backgroundColor: pathname === "/app/progreso" ? "#1a1a1a" : "transparent",
+            textDecoration: "none",
+            borderLeft: pathname === "/app/progreso" ? "2px solid #fff" : "2px solid transparent",
+          }}
+        >
+          <BarChart2 size={13} /> Mi progreso
+        </Link>
         <Link
           href="/app/perfil"
           style={{
