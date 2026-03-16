@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, User, ShieldCheck } from "lucide-react";
+import { ChevronLeft, User, ShieldCheck, BarChart2 } from "lucide-react";
 
 export const MODULOS = [
   { slug: "modulo-1-mentalidad",   titulo: "Módulo 1 – Mentalidad Empresarial" },
@@ -17,7 +17,13 @@ export const MODULOS = [
   { slug: "modulo-10-plan-accion", titulo: "Módulo 10 – Tu Plan de Acción" },
 ];
 
-export default function SidebarModulos({ role }: { role?: string }) {
+export default function SidebarModulos({
+  role,
+  progressMap = {},
+}: {
+  role?: string;
+  progressMap?: Record<string, number>;
+}) {
   const pathname = usePathname();
   const isAdmin = role === "founder" || role === "admin";
 
@@ -68,7 +74,10 @@ export default function SidebarModulos({ role }: { role?: string }) {
               key={mod.slug}
               href={href}
               style={{
-                display: "block",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "0.5rem",
                 padding: "0.625rem 1.25rem",
                 fontSize: "0.8rem",
                 lineHeight: 1.4,
@@ -79,17 +88,31 @@ export default function SidebarModulos({ role }: { role?: string }) {
                 transition: "color 0.15s, background-color 0.15s",
               }}
             >
-              <span style={{
-                display: "block",
-                fontSize: "0.6rem",
-                color: isActive ? "#aaa" : "#444",
-                letterSpacing: "0.06em",
-                marginBottom: "0.15rem",
-                textTransform: "uppercase",
-              }}>
-                {String(i + 1).padStart(2, "0")}
+              <span style={{ minWidth: 0 }}>
+                <span style={{
+                  display: "block",
+                  fontSize: "0.6rem",
+                  color: isActive ? "#aaa" : "#444",
+                  letterSpacing: "0.06em",
+                  marginBottom: "0.15rem",
+                  textTransform: "uppercase",
+                }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {mod.titulo.replace(/^Módulo \d+ – /, "")}
               </span>
-              {mod.titulo.replace(/^Módulo \d+ – /, "")}
+              {/* Progress indicator */}
+              {progressMap[mod.slug] !== undefined && (
+                <span style={{
+                  fontSize: "0.6rem",
+                  fontWeight: 700,
+                  color: progressMap[mod.slug] === 100 ? "#4ade80" : "#555",
+                  flexShrink: 0,
+                  letterSpacing: "0.02em",
+                }}>
+                  {progressMap[mod.slug] === 100 ? "✓" : `${progressMap[mod.slug]}%`}
+                </span>
+              )}
             </Link>
           );
         })}
@@ -97,6 +120,20 @@ export default function SidebarModulos({ role }: { role?: string }) {
 
       {/* Bottom links */}
       <div style={{ borderTop: "1px solid #1e1e1e" }}>
+        <Link
+          href="/app/progreso"
+          style={{
+            display: "flex", alignItems: "center", gap: "0.5rem",
+            padding: "0.625rem 1.25rem",
+            fontSize: "0.75rem",
+            color: pathname === "/app/progreso" ? "#fff" : "#666",
+            backgroundColor: pathname === "/app/progreso" ? "#1a1a1a" : "transparent",
+            textDecoration: "none",
+            borderLeft: pathname === "/app/progreso" ? "2px solid #fff" : "2px solid transparent",
+          }}
+        >
+          <BarChart2 size={13} /> Mi progreso
+        </Link>
         <Link
           href="/app/perfil"
           style={{

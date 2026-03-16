@@ -87,3 +87,105 @@ ALTER TABLE public.profiles
 
 -- Para asignarte a ti como fundador, ejecuta:
 -- UPDATE public.profiles SET role = 'founder' WHERE id = 'tu-user-id-aqui';
+
+-- ============================================================
+-- FASE 4 — Lecciones, Ejercicios y Progreso
+-- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
+-- ============================================================
+
+-- 4a. Definición de lecciones por módulo (datos no sensibles)
+CREATE TABLE IF NOT EXISTS public.lessons (
+  id           UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  module_slug  TEXT        NOT NULL,
+  lesson_slug  TEXT        NOT NULL,
+  order_index  INTEGER     NOT NULL,
+  title        TEXT        NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (module_slug, lesson_slug)
+);
+
+CREATE INDEX IF NOT EXISTS idx_lessons_module_order
+  ON public.lessons (module_slug, order_index);
+
+-- 4b. Plantillas de ejercicios por lección (datos no sensibles)
+CREATE TABLE IF NOT EXISTS public.lesson_exercises (
+  id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  module_slug   TEXT        NOT NULL,
+  lesson_slug   TEXT        NOT NULL,
+  exercise_key  TEXT        NOT NULL,
+  prompt        TEXT        NOT NULL,
+  order_index   INTEGER     NOT NULL DEFAULT 0,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (module_slug, lesson_slug, exercise_key)
+);
+
+-- 4c. Respuestas reales del usuario (datos privados)
+CREATE TABLE IF NOT EXISTS public.exercise_responses (
+  id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id       UUID        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  module_slug   TEXT        NOT NULL,
+  lesson_slug   TEXT        NOT NULL,
+  exercise_key  TEXT        NOT NULL,
+  response      TEXT        NOT NULL DEFAULT '',
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, module_slug, lesson_slug, exercise_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_exercise_responses_user_module
+  ON public.exercise_responses (user_id, module_slug, lesson_slug);
+
+-- 4d. Progreso por módulo (calculado al guardar ejercicios, datos privados)
+-- Decisión de diseño: se almacena para evitar N queries en el sidebar.
+-- Se recalcula en cada POST a /api/exercise-responses.
+CREATE TABLE IF NOT EXISTS public.module_progress (
+  id                UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           UUID        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  module_slug       TEXT        NOT NULL,
+  completed_lessons INTEGER     NOT NULL DEFAULT 0,
+  total_lessons     INTEGER     NOT NULL DEFAULT 4,
+  last_update       TIMESTAMPTZ          DEFAULT NOW(),
+  UNIQUE (user_id, module_slug)
+);
+
+-- ── RLS ────────────────────────────────────────────────────────
+
+ALTER TABLE public.lessons          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lesson_exercises ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.exercise_responses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.module_progress  ENABLE ROW LEVEL SECURITY;
+
+-- lessons y lesson_exercises: lectura pública (sin datos sensibles)
+CREATE POLICY "lessons_public_read"
+  ON public.lessons FOR SELECT USING (true);
+
+CREATE POLICY "lesson_exercises_public_read"
+  ON public.lesson_exercises FOR SELECT USING (true);
+
+-- exercise_responses: solo el propio usuario
+CREATE POLICY "exercise_responses_select_own"
+  ON public.exercise_responses FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "exercise_responses_insert_own"
+  ON public.exercise_responses FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "exercise_responses_update_own"
+  ON public.exercise_responses FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
+-- module_progress: solo el propio usuario
+CREATE POLICY "module_progress_select_own"
+  ON public.module_progress FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "module_progress_insert_own"
+  ON public.module_progress FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "module_progress_update_own"
+  ON public.module_progress FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
