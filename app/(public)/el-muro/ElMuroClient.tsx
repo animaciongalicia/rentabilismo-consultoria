@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { MuroProfile } from "./page";
+import { ROLES } from "@/config/roles";
 
 // ── Utilidades ────────────────────────────────────────────────
 function getInitials(name: string | null) {
@@ -78,8 +79,8 @@ export default function ElMuroClient({
         <span style={{ fontSize: "0.7rem", color: "var(--muted)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
           Estado:
         </span>
-        {(["", "member", "founder", "free"] as const).map(r => {
-          const labels: Record<string, string> = { "": "Todos", member: "Miembro", founder: "Fundador", free: "Explorador" };
+        {(["", ROLES.MEMBER, ROLES.FOUNDER, ROLES.FREE] as const).map(r => {
+          const labels: Record<string, string> = { "": "Todos", [ROLES.MEMBER]: "Miembro", [ROLES.FOUNDER]: "Fundador", [ROLES.FREE]: "Explorador" };
           return (
             <button key={r} onClick={() => setFilterRole(r)} style={pillStyle(filterRole === r)}>
               {labels[r]}
@@ -117,9 +118,9 @@ export default function ElMuroClient({
 // ── Tarjeta de perfil ─────────────────────────────────────────
 function ProfileCard({ profile: p }: { profile: MuroProfile }) {
   const initials = getInitials(p.full_name);
-  const badge    = ROLE_BADGE[p.role ?? "free"] ?? ROLE_BADGE.free;
+  const badge    = ROLE_BADGE[p.role ?? ROLES.FREE] ?? ROLE_BADGE[ROLES.FREE];
   const progress = roundProgress(p.global_progress_pct ?? 0);
-  const isMember = p.role === "member" || p.role === "founder" || p.role === "admin";
+  const isMember = p.role === ROLES.MEMBER || p.role === ROLES.FOUNDER || p.role === ROLES.ADMIN;
 
   return (
     <div style={{

@@ -318,8 +318,11 @@ export default function ProgressReportPDF({ data }: { data: ReportData }) {
         {/* Marca */}
         <Text style={S.coverBrand}>Rentabilismo · Consultoría Guiada</Text>
 
-        {/* Título */}
-        <Text style={S.coverTitle}>Informe de{"\n"}Progreso</Text>
+        {/* Título — dos <Text> separados para evitar \n erráticos en PDF viewers */}
+        <View>
+          <Text style={S.coverTitle}>Informe de</Text>
+          <Text style={[S.coverTitle, { marginBottom: 10 }]}>Progreso</Text>
+        </View>
         <Text style={S.coverSubtitle}>Trabajo realizado en el programa</Text>
 
         {/* Línea divisoria */}

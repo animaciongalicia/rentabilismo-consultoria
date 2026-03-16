@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import AdminTable from "./AdminTable";
+import { ROLES, isSuperUser } from "@/config/roles";
 
 export const metadata = {
   title: "Admin — Rentabilismo",
@@ -18,7 +19,7 @@ export default async function AdminPage() {
     .eq("id", user.id)
     .single();
 
-  if (!myProfile || !["founder", "admin"].includes(myProfile.role)) {
+  if (!myProfile || !isSuperUser(myProfile.role)) {
     redirect("/app");
   }
 
@@ -38,7 +39,7 @@ export default async function AdminPage() {
     full_name: (p.full_name ?? "—") as string,
     email: emailMap.get(p.id) ?? "—",
     country: (p.country ?? "") as string,
-    role: (p.role ?? "free") as string,
+    role: (p.role ?? ROLES.FREE) as string,
     has_paid: p.has_paid as boolean,
     created_at: p.created_at as string,
   }));
@@ -64,10 +65,10 @@ export default async function AdminPage() {
       }}>
         {[
           { label: "Total", value: rows.length, color: "var(--foreground)" },
-          { label: "Fundadores", value: rows.filter(r => r.role === "founder").length, color: "#6366f1" },
-          { label: "Admins", value: rows.filter(r => r.role === "admin").length, color: "#d97706" },
-          { label: "Miembros", value: rows.filter(r => r.role === "member").length, color: "#16a34a" },
-          { label: "Exploradores", value: rows.filter(r => r.role === "free").length, color: "#6b7280" },
+          { label: "Fundadores",   value: rows.filter(r => r.role === ROLES.FOUNDER).length, color: "#6366f1" },
+          { label: "Admins",       value: rows.filter(r => r.role === ROLES.ADMIN).length,   color: "#d97706" },
+          { label: "Miembros",     value: rows.filter(r => r.role === ROLES.MEMBER).length,  color: "#16a34a" },
+          { label: "Exploradores", value: rows.filter(r => r.role === ROLES.FREE).length,    color: "#6b7280" },
           { label: "Con acceso", value: rows.filter(r => r.has_paid).length, color: "#16a34a" },
         ].map(stat => (
           <div key={stat.label} style={{

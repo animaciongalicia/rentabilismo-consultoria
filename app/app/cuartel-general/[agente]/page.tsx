@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ChevronLeft } from "lucide-react";
 import { AGENTES } from "@/config/agentes";
+import { hasFullAccess } from "@/config/roles";
 import AgenteForm from "../AgenteForm";
 
 // Genera las rutas estáticas en build para todos los agentes
@@ -42,8 +43,7 @@ export default async function AgentePage({
     .eq("id", user.id)
     .single();
 
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const hasPaid     = (profile?.has_paid ?? false) || isSuperUser;
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   if (!hasPaid) redirect("/programa");
 

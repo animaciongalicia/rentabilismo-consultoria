@@ -7,30 +7,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@/lib/supabase/client";
 import { ChevronRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { SECTORES, BUSINESS_SIZES } from "@/config/opciones";
 
-// ── Sectores y tamaños disponibles ───────────────────────────
-export const SECTORES = [
-  "Hostelería y restauración",
-  "Comercio y retail",
-  "Servicios profesionales",
-  "Construcción y reformas",
-  "Tecnología y digital",
-  "Salud y bienestar",
-  "Educación y formación",
-  "Industria y manufactura",
-  "Transporte y logística",
-  "Inmobiliario",
-  "Consultoría",
-  "Alimentación",
-  "Otro",
-];
-
-export const BUSINESS_SIZES = [
-  { value: "autonomo", label: "Autónomo / Solo" },
-  { value: "2-5",     label: "2-5 personas" },
-  { value: "6-20",    label: "6-20 personas" },
-  { value: "+20",     label: "+20 personas" },
-];
+export { SECTORES, BUSINESS_SIZES };
 
 // ── Schemas Zod ───────────────────────────────────────────────
 const paso1Schema = z.object({

@@ -13,6 +13,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { createClient } from "@/lib/supabase/server";
 import { getReportData } from "@/lib/reports";
 import ProgressReportPDF from "@/lib/pdf/ProgressReportPDF";
+import { hasFullAccess } from "@/config/roles";
 
 // Forzar runtime Node.js — @react-pdf/renderer no funciona en Edge Runtime.
 export const runtime = "nodejs";
@@ -34,8 +35,7 @@ export async function GET() {
     .eq("id", user.id)
     .single();
 
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const hasPaid     = (profile?.has_paid ?? false) || isSuperUser;
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   if (!hasPaid) {
     return NextResponse.json(

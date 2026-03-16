@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SidebarModulos from "@/components/SidebarModulos";
+import { hasFullAccess, ROLES } from "@/config/roles";
 
 // Rutas de /app accesibles sin pago (solo requieren estar logueado)
 const FREE_APP_PATHS = [
@@ -31,8 +32,7 @@ export default async function AppLayout({
     .eq("id", user.id)
     .single();
 
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const hasPaid = profile?.has_paid ?? false;
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   // La protección real de rutas la hace proxy.ts (middleware).
   // Aquí solo redirigimos si por algún motivo llega a rutas de pago sin pagar.
@@ -57,8 +57,8 @@ export default async function AppLayout({
   return (
     <div style={{ display: "flex" }}>
       <SidebarModulos
-        role={profile.role ?? "free"}
-        hasPaid={hasPaid || isSuperUser}
+        role={profile.role ?? ROLES.FREE}
+        hasPaid={hasPaid}
         progressMap={progressMap}
       />
       <main style={{

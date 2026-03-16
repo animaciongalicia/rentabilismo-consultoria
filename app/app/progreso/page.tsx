@@ -10,10 +10,11 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { MODULOS } from "@/components/SidebarModulos";
+import { MODULOS } from "@/config/modulos";
 import { getLessonsForModule } from "@/config/lessons";
 import Link from "next/link";
 import { FileText, Download } from "lucide-react";
+import { hasFullAccess } from "@/config/roles";
 
 export const metadata = {
   title: "Mi progreso — Rentabilismo",
@@ -47,8 +48,7 @@ export default async function ProgresoPage() {
     .select("has_paid, role")
     .eq("id", user.id)
     .single();
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const canDownloadPDF = (profile?.has_paid ?? false) || isSuperUser;
+  const canDownloadPDF = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   // Load all saved responses for this user (non-empty only)
   const { data: responses } = await supabase

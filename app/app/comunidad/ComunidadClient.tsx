@@ -6,6 +6,7 @@
 
 import { useState, useMemo } from "react";
 import type { PublicProfile } from "./page";
+import { ROLES } from "@/config/roles";
 
 const ROLE_LABEL: Record<string, string> = {
   founder: "Fundador",
@@ -101,8 +102,8 @@ export default function ComunidadClient({
           }}
         >
           <option value="">Todos los roles</option>
-          <option value="member">Miembros (acceso completo)</option>
-          <option value="free">Exploradores (acceso gratuito)</option>
+          <option value={ROLES.MEMBER}>Miembros (acceso completo)</option>
+          <option value={ROLES.FREE}>Exploradores (acceso gratuito)</option>
         </select>
 
         {(filterCountry || filterRole) && (
@@ -148,7 +149,7 @@ export default function ComunidadClient({
         }}>
           {filtered.map((profile) => {
             const isCurrentUser = profile.id === currentUserId;
-            const role = profile.role ?? "free";
+            const role = profile.role ?? ROLES.FREE;
             const initials = getInitials(profile.full_name);
             const joinDate = new Date(profile.created_at).toLocaleDateString("es-ES", {
               year: "numeric",

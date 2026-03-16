@@ -3,19 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users, Cpu } from "lucide-react";
+import { MODULOS } from "@/config/modulos";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
+import { isSuperUser } from "@/config/roles";
 
-export const MODULOS = [
-  { slug: "modulo-1-mentalidad",   titulo: "Módulo 1 – Mentalidad Empresarial" },
-  { slug: "modulo-2-diagnostico",  titulo: "Módulo 2 – Diagnóstico de Rentabilidad" },
-  { slug: "modulo-3-finanzas",     titulo: "Módulo 3 – Control Financiero" },
-  { slug: "modulo-4-precios",      titulo: "Módulo 4 – Estrategia de Precios" },
-  { slug: "modulo-5-operaciones",  titulo: "Módulo 5 – Operaciones y Procesos" },
-  { slug: "modulo-6-equipo",       titulo: "Módulo 6 – Equipo y Liderazgo" },
-  { slug: "modulo-7-ventas",       titulo: "Módulo 7 – Ventas y Captación" },
-  { slug: "modulo-8-marketing",    titulo: "Módulo 8 – Marketing y Posicionamiento" },
-  { slug: "modulo-9-estrategia",   titulo: "Módulo 9 – Estrategia y Crecimiento" },
-  { slug: "modulo-10-plan-accion", titulo: "Módulo 10 – Tu Plan de Acción" },
-];
+export { MODULOS };
 
 export default function SidebarModulos({
   role,
@@ -27,7 +19,7 @@ export default function SidebarModulos({
   progressMap?: Record<string, number>;
 }) {
   const pathname = usePathname();
-  const isAdmin = role === "founder" || role === "admin";
+  const isAdmin = isSuperUser(role);
 
   return (
     <aside style={{
@@ -205,7 +197,7 @@ export default function SidebarModulos({
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}>
-            Desbloquear — 799 €
+            Desbloquear — {PRECIO_PROGRAMA} €
           </Link>
         </div>
       )}

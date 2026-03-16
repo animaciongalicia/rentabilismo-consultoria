@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getLesson, getLessonsForModule } from "@/config/lessons";
 import LessonExercises from "@/components/LessonExercises";
-import { MODULOS } from "@/components/SidebarModulos";
+import { MODULOS } from "@/config/modulos";
 
 export const dynamic = "force-dynamic";
 

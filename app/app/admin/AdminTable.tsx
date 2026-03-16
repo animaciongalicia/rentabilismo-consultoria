@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ROLES } from "@/config/roles";
 
 interface UserRow {
   id: string;
@@ -12,7 +13,7 @@ interface UserRow {
   created_at: string;
 }
 
-const ROLES = ["founder", "admin", "member", "free"] as const;
+const ROLE_LIST = Object.values(ROLES);
 
 const ROLE_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
   founder: { label: "Fundador",       color: "#fff",    bg: "#6366f1", icon: "💎" },
@@ -26,7 +27,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
-  const canChangeFounder = myRole === "founder";
+  const canChangeFounder = myRole === ROLES.FOUNDER;
 
   const filtered = users.filter(u =>
     u.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -143,7 +144,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
                 <select
                   value={user.role}
                   onChange={e => changeRole(user.id, e.target.value)}
-                  disabled={isLoading || (!canChangeFounder && user.role === "founder")}
+                  disabled={isLoading || (!canChangeFounder && user.role === ROLES.FOUNDER)}
                   style={{
                     fontSize: "0.7rem", fontWeight: 700, padding: "0.2rem 0.4rem",
                     backgroundColor: cfg.bg, color: "#fff",
@@ -151,11 +152,11 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
                     fontFamily: "inherit", width: "100%",
                   }}
                 >
-                  {ROLES.map(r => (
+                  {ROLE_LIST.map(r => (
                     <option
                       key={r}
                       value={r}
-                      disabled={r === "founder" && !canChangeFounder}
+                      disabled={r === ROLES.FOUNDER && !canChangeFounder}
                       style={{ backgroundColor: ROLE_CONFIG[r].bg }}
                     >
                       {ROLE_CONFIG[r].icon} {ROLE_CONFIG[r].label}

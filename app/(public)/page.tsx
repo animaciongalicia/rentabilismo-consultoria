@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ArrowRight } from "lucide-react";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 
 async function getUserCount(): Promise<number> {
   const supabase = await createClient();
@@ -212,7 +213,7 @@ export default async function HomePage() {
           </div>
 
           <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-            <span style={{ fontSize: "2.5rem", fontWeight: 900, lineHeight: 1 }}>799 €</span>
+            <span style={{ fontSize: "2.5rem", fontWeight: 900, lineHeight: 1 }}>{PRECIO_PROGRAMA} €</span>
             <span style={{ fontSize: "0.8rem", color: "var(--muted)", fontWeight: 600 }}>
               — acceso de por vida
             </span>

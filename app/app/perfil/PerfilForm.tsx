@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SECTORES, BUSINESS_SIZES } from "@/app/(public)/registro/RegistroWizard";
+import { SECTORES, BUSINESS_SIZES } from "@/config/opciones";
 
 interface Props {
   initialData: {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ArrowRight } from "lucide-react";
 import ElMuroClient from "./ElMuroClient";
+import { ROLES } from "@/config/roles";
 
 export const metadata = {
   title: "El Muro — Rentabilismo",
@@ -95,9 +96,9 @@ export default async function ElMuroPage() {
 
   const counts = {
     total:    profiles.length,
-    founders: profiles.filter(p => p.role === "founder").length,
-    members:  profiles.filter(p => p.role === "member").length,
-    free:     profiles.filter(p => p.role === "free").length,
+    founders: profiles.filter(p => p.role === ROLES.FOUNDER).length,
+    members:  profiles.filter(p => p.role === ROLES.MEMBER).length,
+    free:     profiles.filter(p => p.role === ROLES.FREE).length,
   };
 
   const topSectores = sectores

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ExternalLink, ArrowRight, Cpu } from "lucide-react";
 import { AGENTES, HERRAMIENTAS_EXTERNAS } from "@/config/agentes";
+import { hasFullAccess } from "@/config/roles";
 
 export const metadata = {
   title: "Cuartel General — Rentabilismo",
@@ -20,8 +21,7 @@ export default async function CuartelGeneralPage() {
     .eq("id", user.id)
     .single();
 
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const hasPaid     = (profile?.has_paid ?? false) || isSuperUser;
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   if (!hasPaid) redirect("/programa");
 

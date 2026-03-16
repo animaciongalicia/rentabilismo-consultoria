@@ -2,7 +2,7 @@
 // Recopila todos los datos necesarios para generar el informe PDF de un usuario.
 // Recibe el user_id y un cliente Supabase ya autenticado (evita crear otro).
 
-import { MODULOS } from "@/components/SidebarModulos";
+import { MODULOS } from "@/config/modulos";
 import { getLessonsForModule } from "@/config/lessons";
 import type { SupabaseClient } from "@supabase/supabase-js";
 

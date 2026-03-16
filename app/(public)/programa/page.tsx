@@ -1,6 +1,7 @@
 import { CheckCircle, ArrowRight, AlertCircle, Lock, Gift } from "lucide-react";
 import Link from "next/link";
 import CheckoutButton from "./CheckoutButton";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 
 export const metadata = {
   title: "El Programa — Rentabilismo",
@@ -178,7 +179,7 @@ export default function ProgramaPage({
           {/* Paso 2: acceso completo */}
           <div style={{ padding: "1.25rem", border: "1px solid var(--border)", backgroundColor: "var(--background)" }}>
             <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem" }}>
-              Paso 2 — 799 € · Pago único
+              Paso 2 — {PRECIO_PROGRAMA} € · Pago único
             </div>
             <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1rem" }}>
               Desbloquea los 10 módulos completos. Acceso permanente, sin suscripciones.

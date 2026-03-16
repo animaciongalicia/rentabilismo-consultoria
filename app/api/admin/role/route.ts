@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
+import { ROLES, isSuperUser } from "@/config/roles";
 
-const VALID_ROLES = ["founder", "admin", "member", "free"] as const;
-type Role = (typeof VALID_ROLES)[number];
+const VALID_ROLES = Object.values(ROLES) as string[];
 
 export async function PATCH(request: Request) {
   // Verify caller is founder or admin
@@ -17,7 +17,7 @@ export async function PATCH(request: Request) {
     .eq("id", user.id)
     .single();
 
-  if (!myProfile || !["founder", "admin"].includes(myProfile.role)) {
+  if (!myProfile || !isSuperUser(myProfile.role)) {
     return NextResponse.json({ error: "Sin permisos" }, { status: 403 });
   }
 
@@ -25,12 +25,12 @@ export async function PATCH(request: Request) {
   if (!body) return NextResponse.json({ error: "Cuerpo inválido" }, { status: 400 });
 
   const { userId, role } = body as { userId?: string; role?: string };
-  if (!userId || !role || !VALID_ROLES.includes(role as Role)) {
+  if (!userId || !role || !VALID_ROLES.includes(role)) {
     return NextResponse.json({ error: "Parámetros inválidos" }, { status: 400 });
   }
 
   // Only founders can assign/remove founder role
-  if (role === "founder" && myProfile.role !== "founder") {
+  if (role === ROLES.FOUNDER && myProfile.role !== ROLES.FOUNDER) {
     return NextResponse.json({ error: "Solo los fundadores pueden asignar ese rol" }, { status: 403 });
   }
 

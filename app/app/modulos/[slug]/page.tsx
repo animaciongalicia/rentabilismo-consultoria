@@ -1,8 +1,10 @@
 import { notFound, redirect } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getModulo, getAllSlugs } from "@/lib/mdx";
-import { MODULOS } from "@/components/SidebarModulos";
+import { MODULOS } from "@/config/modulos";
 import { getLessonsForModule } from "@/config/lessons";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
+import { hasFullAccess } from "@/config/roles";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Lock, ArrowRight } from "lucide-react";
@@ -49,8 +51,7 @@ export default async function ModuloPage({
     .eq("id", user.id)
     .single();
 
-  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  const hasPaid = profile?.has_paid || isSuperUser;
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
 
   // Lessons for this module (from config)
   const lessons = getLessonsForModule(slug);
@@ -188,7 +189,7 @@ export default async function ModuloPage({
             </p>
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
               <Link href="/programa" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
-                Ver el programa completo — 799 € <ArrowRight size={14} />
+                Ver el programa completo — {PRECIO_PROGRAMA} € <ArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -437,7 +438,7 @@ export default async function ModuloPage({
                 textTransform: "uppercase",
               }}
             >
-              Desbloquear programa — 799 €
+              Desbloquear programa — {PRECIO_PROGRAMA} €
             </Link>
           </div>
         )}
