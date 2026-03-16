@@ -34,111 +34,96 @@ export default async function HomePage() {
     <div>
       {/* ── HERO ─────────────────────────────────────────── */}
       <section style={{
-        borderBottom: "3px solid var(--foreground)",
-        padding: "6rem 4rem 5rem",
-        maxWidth: "900px",
+        borderBottom: "1px solid var(--border)",
+        padding: "4rem 3.5rem 3.5rem",
+        maxWidth: "820px",
       }}>
         <div style={{
-          fontSize: "0.75rem",
-          fontWeight: 700,
-          letterSpacing: "0.15em",
+          fontSize: "0.7rem",
+          fontWeight: 600,
+          letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: "var(--muted)",
-          marginBottom: "2rem",
+          marginBottom: "1.5rem",
         }}>
           Rentabilismo — Consultoría Guiada
         </div>
 
         <h1 style={{
-          fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-          fontWeight: 900,
-          lineHeight: 1.05,
-          letterSpacing: "-0.04em",
-          marginBottom: "2rem",
-          maxWidth: "800px",
+          fontSize: "clamp(1.875rem, 3.5vw, 3rem)",
+          marginBottom: "1.25rem",
+          maxWidth: "680px",
         }}>
           Tu negocio no es una ONG,{" "}
-          <span style={{
-            borderBottom: "4px solid var(--foreground)",
-            paddingBottom: "2px",
-          }}>
+          <span style={{ borderBottom: "2px solid var(--foreground)", paddingBottom: "1px" }}>
             pero estás perdiendo dinero.
           </span>
         </h1>
 
         <p style={{
-          fontSize: "1.25rem",
+          fontSize: "0.975rem",
           color: "var(--muted)",
           lineHeight: 1.7,
-          maxWidth: "600px",
-          marginBottom: "3rem",
+          maxWidth: "520px",
+          marginBottom: "2rem",
         }}>
-          Aquí no hay gurús ni fórmulas mágicas. Solo diagnóstico brutal y un plan de acción
-          para que tu empresa empiece a funcionar como negocio, no como hobby caro.
+          Sin gurús ni fórmulas mágicas. Diagnóstico directo y plan de acción
+          para que tu empresa funcione como negocio, no como hobby caro.
         </p>
 
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Link href="/registro" className="btn-primary" style={{ fontSize: "1.1rem", padding: "1rem 2.5rem" }}>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <Link href="/registro" className="btn-primary">
             Únete a la trinchera{" "}
-            <ArrowRight size={18} style={{ display: "inline", verticalAlign: "middle", marginLeft: "0.25rem" }} />
+            <ArrowRight size={14} style={{ display: "inline", verticalAlign: "middle", marginLeft: "0.25rem" }} />
           </Link>
           <Link href="#el-muro" className="btn-outline">
             Ver El Muro
           </Link>
         </div>
 
-        {/* Stats */}
-        <div style={{
-          marginTop: "4rem",
-          display: "flex",
-          gap: "3rem",
-          flexWrap: "wrap",
-        }}>
-          {[
-            { num: profiles.length.toString(), label: "Empresarios en El Muro" },
-            { num: "100%", label: "Sin promesas vacías" },
-            { num: "0", label: "Coaches motivacionales" },
-          ].map(({ num, label }) => (
-            <div key={label}>
-              <div style={{ fontSize: "2rem", fontWeight: 900, letterSpacing: "-0.04em" }}>{num}</div>
-              <div style={{ fontSize: "0.8rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: "0.25rem" }}>{label}</div>
-            </div>
-          ))}
-        </div>
+        {/* Stat solo si hay miembros reales */}
+        {profiles.length > 0 && (
+          <div style={{ marginTop: "2.5rem" }}>
+            <span style={{ fontSize: "0.8rem", color: "var(--muted)" }}>
+              <strong style={{ color: "var(--foreground)", fontWeight: 700 }}>{profiles.length}</strong>
+              {" "}empresarios ya colgaron su verdad en El Muro.
+            </span>
+          </div>
+        )}
       </section>
 
       {/* ── EL MURO ───────────────────────────────────────── */}
-      <section id="el-muro" style={{ padding: "5rem 4rem" }}>
-        <div style={{ marginBottom: "3rem" }}>
+      <section id="el-muro" style={{ padding: "3.5rem 3.5rem" }}>
+        <div style={{ marginBottom: "2rem" }}>
           <div style={{
-            fontSize: "0.75rem",
-            fontWeight: 700,
-            letterSpacing: "0.15em",
+            fontSize: "0.7rem",
+            fontWeight: 600,
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: "var(--muted)",
-            marginBottom: "1rem",
+            marginBottom: "0.75rem",
           }}>
             El Muro
           </div>
-          <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "1rem" }}>
+          <h2 style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.875rem)", marginBottom: "0.625rem" }}>
             Empresarios que ya dijeron la verdad.
           </h2>
-          <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "560px" }}>
-            Cada tarjeta es una persona real que se atrevió a nombrar su problema.
-            ¿Te reconoces en alguna?
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem", maxWidth: "480px" }}>
+            ¿Te reconoces en alguno?
           </p>
         </div>
 
         {profiles.length === 0 ? (
-          <div className="card-brutal" style={{
-            textAlign: "center",
-            padding: "4rem 2rem",
-            maxWidth: "480px",
+          <div style={{
+            border: "1px solid var(--border)",
+            padding: "2.5rem",
+            maxWidth: "400px",
+            backgroundColor: "var(--card)",
           }}>
-            <p style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-              El Muro está vacío.
+            <p style={{ fontSize: "0.95rem", fontWeight: 600, marginBottom: "0.375rem" }}>
+              El Muro está vacío todavía.
             </p>
-            <p style={{ color: "var(--muted)", marginBottom: "1.5rem" }}>
+            <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "1.25rem" }}>
               Sé el primero en colgar tu verdad aquí.
             </p>
             <Link href="/registro" className="btn-primary">
@@ -148,8 +133,8 @@ export default async function HomePage() {
         ) : (
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "1.5rem",
+            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gap: "1rem",
           }}>
             {profiles.map((profile) => (
               <ProfileCard key={profile.id} profile={profile} />
@@ -159,24 +144,24 @@ export default async function HomePage() {
 
         {/* CTA bajo el muro */}
         <div style={{
-          marginTop: "4rem",
-          borderTop: "2px solid var(--foreground)",
-          paddingTop: "3rem",
+          marginTop: "3rem",
+          borderTop: "1px solid var(--border)",
+          paddingTop: "2rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "2rem",
+          gap: "1.5rem",
         }}>
           <div>
-            <h3 style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>
+            <p style={{ fontWeight: 700, fontSize: "0.95rem", marginBottom: "0.25rem" }}>
               ¿Te identificas con alguno?
-            </h3>
-            <p style={{ color: "var(--muted)" }}>
-              Cuelga tu verdad en El Muro. El primer paso es nombrarlo.
+            </p>
+            <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
+              El primer paso es nombrarlo.
             </p>
           </div>
-          <Link href="/registro" className="btn-primary" style={{ whiteSpace: "nowrap" }}>
+          <Link href="/registro" className="btn-primary">
             Únete a la trinchera
           </Link>
         </div>
@@ -194,47 +179,40 @@ function ProfileCard({ profile }: { profile: Profile }) {
     .toUpperCase();
 
   return (
-    <div className="card-brutal" style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
-    }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "0.875rem" }}>
+    <div className="card-brutal" style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
         <div style={{
-          width: "40px",
-          height: "40px",
+          width: "34px",
+          height: "34px",
           backgroundColor: "var(--foreground)",
           color: "#ffffff",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontWeight: 900,
-          fontSize: "0.875rem",
+          fontWeight: 800,
+          fontSize: "0.75rem",
           flexShrink: 0,
-          letterSpacing: "0.02em",
         }}>
           {initials}
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>{profile.full_name}</div>
-          <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.2rem" }}>
-            <span style={{ fontSize: "0.75rem", color: "var(--muted)", display: "flex", alignItems: "center", gap: "0.2rem" }}>
-              <Calendar size={11} /> {profile.age} años
+          <div style={{ fontWeight: 600, fontSize: "0.875rem" }}>{profile.full_name}</div>
+          <div style={{ display: "flex", gap: "0.625rem", marginTop: "0.125rem" }}>
+            <span style={{ fontSize: "0.7rem", color: "var(--muted)", display: "flex", alignItems: "center", gap: "0.2rem" }}>
+              <Calendar size={10} /> {profile.age} años
             </span>
-            <span style={{ fontSize: "0.75rem", color: "var(--muted)", display: "flex", alignItems: "center", gap: "0.2rem" }}>
-              <MapPin size={11} /> {profile.country}
+            <span style={{ fontSize: "0.7rem", color: "var(--muted)", display: "flex", alignItems: "center", gap: "0.2rem" }}>
+              <MapPin size={10} /> {profile.country}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Pain phrase */}
       <blockquote style={{
-        borderLeft: "3px solid var(--foreground)",
-        paddingLeft: "1rem",
+        borderLeft: "2px solid var(--border)",
+        paddingLeft: "0.75rem",
         margin: 0,
-        fontSize: "0.95rem",
+        fontSize: "0.875rem",
         lineHeight: 1.6,
         color: "var(--foreground)",
         fontStyle: "italic",

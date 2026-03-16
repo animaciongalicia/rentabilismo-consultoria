@@ -28,76 +28,78 @@ export default async function AppDashboard({
   const pagoOk = params.pago === 'ok'
 
   return (
-    <div style={{ minHeight: '100vh', padding: '5rem 4rem' }}>
-      <div style={{ maxWidth: '640px' }}>
+    <div style={{ minHeight: '100vh', padding: '4rem 3.5rem' }}>
+      <div style={{ maxWidth: '580px' }}>
 
-        {/* Banner de bienvenida post-pago */}
         {pagoOk && (
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            padding: '1rem 1.25rem',
-            border: '2px solid var(--foreground)',
-            backgroundColor: '#f0fff4',
-            marginBottom: '2.5rem',
-            fontSize: '0.875rem',
-            fontWeight: 700,
+            gap: '0.625rem',
+            padding: '0.75rem 1rem',
+            border: '1px solid #b7e0c4',
+            backgroundColor: '#f4fdf7',
+            marginBottom: '2rem',
+            fontSize: '0.825rem',
+            fontWeight: 600,
+            color: '#2d6a4a',
           }}>
-            <CheckCircle size={18} />
-            Pago confirmado. Bienvenido al programa.
+            <CheckCircle size={15} />
+            Pago confirmado. Ya tienes acceso.
           </div>
         )}
 
         <div style={{
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          letterSpacing: '0.15em',
+          fontSize: '0.7rem',
+          fontWeight: 600,
+          letterSpacing: '0.12em',
           textTransform: 'uppercase',
           color: 'var(--muted)',
-          marginBottom: '1rem',
+          marginBottom: '0.75rem',
         }}>
           Dashboard
         </div>
 
-        <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1rem' }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', marginBottom: '0.75rem' }}>
           Hola, {profile.full_name?.split(' ')[0]}.
         </h1>
 
-        <p style={{ color: 'var(--muted)', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '3rem' }}>
+        <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '2.5rem' }}>
           Estás dentro. El contenido del programa se está preparando.
-          En las próximas horas tendrás acceso a tu diagnóstico personalizado.
+          Tendrás acceso a tu diagnóstico personalizado en breve.
         </p>
 
-        {/* Placeholder módulos — se implementan en FASE 3 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {['Diagnóstico de rentabilidad', 'Tu plan de acción', 'Casos de referencia'].map((mod, i) => (
-            <div key={mod} className="card-brutal" style={{
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+          {[
+            { label: 'Diagnóstico de rentabilidad', soon: true },
+            { label: 'Tu plan de acción', soon: true },
+            { label: 'Casos de referencia', soon: true },
+          ].map(({ label }, i) => (
+            <div key={label} style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              opacity: i === 0 ? 1 : 0.4,
+              padding: '1rem 1.25rem',
+              border: '1px solid var(--border)',
+              backgroundColor: 'var(--card)',
+              opacity: i === 0 ? 1 : 0.5,
             }}>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{mod}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: '0.2rem' }}>
-                  {i === 0 ? 'Disponible próximamente' : 'Próximamente'}
-                </div>
-              </div>
-              <div style={{
-                fontSize: '0.7rem',
+              <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{label}</span>
+              <span style={{
+                fontSize: '0.65rem',
                 fontWeight: 700,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                border: '2px solid var(--foreground)',
-                padding: '0.25rem 0.625rem',
-                opacity: i === 0 ? 1 : 0.4,
+                color: 'var(--muted)',
+                border: '1px solid var(--border)',
+                padding: '0.2rem 0.5rem',
               }}>
-                {i === 0 ? 'Fase 3' : 'Locked'}
-              </div>
+                Próximamente
+              </span>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   )
