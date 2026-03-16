@@ -77,7 +77,7 @@ export async function GET() {
   const fecha    = new Date().toISOString().slice(0, 10);
   const filename = `rentabilismo-informe-${fecha}.pdf`;
 
-  return new Response(pdfBuffer, {
+  return new Response(new Uint8Array(pdfBuffer), {
     status: 200,
     headers: {
       "Content-Type":        "application/pdf",
