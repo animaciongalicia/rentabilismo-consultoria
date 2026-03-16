@@ -253,37 +253,53 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
+/* ── Página: contenedor estándar single-column ────── */
+/* Úsalo en páginas de lección, progreso, perfil, etc. */
+.page-content {
+  max-width: 960px;
+  padding: 3rem 2.5rem 5rem;
+}
+
 /* ── Módulo: layout de dos columnas ───────────────── */
 .modulo-layout {
   display: flex;
   align-items: flex-start;
-  gap: 2rem;
-  padding: 3rem 3.5rem 5rem;
+  gap: 2.5rem;
+  padding: 3rem 2.5rem 5rem;
+  max-width: 1240px;
 }
 
 .modulo-main {
   flex: 1;
   min-width: 0;
-  max-width: 680px;
+  /* Sin max-width fijo: ocupa el espacio disponible */
 }
 
 .modulo-sidebar {
-  width: 280px;
+  width: 300px;
   flex-shrink: 0;
   position: sticky;
   top: 2rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .modulo-layout {
     flex-direction: column;
-    padding: 2.5rem 1.5rem 4rem;
-  }
-  .modulo-main {
-    max-width: 100%;
+    padding: 2.5rem 1.75rem 4rem;
   }
   .modulo-sidebar {
     width: 100%;
     position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .modulo-layout,
+  .page-content {
+    padding: 2rem 1.25rem 3rem;
   }
 }

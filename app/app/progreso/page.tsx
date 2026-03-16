@@ -80,7 +80,7 @@ export default async function ProgresoPage() {
   const sortedModules = MODULOS.filter((m) => grouped.has(m.slug));
 
   return (
-    <div style={{ maxWidth: "740px", padding: "3rem 3.5rem 5rem" }}>
+    <div className="page-content" style={{ maxWidth: "1040px" }}>
 
       {/* Header */}
       <div style={{
@@ -103,7 +103,7 @@ export default async function ProgresoPage() {
         color: "var(--muted)",
         lineHeight: 1.75,
         marginBottom: "2.5rem",
-        maxWidth: "540px",
+        maxWidth: "680px",
       }}>
         Este informe recoge todo lo que has escrito en los ejercicios del programa.
         Es tuyo, nadie más puede verlo. Úsalo para revisar tu evolución o compartirlo

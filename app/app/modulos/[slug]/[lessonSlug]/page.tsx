@@ -63,7 +63,7 @@ export default async function LessonPage({
   }));
 
   return (
-    <article style={{ maxWidth: "740px", padding: "3rem 3.5rem 5rem" }}>
+    <article className="page-content">
 
       {/* Breadcrumb */}
       <div style={{
@@ -117,7 +117,7 @@ export default async function LessonPage({
         fontSize: "0.975rem",
         color: "var(--muted)",
         lineHeight: 1.8,
-        maxWidth: "580px",
+        maxWidth: "720px",
         marginBottom: "2.5rem",
         borderLeft: "3px solid var(--border)",
         paddingLeft: "1rem",
