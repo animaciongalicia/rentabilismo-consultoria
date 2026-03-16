@@ -76,17 +76,24 @@ export async function POST(request: Request) {
   }
 
   // Recalculate module progress ─────────────────────────────────────────────
-  // A lesson is "completed" when it has at least one non-empty response.
+  // A lesson is "completed" when ALL its exercises have non-empty responses.
+  // This matches the completion badge shown in LessonExercises.tsx.
   const { data: moduleResponses } = await supabase
     .from("exercise_responses")
-    .select("lesson_slug")
+    .select("lesson_slug, exercise_key")
     .eq("user_id", user.id)
     .eq("module_slug", moduleSlug)
     .neq("response", "");
 
-  const completedLessons = new Set(
-    (moduleResponses ?? []).map((r) => r.lesson_slug)
-  ).size;
+  const lessons = getLessonsForModule(moduleSlug);
+  const completedLessons = lessons.filter((lesson) => {
+    const respondedKeys = new Set(
+      (moduleResponses ?? [])
+        .filter((r) => r.lesson_slug === lesson.lessonSlug)
+        .map((r) => r.exercise_key)
+    );
+    return lesson.exercises.every((e) => respondedKeys.has(e.exerciseKey));
+  }).length;
 
   const totalLessons = getLessonsForModule(moduleSlug).length || 4;
 

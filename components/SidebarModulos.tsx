@@ -57,7 +57,7 @@ export default function SidebarModulos({
           <ChevronLeft size={12} /> Inicio
         </Link>
         <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em" }}>
-          La Clínica
+          Rentabilismo
         </div>
         <div style={{ fontSize: "0.65rem", color: "#555", marginTop: "0.2rem", letterSpacing: "0.06em", textTransform: "uppercase" }}>
           Programa completo

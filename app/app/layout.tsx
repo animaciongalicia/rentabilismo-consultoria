@@ -14,7 +14,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     .eq("id", user.id)
     .single();
 
-  if (!profile?.has_paid) redirect("/programa");
+  // Founders and admins always have access regardless of payment status
+  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
+  if (!profile?.has_paid && !isSuperUser) redirect("/programa");
 
   // Fetch module progress for sidebar indicators (one query, all modules)
   const { data: progressData } = await supabase
