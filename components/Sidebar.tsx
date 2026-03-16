@@ -2,13 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, LogIn, UserPlus } from "lucide-react";
+import { Home, Users, LogIn, UserPlus, HelpCircle, HeartCrack, Brain, BookOpen } from "lucide-react";
 
-const navItems = [
-  { href: "/", label: "Inicio", icon: Home },
-  { href: "/el-muro", label: "El Muro", icon: Users },
-  { href: "/registro", label: "Únete", icon: UserPlus },
-  { href: "/login", label: "Entrar", icon: LogIn },
+const NAV_SECTIONS = [
+  {
+    label: "Descubre",
+    items: [
+      { href: "/",               label: "Inicio",         icon: Home },
+      { href: "/como-funciona",  label: "Cómo funciona",  icon: HelpCircle },
+      { href: "/dolores",        label: "¿Eres tú?",      icon: HeartCrack },
+      { href: "/mentalidad",     label: "Mentalidad",     icon: Brain },
+      { href: "/programa",       label: "El Programa",    icon: BookOpen },
+    ],
+  },
+  {
+    label: "Comunidad",
+    items: [
+      { href: "/el-muro", label: "El Muro", icon: Users },
+    ],
+  },
+  {
+    label: "Acceso",
+    items: [
+      { href: "/registro", label: "Únete",  icon: UserPlus },
+      { href: "/login",    label: "Entrar", icon: LogIn },
+    ],
+  },
 ];
 
 export default function Sidebar() {
@@ -16,25 +35,24 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      {/* Logo / Marca */}
-      <div style={{ marginBottom: "3rem" }}>
+      {/* Logo */}
+      <div style={{ marginBottom: "2rem" }}>
         <Link href="/" style={{ textDecoration: "none" }}>
           <div style={{
-            fontSize: "1.1rem",
+            fontSize: "1rem",
             fontWeight: 900,
             color: "#ffffff",
             letterSpacing: "-0.02em",
-            lineHeight: 1.2,
             textTransform: "uppercase",
+            whiteSpace: "nowrap",
           }}>
-            Rentabi<br />
-            <span style={{ color: "#888888" }}>lismo</span>
+            Rentabilismo
           </div>
         </Link>
         <div style={{
-          marginTop: "0.5rem",
-          fontSize: "0.7rem",
-          color: "#666666",
+          marginTop: "0.3rem",
+          fontSize: "0.65rem",
+          color: "#555",
           letterSpacing: "0.08em",
           textTransform: "uppercase",
         }}>
@@ -42,40 +60,44 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Navegación */}
-      <nav className="sidebar-nav" style={{ flex: 1 }}>
-        <div style={{
-          fontSize: "0.65rem",
-          color: "#555555",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          marginBottom: "0.75rem",
-          paddingLeft: "0.75rem",
-        }}>
-          Navegación
-        </div>
-        {navItems.map(({ href, label, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className={pathname === href ? "active" : ""}
-          >
-            <Icon size={15} strokeWidth={2.5} />
-            {label}
-          </Link>
+      {/* Navegación por secciones */}
+      <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        {NAV_SECTIONS.map(({ label, items }) => (
+          <div key={label}>
+            <div style={{
+              fontSize: "0.6rem",
+              color: "#444",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "0.375rem",
+              paddingLeft: "0.625rem",
+            }}>
+              {label}
+            </div>
+            <div className="sidebar-nav">
+              {items.map(({ href, label: itemLabel, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={pathname === href ? "active" : ""}
+                >
+                  <Icon size={14} strokeWidth={2} />
+                  {itemLabel}
+                </Link>
+              ))}
+            </div>
+          </div>
         ))}
       </nav>
 
-      {/* Footer sidebar */}
+      {/* Footer */}
       <div style={{
-        borderTop: "1px solid #222",
-        paddingTop: "1.5rem",
-        fontSize: "0.7rem",
-        color: "#444444",
-        letterSpacing: "0.03em",
+        borderTop: "1px solid #1e1e1e",
+        paddingTop: "1rem",
+        fontSize: "0.65rem",
+        color: "#333",
       }}>
-        <div>© 2025 Rentabilismo</div>
-        <div style={{ marginTop: "0.25rem" }}>Todos los derechos reservados</div>
+        © 2026 Rentabilismo
       </div>
     </aside>
   );

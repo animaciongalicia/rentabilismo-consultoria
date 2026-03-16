@@ -96,7 +96,7 @@ export default function SidebarModulos() {
 
       {/* Footer */}
       <div style={{ padding: "1rem 1.25rem", borderTop: "1px solid #1e1e1e", fontSize: "0.65rem", color: "#333" }}>
-        © 2025 Rentabilismo
+        © 2026 Rentabilismo
       </div>
     </aside>
   );
