@@ -61,13 +61,15 @@ export async function proxy(request: NextRequest) {
     // Para el resto de rutas /app → verificar pago
     const { data: profile } = await supabase
       .from('profiles')
-      .select('has_paid, role')
+      .select('has_paid, role, plan')
       .eq('id', user.id)
       .single()
 
     const isSuperUser = profile?.role === 'founder' || profile?.role === 'admin'
+    // has_paid es el flag legacy; plan cubre el modelo nuevo (FASE 6)
+    const hasPaidAccess = profile?.has_paid || (!!profile?.plan && profile.plan !== 'free')
 
-    if (!profile?.has_paid && !isSuperUser) {
+    if (!hasPaidAccess && !isSuperUser) {
       const url = request.nextUrl.clone()
       url.pathname = '/programa'
       return NextResponse.redirect(url)
