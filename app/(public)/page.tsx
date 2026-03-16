@@ -20,7 +20,7 @@ export default async function HomePage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "5rem 3.5rem 4rem",
-        maxWidth: "820px",
+        maxWidth: "920px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -33,7 +33,6 @@ export default async function HomePage() {
           fontSize: "clamp(2rem, 4vw, 3rem)",
           lineHeight: 1.18,
           marginBottom: "1.5rem",
-          maxWidth: "700px",
         }}>
           Mejora tu forma de pensar la empresa.{" "}
           <span style={{ borderBottom: "3px solid var(--foreground)", paddingBottom: "2px" }}>
@@ -45,7 +44,7 @@ export default async function HomePage() {
           fontSize: "1.05rem",
           color: "var(--muted)",
           lineHeight: 1.8,
-          maxWidth: "560px",
+          maxWidth: "700px",
           marginBottom: "2.25rem",
         }}>
           No es un curso más. Es un sistema de trabajo para empresarios que quieren
@@ -146,7 +145,7 @@ export default async function HomePage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "4rem 3.5rem",
-        maxWidth: "820px",
+        maxWidth: "920px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -159,14 +158,13 @@ export default async function HomePage() {
           fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
           lineHeight: 1.25,
           marginBottom: "1.5rem",
-          maxWidth: "560px",
         }}>
           Un solo pago. Un sistema vivo para toda tu vida empresarial.
         </h2>
 
         <div style={{
           fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.9,
-          maxWidth: "540px", marginBottom: "2.5rem",
+          maxWidth: "700px", marginBottom: "2.5rem",
         }}>
           <p style={{ marginBottom: "1rem" }}>
             Rentabilismo recoge más de 25 años de trabajo con empresas reales
@@ -225,7 +223,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── 4. COMUNIDAD Y PRÓXIMO PASO ────────────────────────── */}
-      <section style={{ padding: "4rem 3.5rem", maxWidth: "640px" }}>
+      <section style={{ padding: "4rem 3.5rem", maxWidth: "920px" }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
           textTransform: "uppercase", color: "var(--muted)", marginBottom: "2rem",
@@ -250,7 +248,7 @@ export default async function HomePage() {
 
         <p style={{
           fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.75,
-          marginBottom: "2.5rem", maxWidth: "480px",
+          marginBottom: "2.5rem", maxWidth: "700px",
         }}>
           Si estás aquí es porque sabes que tu empresa puede estar mejor y quieres
           hacerlo con método, sin humo y a tu ritmo.

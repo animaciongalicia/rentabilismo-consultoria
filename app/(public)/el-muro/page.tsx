@@ -63,7 +63,7 @@ export default async function ElMuroPage() {
   return (
     <div>
       {/* ── CABECERA ─────────────────────────────────────── */}
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "820px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
           El Muro
         </div>
@@ -72,7 +72,7 @@ export default async function ElMuroPage() {
           Empresarios que nombraron su problema.
         </h1>
 
-        <p style={{ fontSize: "0.925rem", color: "var(--muted)", lineHeight: 1.75, maxWidth: "560px", marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.925rem", color: "var(--muted)", lineHeight: 1.75, maxWidth: "700px", marginBottom: "2rem" }}>
           El primer paso para cambiar algo es atreverse a nombrarlo. Aquí no hay
           historias de éxito ni casos de estudio perfectos. Solo empresarios reales
           que escribieron su verdad en una frase. Si te reconoces en alguna,
