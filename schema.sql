@@ -195,6 +195,17 @@ CREATE POLICY "module_progress_update_own"
 -- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
 -- ============================================================
 
+-- Nuevos campos en profiles para El Muro
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS sector             TEXT,
+  ADD COLUMN IF NOT EXISTS business_size      TEXT
+    CHECK (business_size IN ('autonomo', '2-5', '6-20', '+20')),
+  ADD COLUMN IF NOT EXISTS objetivo_60_dias   TEXT,
+  -- Progreso global simplificado (0-100), actualizado por /api/exercise-responses
+  -- Se almacena aquí para que El Muro (página pública) pueda leerlo sin violar RLS
+  ADD COLUMN IF NOT EXISTS global_progress_pct INTEGER NOT NULL DEFAULT 0
+    CHECK (global_progress_pct >= 0 AND global_progress_pct <= 100);
+
 -- ============================================================
 -- FASE 6 — Planes de acceso (fundador, futuras suscripciones)
 -- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
@@ -210,22 +221,6 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS plan    TEXT NOT NULL DEFAULT 'free'
     CHECK (plan IN ('free', 'founder', 'member', 'annual', 'premium')),
   ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
-
--- ============================================================
--- FASE 5 — El Muro: sector, tamaño, objetivo y progreso global
--- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
--- ============================================================
-
--- Nuevos campos en profiles para El Muro
-ALTER TABLE public.profiles
-  ADD COLUMN IF NOT EXISTS sector             TEXT,
-  ADD COLUMN IF NOT EXISTS business_size      TEXT
-    CHECK (business_size IN ('autonomo', '2-5', '6-20', '+20')),
-  ADD COLUMN IF NOT EXISTS objetivo_60_dias   TEXT,
-  -- Progreso global simplificado (0-100), actualizado por /api/exercise-responses
-  -- Se almacena aquí para que El Muro (página pública) pueda leerlo sin violar RLS
-  ADD COLUMN IF NOT EXISTS global_progress_pct INTEGER NOT NULL DEFAULT 0
-    CHECK (global_progress_pct >= 0 AND global_progress_pct <= 100);
 
 -- Actualizar el trigger para incluir los nuevos campos del signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()

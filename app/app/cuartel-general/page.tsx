@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ExternalLink, ArrowRight, Cpu, Lock } from "lucide-react";
 import { AGENTES, HERRAMIENTAS_EXTERNAS } from "@/config/agentes";
 import { hasFullAccess } from "@/config/roles";
-import { PRECIO_PROGRAMA } from "@/config/opciones";
+import { PRECIO_FUNDADOR } from "@/config/opciones";
 
 export const metadata = {
   title: "Cuartel General — Rentabilismo",
@@ -83,7 +83,7 @@ export default async function CuartelGeneralPage() {
               Los agentes de IA forman parte del acceso completo al programa.
             </p>
             <Link href="/programa" className="btn-primary" style={{ whiteSpace: "nowrap", fontSize: "0.8rem" }}>
-              Desbloquear — {PRECIO_PROGRAMA} €
+              Desbloquear — {PRECIO_FUNDADOR} €
             </Link>
           </div>
         )}

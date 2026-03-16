@@ -7,6 +7,7 @@ const FREE_APP_PATHS = [
   '/app/perfil',
   '/app/comunidad',
   '/app/progreso',
+  '/app/cuartel-general',
 ]
 
 function isFreeAppPath(pathname: string): boolean {
