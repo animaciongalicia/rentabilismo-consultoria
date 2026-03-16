@@ -42,20 +42,20 @@ const DOLORES = [
 export default function DoloresPage() {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "740px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
           ¿Eres tú?
         </div>
         <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "1rem" }}>
           Si has llegado hasta aquí,<br />es por algo.
         </h1>
-        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "540px" }}>
+        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "680px" }}>
           No buscaste Rentabilismo por casualidad. Algo en tu situación actual te dijo
           que así no puede seguir. Reconoce si alguna de estas situaciones te resulta familiar.
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "740px" }}>
+      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
           {DOLORES.map((dolor, i) => (
             <div key={dolor.titulo} style={{

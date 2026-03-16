@@ -99,7 +99,6 @@ export default async function ModuloPage({
           color: "var(--muted)",
           lineHeight: 1.7,
           marginBottom: "2rem",
-          maxWidth: "700px",
         }}>
           {frontmatter.description}
         </p>

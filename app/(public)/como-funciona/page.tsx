@@ -37,21 +37,21 @@ const FASES = [
 export default function ComoFuncionaPage() {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "740px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
           Cómo funciona
         </div>
         <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "1rem" }}>
           Consultoría guiada.<br />No magia. No atajos.
         </h1>
-        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "540px" }}>
+        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "680px" }}>
           Rentabilismo es un proceso estructurado para que tú, como empresario,
           entiendas exactamente qué está fallando en tu negocio y sepas qué hacer para corregirlo.
           No te damos respuestas genéricas. Te damos las herramientas para encontrar las tuyas.
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "740px" }}>
+      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
 
         {/* Lo que NO es */}
         <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid var(--border)", backgroundColor: "var(--card)" }}>

@@ -117,7 +117,6 @@ export default async function LessonPage({
         fontSize: "0.975rem",
         color: "var(--muted)",
         lineHeight: 1.8,
-        maxWidth: "720px",
         marginBottom: "2.5rem",
         borderLeft: "3px solid var(--border)",
         paddingLeft: "1rem",

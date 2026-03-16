@@ -9,21 +9,21 @@ export const metadata = {
 export default function MentalidadPage() {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "740px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
           Mentalidad
         </div>
         <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "1rem" }}>
           Lo primero que tiene que<br />cambiar eres tú.
         </h1>
-        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "540px" }}>
+        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "680px" }}>
           Antes de hablar de finanzas, procesos o ventas, hay una pregunta previa
           que muy pocos se hacen con honestidad: ¿realmente quiero cambiar la forma
           en que llevo mi negocio?
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "680px" }}>
+      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
 

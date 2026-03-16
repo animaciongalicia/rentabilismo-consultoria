@@ -34,7 +34,7 @@ export default function ProgramaPage({
 }) {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "740px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
         <CancelBanner searchParams={searchParams} />
 
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
@@ -45,14 +45,14 @@ export default function ProgramaPage({
           Solo para empresarios<br />que quieren cambiar de verdad.
         </h1>
 
-        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "560px" }}>
+        <p style={{ fontSize: "0.95rem", color: "var(--muted)", lineHeight: 1.8, maxWidth: "680px" }}>
           Rentabilismo no es un curso. Es un proceso de consultoría guiada en el que
           tú diagnosticas tu negocio, identificas lo que hay que cambiar y ejecutas
           con estructura. Nosotros acompañamos. Tú decides y actúas.
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "740px" }}>
+      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
 
         {/* ¿Para quién es? */}
         <div style={{ marginBottom: "3rem" }}>
