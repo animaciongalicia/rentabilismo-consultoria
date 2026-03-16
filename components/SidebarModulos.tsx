@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users } from "lucide-react";
+import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users, Cpu } from "lucide-react";
 
 export const MODULOS = [
   { slug: "modulo-1-mentalidad",   titulo: "Módulo 1 – Mentalidad Empresarial" },
@@ -212,6 +212,23 @@ export default function SidebarModulos({
 
       {/* Bottom links */}
       <div style={{ borderTop: "1px solid #1e1e1e" }}>
+        {/* Cuartel General — solo usuarios pagados */}
+        {(hasPaid) && (
+          <Link
+            href="/app/cuartel-general"
+            style={{
+              display: "flex", alignItems: "center", gap: "0.5rem",
+              padding: "0.625rem 1.25rem",
+              fontSize: "0.75rem",
+              color: pathname.startsWith("/app/cuartel-general") ? "#fff" : "#666",
+              backgroundColor: pathname.startsWith("/app/cuartel-general") ? "#1a1a1a" : "transparent",
+              textDecoration: "none",
+              borderLeft: pathname.startsWith("/app/cuartel-general") ? "2px solid #fff" : "2px solid transparent",
+            }}
+          >
+            <Cpu size={13} /> Cuartel General
+          </Link>
+        )}
         {/* Comunidad — visible para todos los usuarios logueados */}
         <Link
           href="/app/comunidad"
