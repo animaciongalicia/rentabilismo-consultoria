@@ -42,8 +42,8 @@ export default function LoginForm() {
       return;
     }
 
-    router.push("/app");
-    router.refresh();
+    // Full page reload ensures server picks up the new session cookies.
+    window.location.href = "/app";
   };
 
   return (
