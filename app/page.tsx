@@ -50,33 +50,57 @@ export default async function HomePage() {
         </div>
 
         <h1 style={{
-          fontSize: "clamp(1.875rem, 3.5vw, 3rem)",
+          fontSize: "clamp(1.875rem, 3.5vw, 2.875rem)",
           marginBottom: "1.25rem",
           maxWidth: "680px",
         }}>
-          Tu negocio no es una ONG,{" "}
+          Consultoría guiada para hacer crecer{" "}
           <span style={{ borderBottom: "2px solid var(--foreground)", paddingBottom: "1px" }}>
-            pero estás perdiendo dinero.
+            tu empresa en todos los frentes.
           </span>
         </h1>
 
         <p style={{
           fontSize: "0.975rem",
           color: "var(--muted)",
-          lineHeight: 1.7,
-          maxWidth: "520px",
+          lineHeight: 1.8,
+          maxWidth: "540px",
+          marginBottom: "1.75rem",
+        }}>
+          Te acompañamos en un proceso estructurado para diagnosticar y mejorar
+          tu negocio: finanzas, operaciones, equipo, ventas y estrategia.
+          Sin teoría. Con un plan concreto que puedas ejecutar desde el primer día.
+        </p>
+
+        {/* Áreas de consultoría */}
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem",
           marginBottom: "2rem",
         }}>
-          Sin gurús ni fórmulas mágicas. Diagnóstico directo y plan de acción
-          para que tu empresa funcione como negocio, no como hobby caro.
-        </p>
+          {["Finanzas", "Operaciones", "Equipo", "Ventas", "Estrategia"].map(area => (
+            <span key={area} style={{
+              fontSize: "0.7rem",
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              padding: "0.25rem 0.625rem",
+              border: "1px solid var(--border)",
+              color: "var(--muted)",
+              backgroundColor: "var(--card)",
+            }}>
+              {area}
+            </span>
+          ))}
+        </div>
 
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <Link href="/registro" className="btn-primary">
-            Únete a la trinchera{" "}
+            Empieza tu diagnóstico{" "}
             <ArrowRight size={14} style={{ display: "inline", verticalAlign: "middle", marginLeft: "0.25rem" }} />
           </Link>
-          <Link href="#el-muro" className="btn-outline">
+          <Link href="/el-muro" className="btn-outline">
             Ver El Muro
           </Link>
         </div>
