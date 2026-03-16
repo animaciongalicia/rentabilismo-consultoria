@@ -68,6 +68,7 @@ export default async function HomePage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "4rem 3.5rem",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -78,7 +79,7 @@ export default async function HomePage() {
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gridTemplateColumns: "repeat(2, 1fr)",
           gap: "0",
           border: "1px solid var(--border)",
           overflow: "hidden",

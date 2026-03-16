@@ -44,7 +44,7 @@ export default async function AdminPage() {
   }));
 
   return (
-    <div style={{ padding: "3.5rem 3.5rem", maxWidth: "900px" }}>
+    <div className="page-content">
       <div style={{
         fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
         textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",

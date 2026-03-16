@@ -48,7 +48,7 @@ export default async function PerfilPage() {
     .toUpperCase();
 
   return (
-    <div style={{ maxWidth: "640px", padding: "3.5rem 3.5rem" }}>
+    <div style={{ maxWidth: "760px", padding: "3rem 3rem" }}>
       {/* Header */}
       <div style={{ marginBottom: "3rem" }}>
         <div style={{

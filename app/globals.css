@@ -254,10 +254,10 @@ h1, h2, h3, h4 {
 }
 
 /* ── Página: contenedor estándar single-column ────── */
-/* Úsalo en páginas de lección, progreso, perfil, etc. */
+/* Sin max-width: usa todo el espacio disponible del área principal.
+   En pantallas muy grandes (>1600px) el padding visual es suficiente. */
 .page-content {
-  max-width: 960px;
-  padding: 3rem 2.5rem 5rem;
+  padding: 3rem 3rem 5rem;
 }
 
 /* ── Módulo: layout de dos columnas ───────────────── */
@@ -265,14 +265,12 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: flex-start;
   gap: 2.5rem;
-  padding: 3rem 2.5rem 5rem;
-  max-width: 1240px;
+  padding: 3rem 3rem 5rem;
 }
 
 .modulo-main {
   flex: 1;
   min-width: 0;
-  /* Sin max-width fijo: ocupa el espacio disponible */
 }
 
 .modulo-sidebar {
@@ -287,7 +285,7 @@ h1, h2, h3, h4 {
 @media (max-width: 1024px) {
   .modulo-layout {
     flex-direction: column;
-    padding: 2.5rem 1.75rem 4rem;
+    padding: 2.5rem 2rem 4rem;
   }
   .modulo-sidebar {
     width: 100%;
