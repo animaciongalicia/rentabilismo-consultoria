@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { SECTORES, BUSINESS_SIZES } from "@/app/(public)/registro/RegistroWizard";
 
 interface Props {
   initialData: {
-    full_name: string;
-    country: string;
-    pain_phrase: string;
+    full_name:        string;
+    country:          string;
+    pain_phrase:      string;
+    sector:           string;
+    business_size:    string;
+    objetivo_60_dias: string;
   };
 }
 
@@ -65,17 +69,71 @@ export default function PerfilForm({ initialData }: Props) {
         />
       </Field>
 
+      <Field label="Sector">
+        <select
+          value={values.sector}
+          onChange={e => setValues(v => ({ ...v, sector: e.target.value }))}
+          style={{ ...inputStyle, cursor: "pointer" }}
+        >
+          <option value="">Selecciona tu sector</option>
+          {SECTORES.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </Field>
+
+      <Field label="Tamaño del negocio">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+          {BUSINESS_SIZES.map(({ value, label }) => {
+            const checked = values.business_size === value;
+            return (
+              <label key={value} style={{
+                display: "flex", alignItems: "center", gap: "0.5rem",
+                padding: "0.5rem 0.75rem",
+                border: `1px solid ${checked ? "var(--foreground)" : "var(--border)"}`,
+                cursor: "pointer", fontSize: "0.825rem",
+                backgroundColor: checked ? "var(--foreground)" : "var(--card)",
+                color: checked ? "var(--background)" : "var(--foreground)",
+                transition: "all 0.12s",
+              }}>
+                <input
+                  type="radio"
+                  name="business_size"
+                  value={value}
+                  checked={checked}
+                  onChange={() => setValues(v => ({ ...v, business_size: value }))}
+                  style={{ display: "none" }}
+                />
+                {label}
+              </label>
+            );
+          })}
+        </div>
+      </Field>
+
       <Field
         label="Tu frase en El Muro"
-        hint={`${values.pain_phrase.length}/300 caracteres`}
+        hint={`${values.pain_phrase.length}/300`}
       >
         <textarea
           value={values.pain_phrase}
           onChange={e => setValues(v => ({ ...v, pain_phrase: e.target.value }))}
-          rows={4}
+          rows={3}
           maxLength={300}
           minLength={20}
           placeholder="En una frase, cuál es tu mayor reto ahora mismo..."
+          style={{ ...inputStyle, resize: "vertical", height: "auto" }}
+        />
+      </Field>
+
+      <Field
+        label="Objetivo a 60 días"
+        hint={`${values.objetivo_60_dias.length}/300`}
+      >
+        <textarea
+          value={values.objetivo_60_dias}
+          onChange={e => setValues(v => ({ ...v, objetivo_60_dias: e.target.value }))}
+          rows={3}
+          maxLength={300}
+          placeholder="¿Qué quieres haber conseguido en dos meses?"
           style={{ ...inputStyle, resize: "vertical", height: "auto" }}
         />
       </Field>

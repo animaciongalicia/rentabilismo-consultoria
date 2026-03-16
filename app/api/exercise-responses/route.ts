@@ -110,5 +110,24 @@ export async function POST(request: Request) {
       { onConflict: "user_id,module_slug" }
     );
 
+  // Recalcular progreso global y guardarlo en profiles para El Muro (lectura pública)
+  const { data: allProgress } = await supabase
+    .from("module_progress")
+    .select("completed_lessons, total_lessons")
+    .eq("user_id", user.id);
+
+  if (allProgress && allProgress.length > 0) {
+    const totalDone     = allProgress.reduce((s, p) => s + p.completed_lessons, 0);
+    const totalPossible = allProgress.reduce((s, p) => s + p.total_lessons, 0);
+    const globalPct     = totalPossible > 0
+      ? Math.min(100, Math.round((totalDone / totalPossible) * 100))
+      : 0;
+
+    await supabase
+      .from("profiles")
+      .update({ global_progress_pct: globalPct })
+      .eq("id", user.id);
+  }
+
   return NextResponse.json({ ok: true, completedLessons, totalLessons });
 }

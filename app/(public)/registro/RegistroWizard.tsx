@@ -4,25 +4,49 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ChevronRight, Loader2, Eye, EyeOff } from "lucide-react";
 
+// ── Sectores y tamaños disponibles ───────────────────────────
+export const SECTORES = [
+  "Hostelería y restauración",
+  "Comercio y retail",
+  "Servicios profesionales",
+  "Construcción y reformas",
+  "Tecnología y digital",
+  "Salud y bienestar",
+  "Educación y formación",
+  "Industria y manufactura",
+  "Transporte y logística",
+  "Inmobiliario",
+  "Consultoría",
+  "Alimentación",
+  "Otro",
+];
+
+export const BUSINESS_SIZES = [
+  { value: "autonomo", label: "Autónomo / Solo" },
+  { value: "2-5",     label: "2-5 personas" },
+  { value: "6-20",    label: "6-20 personas" },
+  { value: "+20",     label: "+20 personas" },
+];
+
+// ── Schemas Zod ───────────────────────────────────────────────
 const paso1Schema = z.object({
-  full_name: z.string().min(2, "Mínimo 2 caracteres").max(80),
-  age: z.number().int().min(18, "Debes ser mayor de 18 años").max(100),
-  country: z.string().min(2, "Indica tu país"),
+  full_name:     z.string().min(2, "Mínimo 2 caracteres").max(80),
+  age:           z.number().int().min(18, "Debes ser mayor de 18 años").max(100),
+  country:       z.string().min(2, "Indica tu país"),
+  sector:        z.string().min(1, "Selecciona tu sector"),
+  business_size: z.string().min(1, "Selecciona el tamaño de tu negocio"),
 });
 
 const paso2Schema = z.object({
-  pain_phrase: z
-    .string()
-    .min(20, "Cuéntanos un poco más (mín. 20 caracteres)")
-    .max(300, "Máximo 300 caracteres"),
+  pain_phrase:      z.string().min(20, "Cuéntanos un poco más (mín. 20 caracteres)").max(300, "Máximo 300 caracteres"),
+  objetivo_60_dias: z.string().min(10, "Mínimo 10 caracteres").max(300, "Máximo 300 caracteres"),
 });
 
 const paso3Schema = z.object({
-  email: z.string().email("Email inválido"),
+  email:    z.string().email("Email inválido"),
   password: z
     .string()
     .min(8, "Mínimo 8 caracteres")
@@ -35,29 +59,33 @@ type Paso2 = z.infer<typeof paso2Schema>;
 type Paso3 = z.infer<typeof paso3Schema>;
 type FormData = Paso1 & Paso2 & Paso3;
 
-const STEP_LABELS = ["¿Quién eres?", "El zasca", "Tu acceso"];
+const STEP_LABELS = ["¿Quién eres?", "Tu negocio", "Tu acceso"];
 
 export default function RegistroWizard() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<Partial<FormData>>({});
+  const [step, setStep]           = useState(1);
+  const [formData, setFormData]   = useState<Partial<FormData>>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError]         = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
   const supabase = createClient();
 
   const form1 = useForm<Paso1>({
     resolver: zodResolver(paso1Schema),
     defaultValues: {
-      full_name: (formData.full_name as string) || "",
-      age: (formData.age as number) || undefined,
-      country: (formData.country as string) || "",
+      full_name:     (formData.full_name as string) || "",
+      age:           (formData.age as number) || undefined,
+      country:       (formData.country as string) || "",
+      sector:        (formData.sector as string) || "",
+      business_size: (formData.business_size as string) || "",
     },
   });
 
   const form2 = useForm<Paso2>({
     resolver: zodResolver(paso2Schema),
-    defaultValues: { pain_phrase: (formData.pain_phrase as string) || "" },
+    defaultValues: {
+      pain_phrase:      (formData.pain_phrase as string) || "",
+      objetivo_60_dias: (formData.objetivo_60_dias as string) || "",
+    },
   });
 
   const form3 = useForm<Paso3>({
@@ -81,14 +109,17 @@ export default function RegistroWizard() {
     const allData = { ...formData, ...data } as FormData;
 
     const { error: signUpError } = await supabase.auth.signUp({
-      email: allData.email,
+      email:    allData.email,
       password: allData.password,
       options: {
         data: {
-          full_name: allData.full_name,
-          age: allData.age,
-          country: allData.country,
-          pain_phrase: allData.pain_phrase,
+          full_name:        allData.full_name,
+          age:              allData.age,
+          country:          allData.country,
+          pain_phrase:      allData.pain_phrase,
+          sector:           allData.sector,
+          business_size:    allData.business_size,
+          objetivo_60_dias: allData.objetivo_60_dias,
         },
       },
     });
@@ -99,10 +130,10 @@ export default function RegistroWizard() {
       return;
     }
 
-    // Redirigir directamente al Módulo 1 (acceso gratuito tras registro)
+    // Redirigir directamente al Módulo 1 (acceso gratuito tras registro).
     // Si Supabase tiene confirmación de email activa, el middleware redirigirá
-    // a /login. En ese caso el usuario debe confirmar el email antes de acceder.
-    window.location.href = "/app";
+    // a /registro. El usuario debe confirmar el email y luego hacer login.
+    window.location.href = "/bienvenida";
   };
 
   return (
@@ -130,25 +161,68 @@ export default function RegistroWizard() {
         ))}
       </div>
 
-      {/* PASO 1 */}
+      {/* ── PASO 1: ¿Quién eres? ─────────────────────────────── */}
       {step === 1 && (
         <form onSubmit={form1.handleSubmit(onStep1)}>
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
             <div>
               <label style={labelStyle}>Nombre completo</label>
               <input {...form1.register("full_name")} className="input-brutal" placeholder="Ej: María García" />
               {form1.formState.errors.full_name && <p style={errorStyle}>{form1.formState.errors.full_name.message}</p>}
             </div>
-            <div>
-              <label style={labelStyle}>Edad</label>
-              <input {...form1.register("age", { valueAsNumber: true })} className="input-brutal" type="number" placeholder="Ej: 35" min={18} max={100} />
-              {form1.formState.errors.age && <p style={errorStyle}>{form1.formState.errors.age.message}</p>}
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+              <div>
+                <label style={labelStyle}>Edad</label>
+                <input {...form1.register("age", { valueAsNumber: true })} className="input-brutal" type="number" placeholder="35" min={18} max={100} />
+                {form1.formState.errors.age && <p style={errorStyle}>{form1.formState.errors.age.message}</p>}
+              </div>
+              <div>
+                <label style={labelStyle}>País</label>
+                <input {...form1.register("country")} className="input-brutal" placeholder="España" />
+                {form1.formState.errors.country && <p style={errorStyle}>{form1.formState.errors.country.message}</p>}
+              </div>
             </div>
+
             <div>
-              <label style={labelStyle}>País</label>
-              <input {...form1.register("country")} className="input-brutal" placeholder="Ej: España" />
-              {form1.formState.errors.country && <p style={errorStyle}>{form1.formState.errors.country.message}</p>}
+              <label style={labelStyle}>Sector</label>
+              <select {...form1.register("sector")} className="input-brutal" style={{ cursor: "pointer" }}>
+                <option value="">Selecciona tu sector</option>
+                {SECTORES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+              {form1.formState.errors.sector && <p style={errorStyle}>{form1.formState.errors.sector.message}</p>}
             </div>
+
+            <div>
+              <label style={labelStyle}>Tamaño del negocio</label>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                {BUSINESS_SIZES.map(({ value, label }) => {
+                  const checked = form1.watch("business_size") === value;
+                  return (
+                    <label key={value} style={{
+                      display: "flex", alignItems: "center", gap: "0.5rem",
+                      padding: "0.625rem 0.875rem",
+                      border: `1px solid ${checked ? "var(--foreground)" : "var(--border)"}`,
+                      cursor: "pointer", fontSize: "0.85rem",
+                      backgroundColor: checked ? "var(--foreground)" : "var(--card)",
+                      color: checked ? "var(--background)" : "var(--foreground)",
+                      transition: "all 0.15s",
+                    }}>
+                      <input
+                        type="radio"
+                        value={value}
+                        {...form1.register("business_size")}
+                        style={{ display: "none" }}
+                      />
+                      {label}
+                    </label>
+                  );
+                })}
+              </div>
+              {form1.formState.errors.business_size && <p style={errorStyle}>{form1.formState.errors.business_size.message}</p>}
+            </div>
+
             <button type="submit" className="btn-primary" style={btnFullStyle}>
               Siguiente <ChevronRight size={14} style={{ display: "inline", verticalAlign: "middle" }} />
             </button>
@@ -156,12 +230,13 @@ export default function RegistroWizard() {
         </form>
       )}
 
-      {/* PASO 2 */}
+      {/* ── PASO 2: Tu negocio ───────────────────────────────── */}
       {step === 2 && (
         <form onSubmit={form2.handleSubmit(onStep2)}>
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
             <div>
-              <label style={labelStyle}>¿Por qué estás aquí?</label>
+              <label style={labelStyle}>Tu mayor problema ahora mismo</label>
               <p style={{ fontSize: "0.825rem", color: "var(--muted)", marginBottom: "0.625rem", lineHeight: 1.6 }}>
                 Sé brutal. Esta frase aparecerá en El Muro.
                 <br />
@@ -170,7 +245,7 @@ export default function RegistroWizard() {
               <textarea
                 {...form2.register("pain_phrase")}
                 className="input-brutal"
-                rows={4}
+                rows={3}
                 placeholder="Tu dolor real en una frase..."
                 style={{ resize: "vertical" }}
               />
@@ -179,6 +254,27 @@ export default function RegistroWizard() {
                 {form2.watch("pain_phrase")?.length || 0} / 300
               </div>
             </div>
+
+            <div>
+              <label style={labelStyle}>Objetivo a 60 días</label>
+              <p style={{ fontSize: "0.825rem", color: "var(--muted)", marginBottom: "0.625rem", lineHeight: 1.6 }}>
+                ¿Qué quieres haber conseguido en dos meses? Algo concreto.
+                <br />
+                <em>Ej: &ldquo;Tener claro qué clientes me cuestan más de lo que me dan&rdquo;</em>
+              </p>
+              <textarea
+                {...form2.register("objetivo_60_dias")}
+                className="input-brutal"
+                rows={3}
+                placeholder="Un objetivo real, medible y tuyo..."
+                style={{ resize: "vertical" }}
+              />
+              {form2.formState.errors.objetivo_60_dias && <p style={errorStyle}>{form2.formState.errors.objetivo_60_dias.message}</p>}
+              <div style={{ textAlign: "right", fontSize: "0.7rem", color: "var(--muted)", marginTop: "0.25rem" }}>
+                {form2.watch("objetivo_60_dias")?.length || 0} / 300
+              </div>
+            </div>
+
             <div style={{ display: "flex", gap: "0.75rem" }}>
               <button type="button" className="btn-outline" onClick={() => setStep(1)} style={{ flex: 1 }}>Atrás</button>
               <button type="submit" className="btn-primary" style={{ flex: 2, ...btnFullStyle }}>
@@ -189,10 +285,11 @@ export default function RegistroWizard() {
         </form>
       )}
 
-      {/* PASO 3 */}
+      {/* ── PASO 3: Tu acceso ────────────────────────────────── */}
       {step === 3 && (
         <form onSubmit={form3.handleSubmit(onStep3)}>
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
             <div>
               <label style={labelStyle}>Email</label>
               <input {...form3.register("email")} className="input-brutal" type="email" placeholder="tu@email.com" autoComplete="email" />
@@ -240,12 +337,14 @@ export default function RegistroWizard() {
             <div style={{ display: "flex", gap: "0.75rem" }}>
               <button type="button" className="btn-outline" onClick={() => setStep(2)} style={{ flex: 1 }} disabled={isLoading}>Atrás</button>
               <button type="submit" className="btn-primary" style={{ flex: 2, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", padding: "0.75rem" }} disabled={isLoading}>
-                {isLoading ? <><Loader2 size={15} style={{ animation: "spin 1s linear infinite" }} />Registrando...</> : "Entrar a la trinchera"}
+                {isLoading
+                  ? <><Loader2 size={15} style={{ animation: "spin 1s linear infinite" }} />Registrando...</>
+                  : "Entrar a la trinchera"}
               </button>
             </div>
 
             <p style={{ fontSize: "0.725rem", color: "var(--muted)", textAlign: "center" }}>
-              Al registrarte aceptas que tu frase aparezca en El Muro de forma pública.
+              Al registrarte aceptas que tu frase y objetivo aparezcan en El Muro de forma pública.
             </p>
           </div>
         </form>

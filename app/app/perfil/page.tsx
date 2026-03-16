@@ -27,7 +27,7 @@ export default async function PerfilPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, country, pain_phrase, role, has_paid, created_at")
+    .select("full_name, country, pain_phrase, sector, business_size, objetivo_60_dias, role, has_paid, created_at")
     .eq("id", user.id)
     .single();
 
@@ -115,9 +115,12 @@ export default async function PerfilPage() {
       {/* Edit form */}
       <PerfilForm
         initialData={{
-          full_name: profile.full_name ?? "",
-          country: profile.country ?? "",
-          pain_phrase: profile.pain_phrase ?? "",
+          full_name:        profile.full_name        ?? "",
+          country:          profile.country          ?? "",
+          pain_phrase:      profile.pain_phrase      ?? "",
+          sector:           profile.sector           ?? "",
+          business_size:    profile.business_size    ?? "",
+          objetivo_60_dias: profile.objetivo_60_dias ?? "",
         }}
       />
     </div>

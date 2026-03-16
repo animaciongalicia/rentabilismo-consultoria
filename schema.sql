@@ -189,3 +189,44 @@ CREATE POLICY "module_progress_update_own"
   ON public.module_progress FOR UPDATE
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
+
+-- ============================================================
+-- FASE 5 — El Muro: sector, tamaño, objetivo y progreso global
+-- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
+-- ============================================================
+
+-- Nuevos campos en profiles para El Muro
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS sector             TEXT,
+  ADD COLUMN IF NOT EXISTS business_size      TEXT
+    CHECK (business_size IN ('autonomo', '2-5', '6-20', '+20')),
+  ADD COLUMN IF NOT EXISTS objetivo_60_dias   TEXT,
+  -- Progreso global simplificado (0-100), actualizado por /api/exercise-responses
+  -- Se almacena aquí para que El Muro (página pública) pueda leerlo sin violar RLS
+  ADD COLUMN IF NOT EXISTS global_progress_pct INTEGER NOT NULL DEFAULT 0
+    CHECK (global_progress_pct >= 0 AND global_progress_pct <= 100);
+
+-- Actualizar el trigger para incluir los nuevos campos del signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (
+    id, full_name, age, country, pain_phrase,
+    sector, business_size, objetivo_60_dias
+  )
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', 'Anónimo'),
+    (NEW.raw_user_meta_data->>'age')::INTEGER,
+    COALESCE(NEW.raw_user_meta_data->>'country', 'Desconocido'),
+    COALESCE(NEW.raw_user_meta_data->>'pain_phrase', ''),
+    NEW.raw_user_meta_data->>'sector',
+    NEW.raw_user_meta_data->>'business_size',
+    NEW.raw_user_meta_data->>'objetivo_60_dias'
+  );
+  RETURN NEW;
+END;
+$$;
