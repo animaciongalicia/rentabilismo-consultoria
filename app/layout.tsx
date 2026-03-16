@@ -1,25 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Rentabilismo — Consultoría Guiada",
-  description: "Tu negocio no es una ONG. Consultoría directa para empresarios que ya no quieren seguir perdiendo dinero.",
+  description: "Consultoría guiada para hacer crecer tu empresa en todos los frentes.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body>
-        <Sidebar />
-        <main className="main-content">
-          {children}
-        </main>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
