@@ -10,7 +10,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid")
+    .select("has_paid, role")
     .eq("id", user.id)
     .single();
 
@@ -18,7 +18,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div style={{ display: "flex" }}>
-      <SidebarModulos />
+      <SidebarModulos role={profile.role ?? "free"} />
       <main style={{
         marginLeft: "260px",
         flex: 1,

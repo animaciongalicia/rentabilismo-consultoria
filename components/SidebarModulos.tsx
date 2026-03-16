@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, User, ShieldCheck } from "lucide-react";
 
 export const MODULOS = [
   { slug: "modulo-1-mentalidad",   titulo: "Módulo 1 – Mentalidad Empresarial" },
@@ -17,8 +17,9 @@ export const MODULOS = [
   { slug: "modulo-10-plan-accion", titulo: "Módulo 10 – Tu Plan de Acción" },
 ];
 
-export default function SidebarModulos() {
+export default function SidebarModulos({ role }: { role?: string }) {
   const pathname = usePathname();
+  const isAdmin = role === "founder" || role === "admin";
 
   return (
     <aside style={{
@@ -94,8 +95,42 @@ export default function SidebarModulos() {
         })}
       </nav>
 
+      {/* Bottom links */}
+      <div style={{ borderTop: "1px solid #1e1e1e" }}>
+        <Link
+          href="/app/perfil"
+          style={{
+            display: "flex", alignItems: "center", gap: "0.5rem",
+            padding: "0.625rem 1.25rem",
+            fontSize: "0.75rem",
+            color: pathname === "/app/perfil" ? "#fff" : "#666",
+            backgroundColor: pathname === "/app/perfil" ? "#1a1a1a" : "transparent",
+            textDecoration: "none",
+            borderLeft: pathname === "/app/perfil" ? "2px solid #fff" : "2px solid transparent",
+          }}
+        >
+          <User size={13} /> Mi perfil
+        </Link>
+        {isAdmin && (
+          <Link
+            href="/app/admin"
+            style={{
+              display: "flex", alignItems: "center", gap: "0.5rem",
+              padding: "0.625rem 1.25rem",
+              fontSize: "0.75rem",
+              color: pathname === "/app/admin" ? "#fff" : "#666",
+              backgroundColor: pathname === "/app/admin" ? "#1a1a1a" : "transparent",
+              textDecoration: "none",
+              borderLeft: pathname === "/app/admin" ? "2px solid #d97706" : "2px solid transparent",
+            }}
+          >
+            <ShieldCheck size={13} style={{ color: "#d97706" }} /> Admin
+          </Link>
+        )}
+      </div>
+
       {/* Footer */}
-      <div style={{ padding: "1rem 1.25rem", borderTop: "1px solid #1e1e1e", fontSize: "0.65rem", color: "#333" }}>
+      <div style={{ padding: "0.75rem 1.25rem", borderTop: "1px solid #1e1e1e", fontSize: "0.65rem", color: "#333" }}>
         © 2026 Rentabilismo
       </div>
     </aside>
