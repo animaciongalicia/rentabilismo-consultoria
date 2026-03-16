@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import { MODULOS } from "@/components/SidebarModulos";
 import { getLessonsForModule } from "@/config/lessons";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import { FileText, Download } from "lucide-react";
 
 export const metadata = {
   title: "Mi progreso — Rentabilismo",
@@ -40,6 +40,15 @@ export default async function ProgresoPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  // Verificar si puede descargar PDF (solo usuarios con acceso completo)
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("has_paid, role")
+    .eq("id", user.id)
+    .single();
+  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
+  const canDownloadPDF = (profile?.has_paid ?? false) || isSuperUser;
 
   // Load all saved responses for this user (non-empty only)
   const { data: responses } = await supabase
@@ -257,21 +266,44 @@ export default async function ProgresoPage() {
             })}
           </div>
 
-          {/* Footer hint for PDF */}
+          {/* Descarga PDF */}
           <div style={{
             marginTop: "3rem",
-            padding: "1.25rem",
-            border: "1px dashed var(--border)",
+            padding: "1.25rem 1.5rem",
+            border: "1px solid var(--border)",
+            backgroundColor: "var(--card)",
             display: "flex",
             alignItems: "center",
-            gap: "0.75rem",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1rem",
           }}>
-            <FileText size={16} style={{ color: "var(--muted)", flexShrink: 0 }} />
-            <p style={{ fontSize: "0.8rem", color: "var(--muted)", margin: 0, lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--foreground)" }}>Exportar PDF —</strong>{" "}
-              Próximamente podrás descargar este informe en PDF para guardarlo o
-              compartirlo con tu equipo o asesor.
-            </p>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+              <FileText size={16} style={{ color: "var(--muted)", flexShrink: 0, marginTop: "0.15rem" }} />
+              <div>
+                <p style={{ fontWeight: 700, fontSize: "0.875rem", margin: "0 0 0.25rem" }}>
+                  Exportar informe en PDF
+                </p>
+                <p style={{ fontSize: "0.8rem", color: "var(--muted)", margin: 0, lineHeight: 1.6 }}>
+                  Descarga todo tu trabajo en un PDF estructurado.
+                  Puedes compartirlo con tu equipo, tu asesor o guardarlo como referencia.
+                </p>
+              </div>
+            </div>
+            {canDownloadPDF ? (
+              <a
+                href="/app/progreso/pdf"
+                download
+                className="btn-primary"
+                style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}
+              >
+                <Download size={13} /> Descargar PDF
+              </a>
+            ) : (
+              <Link href="/programa" className="btn-outline" style={{ whiteSpace: "nowrap" }}>
+                Desbloquear acceso
+              </Link>
+            )}
           </div>
         </>
       ) : (
