@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,6 +68,7 @@ export default function RegistroWizard() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError]         = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
   const supabase = createClient();
 
   const form1 = useForm<Paso1>({
@@ -130,11 +132,49 @@ export default function RegistroWizard() {
       return;
     }
 
-    // Redirigir directamente al Módulo 1 (acceso gratuito tras registro).
-    // Si Supabase tiene confirmación de email activa, el middleware redirigirá
-    // a /registro. El usuario debe confirmar el email y luego hacer login.
-    window.location.href = "/bienvenida";
+    // Mostrar pantalla de confirmación en lugar de redirigir.
+    // Si Supabase tiene email confirmation activo, el usuario debe confirmar
+    // antes de poder entrar. Si está desactivado, puede entrar directamente.
+    setRegisteredEmail(allData.email);
+    setIsLoading(false);
   };
+
+  // ── Pantalla de confirmación post-registro ──────────────────
+  if (registeredEmail) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div style={{
+          padding: "1.5rem",
+          border: "1px solid var(--border)",
+          backgroundColor: "var(--card)",
+          display: "flex", flexDirection: "column", gap: "0.75rem",
+        }}>
+          <div style={{
+            fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "var(--muted)",
+          }}>
+            Registro completado
+          </div>
+          <p style={{ fontWeight: 700, fontSize: "1rem", margin: 0 }}>
+            Ya estás dentro. Confirma tu email para empezar.
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "#444", lineHeight: 1.7, margin: 0 }}>
+            Te hemos enviado un correo a{" "}
+            <strong>{registeredEmail}</strong>.
+            <br />
+            Ábrelo, haz clic en el enlace de confirmación y después entra con tus credenciales.
+          </p>
+          <p style={{ fontSize: "0.8rem", color: "var(--muted)", margin: 0 }}>
+            Si no lo ves en unos minutos, revisa la carpeta de spam.
+          </p>
+        </div>
+
+        <Link href="/login" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", alignSelf: "flex-start" }}>
+          Ir a Entrar →
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>

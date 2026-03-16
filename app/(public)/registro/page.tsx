@@ -7,37 +7,20 @@ export const metadata = {
 
 export default function RegistroPage() {
   return (
-    <div style={{
-      minHeight: "100vh",
-      backgroundColor: "var(--background)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "4rem 2rem",
-    }}>
-      <div style={{ width: "100%", maxWidth: "520px" }}>
-        {/* Cabecera */}
-        <div style={{ marginBottom: "3rem" }}>
-          <div style={{
-            fontSize: "0.75rem",
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--muted)",
-            marginBottom: "1rem",
-          }}>
-            Registro
-          </div>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>
-            Entra en la trinchera.
-          </h1>
-          <p style={{ color: "var(--muted)", fontSize: "1.05rem" }}>
-            3 pasos. Sin rodeos. Sin ventas disfrazadas de contenido.
-          </p>
-        </div>
-
-        <RegistroWizard />
+    <div className="page-content" style={{ maxWidth: "560px" }}>
+      <div className="page-header-block">
+        <div className="page-eyebrow">Registro</div>
+        <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)", marginBottom: "0.75rem" }}>
+          Entra en la trinchera.
+        </h1>
+        <p style={{ color: "var(--muted)", fontSize: "0.95rem" }}>
+          3 pasos. Sin rodeos. Sin ventas disfrazadas de contenido.
+        </p>
       </div>
+
+      <div style={{ borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
+
+      <RegistroWizard />
     </div>
   );
 }

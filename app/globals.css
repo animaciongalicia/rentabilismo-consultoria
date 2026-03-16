@@ -139,13 +139,31 @@ h1, h2, h3, h4 {
   min-height: 100vh;
 }
 
+/* Mobile header: solo visible en móvil */
+.mobile-header,
+.mobile-menu {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     display: none;
   }
   .main-content {
     margin-left: 0;
+    padding-top: 56px; /* altura del mobile header */
   }
+  .mobile-header,
+  .mobile-menu {
+    display: flex;
+  }
+}
+
+/* ── Tablas en prose: scroll horizontal en móvil ── */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Prose (contenido MDX) ─────────────────────────── */
@@ -253,11 +271,25 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
-/* ── Página: contenedor estándar single-column ────── */
-/* Sin max-width: usa todo el espacio disponible del área principal.
-   En pantallas muy grandes (>1600px) el padding visual es suficiente. */
+/* ── Página: contenedor estándar ────────────────── */
 .page-content {
   padding: 3rem 3rem 5rem;
+}
+
+/* Bloque de cabecera estándar: eyebrow + h1 + bajada */
+/* Uso: <div className="page-header-block"> dentro de .page-content */
+.page-header-block {
+  margin-bottom: 0;    /* el separador lo pone la página */
+}
+
+/* Etiqueta pequeña encima del título (ex: "El Muro", "Registro") */
+.page-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
 }
 
 /* ── Módulo: layout de dos columnas ───────────────── */
@@ -298,6 +330,10 @@ h1, h2, h3, h4 {
 @media (max-width: 640px) {
   .modulo-layout,
   .page-content {
-    padding: 2rem 1.25rem 3rem;
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
   }
 }
