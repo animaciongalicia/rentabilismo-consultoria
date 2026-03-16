@@ -59,3 +59,18 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ============================================================
+-- FASE 2 — Campos de pago Stripe
+-- Ejecutar este bloque en el SQL Editor de Supabase
+-- ============================================================
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS has_paid                  BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD COLUMN IF NOT EXISTS stripe_customer_id        TEXT,
+  ADD COLUMN IF NOT EXISTS stripe_checkout_session_id TEXT;
+
+-- Política RLS: solo el service role puede actualizar has_paid y stripe_*
+-- (el webhook usa la service role key, no la anon key)
+-- La política profiles_update_own existente es suficiente para datos de perfil;
+-- el webhook actualiza con service role que bypasea RLS automáticamente.

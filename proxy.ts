@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
+  const { pathname } = request.nextUrl
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,16 +26,36 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  // Refrescar sesión – IMPORTANTE: no añadir lógica entre createServerClient y getUser
+  // Refrescar sesión — no añadir lógica entre createServerClient y getUser
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Proteger rutas privadas (dashboard)
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith('/dashboard')
-  ) {
+  // ── Protección de rutas /app/** ──────────────────────────
+  if (pathname.startsWith('/app')) {
+    // Sin sesión → login
+    if (!user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
+
+    // Con sesión pero sin pago → página de venta
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('has_paid')
+      .eq('id', user.id)
+      .single()
+
+    if (!profile?.has_paid) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/programa'
+      return NextResponse.redirect(url)
+    }
+  }
+
+  // ── Protección legacy /dashboard/** ─────────────────────
+  if (!user && pathname.startsWith('/dashboard')) {
     const url = request.nextUrl.clone()
-    url.pathname = '/registro'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
