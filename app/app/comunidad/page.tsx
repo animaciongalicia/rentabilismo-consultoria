@@ -3,21 +3,14 @@ import { redirect } from "next/navigation";
 import ComunidadClient from "./ComunidadClient";
 
 export const metadata = {
-  title: "Comunidad — Rentabilismo",
+  title: "El Muro — Rentabilismo",
 };
-
-// NOTA: La mensajería directa entre usuarios NO está implementada todavía.
-// Esta página solo muestra fichas públicas de los miembros.
-// Para añadir mensajería en el futuro:
-// 1. Crear tabla "messages" en Supabase con from_user, to_user, content, created_at
-// 2. Añadir RLS policies para que cada usuario solo lea sus mensajes
-// 3. Crear API route /api/messages para enviar y recibir
-// 4. Añadir UI de chat en esta página o en /app/comunidad/[userId]
 
 export type PublicProfile = {
   id: string;
   full_name: string | null;
   country: string | null;
+  sector: string | null;
   pain_phrase: string | null;
   role: string | null;
   created_at: string;
@@ -29,17 +22,26 @@ export default async function ComunidadPage() {
 
   if (!user) redirect("/registro");
 
-  // Obtener todos los perfiles públicos
-  // Solo se muestran campos públicos: sin email, sin datos de pago
-  const { data: profiles } = await supabase
+  const { data: profiles, error } = await supabase
     .from("profiles")
-    .select("id, full_name, country, pain_phrase, role, created_at")
+    .select("id, full_name, country, sector, pain_phrase, role, created_at")
     .order("created_at", { ascending: false });
+
+  if (error) {
+    return (
+      <div style={{ maxWidth: "900px", padding: "3rem" }}>
+        <div style={{ padding: "1.25rem", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.875rem" }}>
+          Error al cargar el muro: {error.message}
+        </div>
+      </div>
+    );
+  }
 
   const publicProfiles: PublicProfile[] = (profiles ?? []).map((p) => ({
     id: p.id,
     full_name: p.full_name,
     country: p.country,
+    sector: p.sector ?? null,
     pain_phrase: p.pain_phrase,
     role: p.role,
     created_at: p.created_at,
@@ -53,7 +55,7 @@ export default async function ComunidadPage() {
           fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
           textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
         }}>
-          Comunidad
+          El Muro
         </div>
         <h1 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)", marginBottom: "0.75rem" }}>
           Los empresarios de la trinchera.
@@ -71,11 +73,10 @@ export default async function ComunidadPage() {
           color: "var(--muted)",
           display: "inline-block",
         }}>
-          {publicProfiles.length} {publicProfiles.length === 1 ? "empresario" : "empresarios"} en la comunidad
+          {publicProfiles.length} {publicProfiles.length === 1 ? "empresario" : "empresarios"} en el muro
         </div>
       </div>
 
-      {/* Client component con filtros y grid de perfiles */}
       <ComunidadClient profiles={publicProfiles} currentUserId={user.id} />
     </div>
   );

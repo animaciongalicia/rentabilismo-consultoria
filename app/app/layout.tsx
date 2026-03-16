@@ -28,7 +28,7 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid, role")
+    .select("has_paid, role, plan")
     .eq("id", user.id)
     .single();
 
@@ -58,6 +58,7 @@ export default async function AppLayout({
     <div style={{ display: "flex" }}>
       <SidebarModulos
         role={profile.role ?? ROLES.FREE}
+        plan={profile.plan ?? "free"}
         hasPaid={hasPaid}
         progressMap={progressMap}
       />

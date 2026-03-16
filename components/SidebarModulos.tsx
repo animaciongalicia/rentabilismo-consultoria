@@ -4,17 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users, Cpu } from "lucide-react";
 import { MODULOS } from "@/config/modulos";
-import { PRECIO_PROGRAMA } from "@/config/opciones";
-import { isSuperUser } from "@/config/roles";
+import { PRECIO_FUNDADOR, PRECIO_PROGRAMA } from "@/config/opciones";
+import { isSuperUser, isFounderPlan } from "@/config/roles";
 
 export { MODULOS };
 
 export default function SidebarModulos({
   role,
+  plan,
   hasPaid = false,
   progressMap = {},
 }: {
   role?: string;
+  plan?: string;
   hasPaid?: boolean;
   progressMap?: Record<string, number>;
 }) {
@@ -53,8 +55,20 @@ export default function SidebarModulos({
         <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em" }}>
           Rentabilismo
         </div>
-        <div style={{ fontSize: "0.65rem", color: "#555", marginTop: "0.2rem", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          {hasPaid ? "Programa completo" : "Acceso gratuito"}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.2rem" }}>
+          <div style={{ fontSize: "0.65rem", color: "#555", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            {hasPaid ? "Programa completo" : "Acceso gratuito"}
+          </div>
+          {isFounderPlan(plan) && (
+            <span style={{
+              fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.06em",
+              textTransform: "uppercase", color: "#f59e0b",
+              border: "1px solid #f59e0b", padding: "0.1rem 0.3rem",
+              borderRadius: "2px",
+            }}>
+              Fundador
+            </span>
+          )}
         </div>
       </div>
 
@@ -197,7 +211,7 @@ export default function SidebarModulos({
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}>
-            Desbloquear — {PRECIO_PROGRAMA} €
+            Desbloquear — {PRECIO_FUNDADOR} €
           </Link>
         </div>
       )}

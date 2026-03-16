@@ -30,5 +30,14 @@ export const BUSINESS_SIZES: TamanoOpcion[] = [
   { value: "+20",      label: "+20 personas" },
 ];
 
-/** Precio del programa en euros. Cambia aquí, se refleja en toda la app. */
-export const PRECIO_PROGRAMA = 799;
+/** Precio fundador (lanzamiento 2026). */
+export const PRECIO_FUNDADOR = 497;
+
+/** Precio normal futuro (después del lanzamiento fundador). */
+export const PRECIO_PROGRAMA = 797;
+
+/** Fecha límite para el precio fundador (inclusive). 0 = sin límite de fecha. */
+export const FOUNDER_DEADLINE: Date | null = new Date('2026-09-30T23:59:59Z');
+
+/** Plazas máximas al precio fundador. 0 = sin límite de plazas. */
+export const FOUNDER_SEATS = 100;

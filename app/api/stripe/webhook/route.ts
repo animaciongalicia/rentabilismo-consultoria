@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { FOUNDER_DEADLINE, FOUNDER_SEATS } from '@/config/opciones'
 import Stripe from 'stripe'
 
 // Next.js App Router: el body debe llegar como stream sin parsear
@@ -41,12 +42,29 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createAdminClient()
+    const now = new Date()
+
+    // Determinar si estamos en la ventana fundador
+    const withinDeadline = !FOUNDER_DEADLINE || now <= FOUNDER_DEADLINE
+    let plan = 'member'
+    if (withinDeadline && FOUNDER_SEATS > 0) {
+      const { count } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .eq('plan', 'founder')
+      plan = (count ?? 0) < FOUNDER_SEATS ? 'founder' : 'member'
+    } else if (withinDeadline) {
+      plan = 'founder'
+    }
+
     const { error } = await supabase
       .from('profiles')
       .update({
-        has_paid: true,
-        role: 'member',
-        stripe_customer_id: session.customer as string ?? null,
+        has_paid:  true,
+        role:      'member',
+        plan,
+        paid_at:   now.toISOString(),
+        stripe_customer_id:         session.customer as string ?? null,
         stripe_checkout_session_id: session.id,
       })
       .eq('id', userId)
@@ -56,7 +74,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    console.log(`[Webhook] Pago confirmado para user ${userId}`)
+    console.log(`[Webhook] Pago confirmado para user ${userId} — plan: ${plan}`)
   }
 
   return NextResponse.json({ received: true })

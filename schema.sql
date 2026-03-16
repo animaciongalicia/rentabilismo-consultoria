@@ -195,6 +195,27 @@ CREATE POLICY "module_progress_update_own"
 -- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
 -- ============================================================
 
+-- ============================================================
+-- FASE 6 — Planes de acceso (fundador, futuras suscripciones)
+-- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
+-- ============================================================
+
+-- plan: tipo de acceso comercial (distinto de role, que es permiso de plataforma)
+--   free             → sin pago (por defecto)
+--   founder          → precio lanzamiento 2026, acceso vitalicio
+--   member           → precio normal futuro (pago único)
+--   annual           → preparado para suscripción anual futura
+--   premium          → preparado para extras premium futuros
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS plan    TEXT NOT NULL DEFAULT 'free'
+    CHECK (plan IN ('free', 'founder', 'member', 'annual', 'premium')),
+  ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
+
+-- ============================================================
+-- FASE 5 — El Muro: sector, tamaño, objetivo y progreso global
+-- ▶ Ejecutar ESTE BLOQUE en el SQL Editor de Supabase
+-- ============================================================
+
 -- Nuevos campos en profiles para El Muro
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS sector             TEXT,

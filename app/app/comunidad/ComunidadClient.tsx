@@ -1,9 +1,5 @@
 "use client";
 
-// NOTA: Mensajería directa entre usuarios NO implementada.
-// Este componente solo muestra fichas públicas de perfiles.
-// Ver page.tsx para instrucciones sobre cómo añadirla en el futuro.
-
 import { useState, useMemo } from "react";
 import type { PublicProfile } from "./page";
 import { ROLES } from "@/config/roles";
@@ -22,12 +18,18 @@ const ROLE_COLOR: Record<string, string> = {
   free: "#6b7280",
 };
 
-// Extraer países únicos para el filtro
 function getUniqueCountries(profiles: PublicProfile[]): string[] {
   const countries = profiles
     .map((p) => p.country)
     .filter((c): c is string => !!c && c.trim() !== "");
   return Array.from(new Set(countries)).sort();
+}
+
+function getUniqueSectors(profiles: PublicProfile[]): string[] {
+  const sectors = profiles
+    .map((p) => p.sector)
+    .filter((s): s is string => !!s && s.trim() !== "");
+  return Array.from(new Set(sectors)).sort();
 }
 
 function getInitials(name: string | null): string {
@@ -48,17 +50,32 @@ export default function ComunidadClient({
   currentUserId: string;
 }) {
   const [filterCountry, setFilterCountry] = useState<string>("");
-  const [filterRole, setFilterRole] = useState<string>("");
+  const [filterSector, setFilterSector] = useState<string>("");
 
   const countries = useMemo(() => getUniqueCountries(profiles), [profiles]);
+  const sectors   = useMemo(() => getUniqueSectors(profiles), [profiles]);
 
   const filtered = useMemo(() => {
     return profiles.filter((p) => {
       if (filterCountry && p.country !== filterCountry) return false;
-      if (filterRole && p.role !== filterRole) return false;
+      if (filterSector  && p.sector  !== filterSector)  return false;
       return true;
     });
-  }, [profiles, filterCountry, filterRole]);
+  }, [profiles, filterCountry, filterSector]);
+
+  if (profiles.length === 0) {
+    return (
+      <div style={{
+        padding: "3rem",
+        textAlign: "center",
+        border: "1px solid var(--border)",
+        color: "var(--muted)",
+        fontSize: "0.875rem",
+      }}>
+        Todavía no hay empresarios presentándose aquí.
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -90,8 +107,8 @@ export default function ComunidadClient({
         </select>
 
         <select
-          value={filterRole}
-          onChange={(e) => setFilterRole(e.target.value)}
+          value={filterSector}
+          onChange={(e) => setFilterSector(e.target.value)}
           style={{
             padding: "0.4rem 0.75rem",
             border: "1px solid var(--border)",
@@ -101,14 +118,15 @@ export default function ComunidadClient({
             cursor: "pointer",
           }}
         >
-          <option value="">Todos los roles</option>
-          <option value={ROLES.MEMBER}>Miembros (acceso completo)</option>
-          <option value={ROLES.FREE}>Exploradores (acceso gratuito)</option>
+          <option value="">Todos los sectores</option>
+          {sectors.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
         </select>
 
-        {(filterCountry || filterRole) && (
+        {(filterCountry || filterSector) && (
           <button
-            onClick={() => { setFilterCountry(""); setFilterRole(""); }}
+            onClick={() => { setFilterCountry(""); setFilterSector(""); }}
             style={{
               padding: "0.4rem 0.75rem",
               border: "1px solid var(--border)",
@@ -211,6 +229,11 @@ export default function ComunidadClient({
                       </span>
                     </div>
                   </div>
+                </div>
+
+                {/* Sector */}
+                <div style={{ marginBottom: "0.625rem", fontSize: "0.75rem", color: "var(--muted)" }}>
+                  {profile.sector ?? "Sector no indicado"}
                 </div>
 
                 {/* Frase de dolor */}
