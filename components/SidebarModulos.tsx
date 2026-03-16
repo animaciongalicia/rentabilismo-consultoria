@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, User, ShieldCheck, BarChart2 } from "lucide-react";
+import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users } from "lucide-react";
 
 export const MODULOS = [
   { slug: "modulo-1-mentalidad",   titulo: "Módulo 1 – Mentalidad Empresarial" },
@@ -19,9 +19,11 @@ export const MODULOS = [
 
 export default function SidebarModulos({
   role,
+  hasPaid = false,
   progressMap = {},
 }: {
   role?: string;
+  hasPaid?: boolean;
   progressMap?: Record<string, number>;
 }) {
   const pathname = usePathname();
@@ -60,7 +62,7 @@ export default function SidebarModulos({
           Rentabilismo
         </div>
         <div style={{ fontSize: "0.65rem", color: "#555", marginTop: "0.2rem", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Programa completo
+          {hasPaid ? "Programa completo" : "Acceso gratuito"}
         </div>
       </div>
 
@@ -68,7 +70,50 @@ export default function SidebarModulos({
       <nav style={{ flex: 1, padding: "0.75rem 0" }}>
         {MODULOS.map((mod, i) => {
           const href = `/app/modulos/${mod.slug}`;
-          const isActive = pathname === href;
+          const isActive = pathname === href || pathname.startsWith(href + '/');
+          const isModulo1 = i === 0;
+          const isLocked = !hasPaid && !isModulo1;
+
+          if (isLocked) {
+            // Módulos 2-10 bloqueados para usuarios sin pago
+            return (
+              <Link
+                key={mod.slug}
+                href="/programa"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "0.5rem",
+                  padding: "0.625rem 1.25rem",
+                  fontSize: "0.8rem",
+                  lineHeight: 1.4,
+                  color: "#444",
+                  backgroundColor: "transparent",
+                  textDecoration: "none",
+                  borderLeft: "2px solid transparent",
+                  cursor: "pointer",
+                }}
+                title="Desbloquear con acceso completo"
+              >
+                <span style={{ minWidth: 0 }}>
+                  <span style={{
+                    display: "block",
+                    fontSize: "0.6rem",
+                    color: "#333",
+                    letterSpacing: "0.06em",
+                    marginBottom: "0.15rem",
+                    textTransform: "uppercase",
+                  }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {mod.titulo.replace(/^Módulo \d+ – /, "")}
+                </span>
+                <Lock size={11} style={{ color: "#333", flexShrink: 0 }} />
+              </Link>
+            );
+          }
+
           return (
             <Link
               key={mod.slug}
@@ -101,39 +146,103 @@ export default function SidebarModulos({
                 </span>
                 {mod.titulo.replace(/^Módulo \d+ – /, "")}
               </span>
-              {/* Progress indicator */}
-              {progressMap[mod.slug] !== undefined && (
-                <span style={{
-                  fontSize: "0.6rem",
-                  fontWeight: 700,
-                  color: progressMap[mod.slug] === 100 ? "#4ade80" : "#555",
-                  flexShrink: 0,
-                  letterSpacing: "0.02em",
-                }}>
-                  {progressMap[mod.slug] === 100 ? "✓" : `${progressMap[mod.slug]}%`}
-                </span>
-              )}
+              <span style={{ display: "flex", alignItems: "center", gap: "0.375rem", flexShrink: 0 }}>
+                {/* Badge GRATIS en Módulo 1 para usuarios sin pago */}
+                {isModulo1 && !hasPaid && (
+                  <span style={{
+                    fontSize: "0.55rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "#4ade80",
+                    border: "1px solid #4ade80",
+                    padding: "0.1rem 0.35rem",
+                    borderRadius: "2px",
+                  }}>
+                    Gratis
+                  </span>
+                )}
+                {/* Progress indicator */}
+                {progressMap[mod.slug] !== undefined && (
+                  <span style={{
+                    fontSize: "0.6rem",
+                    fontWeight: 700,
+                    color: progressMap[mod.slug] === 100 ? "#4ade80" : "#555",
+                    letterSpacing: "0.02em",
+                  }}>
+                    {progressMap[mod.slug] === 100 ? "✓" : `${progressMap[mod.slug]}%`}
+                  </span>
+                )}
+              </span>
             </Link>
           );
         })}
       </nav>
 
+      {/* Banner de upgrade para usuarios sin pago */}
+      {!hasPaid && (
+        <div style={{
+          margin: "0 0.75rem 0.75rem",
+          padding: "0.875rem 1rem",
+          border: "1px solid #2a2a2a",
+          backgroundColor: "#111",
+        }}>
+          <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#fff", marginBottom: "0.375rem" }}>
+            9 módulos bloqueados
+          </div>
+          <div style={{ fontSize: "0.65rem", color: "#666", lineHeight: 1.5, marginBottom: "0.625rem" }}>
+            Acceso completo con un solo pago.
+          </div>
+          <Link href="/programa" style={{
+            display: "block",
+            textAlign: "center",
+            padding: "0.5rem",
+            backgroundColor: "#fff",
+            color: "#000",
+            fontSize: "0.7rem",
+            fontWeight: 700,
+            textDecoration: "none",
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+          }}>
+            Desbloquear — 799 €
+          </Link>
+        </div>
+      )}
+
       {/* Bottom links */}
       <div style={{ borderTop: "1px solid #1e1e1e" }}>
+        {/* Comunidad — visible para todos los usuarios logueados */}
         <Link
-          href="/app/progreso"
+          href="/app/comunidad"
           style={{
             display: "flex", alignItems: "center", gap: "0.5rem",
             padding: "0.625rem 1.25rem",
             fontSize: "0.75rem",
-            color: pathname === "/app/progreso" ? "#fff" : "#666",
-            backgroundColor: pathname === "/app/progreso" ? "#1a1a1a" : "transparent",
+            color: pathname === "/app/comunidad" ? "#fff" : "#666",
+            backgroundColor: pathname === "/app/comunidad" ? "#1a1a1a" : "transparent",
             textDecoration: "none",
-            borderLeft: pathname === "/app/progreso" ? "2px solid #fff" : "2px solid transparent",
+            borderLeft: pathname === "/app/comunidad" ? "2px solid #fff" : "2px solid transparent",
           }}
         >
-          <BarChart2 size={13} /> Mi progreso
+          <Users size={13} /> Comunidad
         </Link>
+        {hasPaid && (
+          <Link
+            href="/app/progreso"
+            style={{
+              display: "flex", alignItems: "center", gap: "0.5rem",
+              padding: "0.625rem 1.25rem",
+              fontSize: "0.75rem",
+              color: pathname === "/app/progreso" ? "#fff" : "#666",
+              backgroundColor: pathname === "/app/progreso" ? "#1a1a1a" : "transparent",
+              textDecoration: "none",
+              borderLeft: pathname === "/app/progreso" ? "2px solid #fff" : "2px solid transparent",
+            }}
+          >
+            <BarChart2 size={13} /> Mi progreso
+          </Link>
+        )}
         <Link
           href="/app/perfil"
           style={{

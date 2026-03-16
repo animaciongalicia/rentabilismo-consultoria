@@ -2,11 +2,28 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SidebarModulos from "@/components/SidebarModulos";
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+// Rutas de /app accesibles sin pago (solo requieren estar logueado)
+const FREE_APP_PATHS = [
+  '/app/modulos/modulo-1-mentalidad',
+  '/app/perfil',
+  '/app/comunidad',
+]
+
+function isFreeAppPath(pathname: string): boolean {
+  return FREE_APP_PATHS.some(
+    (free) => pathname === free || pathname.startsWith(free + '/')
+  )
+}
+
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) redirect("/registro");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -14,9 +31,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     .eq("id", user.id)
     .single();
 
-  // Founders and admins always have access regardless of payment status
   const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
-  if (!profile?.has_paid && !isSuperUser) redirect("/programa");
+  const hasPaid = profile?.has_paid ?? false;
+
+  // La protección real de rutas la hace proxy.ts (middleware).
+  // Aquí solo redirigimos si por algún motivo llega a rutas de pago sin pagar.
+  // Las rutas gratuitas (M1, perfil, comunidad) se permiten sin pago.
+  // Nota: este layout no tiene acceso al pathname, así que la protección fina
+  // ya la gestiona proxy.ts. Aquí solo bloqueamos si no hay perfil.
+  if (!profile) redirect("/registro");
 
   // Fetch module progress for sidebar indicators (one query, all modules)
   const { data: progressData } = await supabase
@@ -33,7 +56,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div style={{ display: "flex" }}>
-      <SidebarModulos role={profile.role ?? "free"} progressMap={progressMap} />
+      <SidebarModulos
+        role={profile.role ?? "free"}
+        hasPaid={hasPaid || isSuperUser}
+        progressMap={progressMap}
+      />
       <main style={{
         marginLeft: "260px",
         flex: 1,

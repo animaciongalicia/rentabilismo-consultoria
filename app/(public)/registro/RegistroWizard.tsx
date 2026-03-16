@@ -99,7 +99,10 @@ export default function RegistroWizard() {
       return;
     }
 
-    router.push("/bienvenida");
+    // Redirigir directamente al Módulo 1 (acceso gratuito tras registro)
+    // Si Supabase tiene confirmación de email activa, el middleware redirigirá
+    // a /login. En ese caso el usuario debe confirmar el email antes de acceder.
+    window.location.href = "/app";
   };
 
   return (

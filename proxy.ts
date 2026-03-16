@@ -1,6 +1,19 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Rutas de /app accesibles sin pago (solo requieren estar logueado)
+const FREE_APP_PATHS = [
+  '/app/modulos/modulo-1-mentalidad',
+  '/app/perfil',
+  '/app/comunidad',
+]
+
+function isFreeAppPath(pathname: string): boolean {
+  return FREE_APP_PATHS.some(
+    (free) => pathname === free || pathname.startsWith(free + '/')
+  )
+}
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
   const { pathname } = request.nextUrl
@@ -31,21 +44,28 @@ export async function proxy(request: NextRequest) {
 
   // ── Protección de rutas /app/** ──────────────────────────
   if (pathname.startsWith('/app')) {
-    // Sin sesión → login
+    // Sin sesión → registro (primera acción natural del flujo)
     if (!user) {
       const url = request.nextUrl.clone()
-      url.pathname = '/login'
+      url.pathname = '/registro'
       return NextResponse.redirect(url)
     }
 
-    // Con sesión pero sin pago → página de venta
+    // Rutas gratuitas: Módulo 1, perfil y comunidad no requieren pago
+    if (isFreeAppPath(pathname)) {
+      return supabaseResponse
+    }
+
+    // Para el resto de rutas /app → verificar pago
     const { data: profile } = await supabase
       .from('profiles')
-      .select('has_paid')
+      .select('has_paid, role')
       .eq('id', user.id)
       .single()
 
-    if (!profile?.has_paid) {
+    const isSuperUser = profile?.role === 'founder' || profile?.role === 'admin'
+
+    if (!profile?.has_paid && !isSuperUser) {
       const url = request.nextUrl.clone()
       url.pathname = '/programa'
       return NextResponse.redirect(url)

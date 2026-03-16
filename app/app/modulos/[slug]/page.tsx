@@ -5,7 +5,7 @@ import { MODULOS } from "@/components/SidebarModulos";
 import { getLessonsForModule } from "@/config/lessons";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Lock, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +38,19 @@ export default async function ModuloPage({
 
   const { frontmatter, content } = modulo;
 
-  // User for personalized progress data
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/registro");
+
+  // Verificar estado de pago para mostrar CTA apropiado
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("has_paid, role")
+    .eq("id", user.id)
+    .single();
+
+  const isSuperUser = profile?.role === "founder" || profile?.role === "admin";
+  const hasPaid = profile?.has_paid || isSuperUser;
 
   // Lessons for this module (from config)
   const lessons = getLessonsForModule(slug);
@@ -64,6 +73,7 @@ export default async function ModuloPage({
 
   // Module prev/next navigation
   const currentIndex = MODULOS.findIndex((m) => m.slug === slug);
+  const isModulo1 = currentIndex === 0;
   const prev = currentIndex > 0 ? MODULOS[currentIndex - 1] : null;
   const next = currentIndex < MODULOS.length - 1 ? MODULOS[currentIndex + 1] : null;
 
@@ -83,6 +93,21 @@ export default async function ModuloPage({
           marginBottom: "0.75rem",
         }}>
           {String(currentIndex + 1).padStart(2, "0")} / {String(MODULOS.length).padStart(2, "0")}
+          {isModulo1 && !hasPaid && (
+            <span style={{
+              marginLeft: "0.75rem",
+              fontSize: "0.55rem",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              color: "#16a34a",
+              border: "1px solid #16a34a",
+              padding: "0.1rem 0.4rem",
+              borderRadius: "2px",
+              verticalAlign: "middle",
+            }}>
+              Gratis
+            </span>
+          )}
         </div>
 
         {/* Title */}
@@ -139,7 +164,37 @@ export default async function ModuloPage({
           <MDXRemote source={content} />
         </div>
 
-        {/* Module prev/next */}
+        {/* CTA de upgrade para usuarios sin pago en Módulo 1 */}
+        {isModulo1 && !hasPaid && (
+          <div style={{
+            marginTop: "3rem",
+            padding: "2rem",
+            border: "1px solid var(--foreground)",
+            backgroundColor: "var(--card)",
+          }}>
+            <div style={{
+              fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
+              textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
+            }}>
+              ¿Seguimos?
+            </div>
+            <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem" }}>
+              Desbloquea los 9 módulos restantes
+            </h2>
+            <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+              Si el Módulo 1 te ha resultado útil, el resto del programa profundiza en
+              diagnóstico, finanzas, precios, operaciones, equipo, ventas, marketing,
+              estrategia y tu plan de acción. Un solo pago, acceso permanente.
+            </p>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+              <Link href="/programa" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                Ver el programa completo — 799 € <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Module prev/next navigation */}
         <div style={{
           display: "flex",
           justifyContent: "space-between",
@@ -170,25 +225,51 @@ export default async function ModuloPage({
           ) : <div />}
 
           {next && (
-            <Link
-              href={`/app/modulos/${next.slug}`}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: "0.825rem",
-                fontWeight: 600,
-                color: "var(--foreground)",
-                textDecoration: "none",
-                textAlign: "right",
-              }}
-            >
-              <span>
-                <span style={{ display: "block", fontSize: "0.65rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Siguiente</span>
-                {next.titulo.replace(/^Módulo \d+ – /, "")}
-              </span>
-              <ChevronRight size={15} />
-            </Link>
+            hasPaid ? (
+              <Link
+                href={`/app/modulos/${next.slug}`}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.825rem",
+                  fontWeight: 600,
+                  color: "var(--foreground)",
+                  textDecoration: "none",
+                  textAlign: "right",
+                }}
+              >
+                <span>
+                  <span style={{ display: "block", fontSize: "0.65rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Siguiente</span>
+                  {next.titulo.replace(/^Módulo \d+ – /, "")}
+                </span>
+                <ChevronRight size={15} />
+              </Link>
+            ) : (
+              // Usuario sin pago: el "siguiente" lleva a la página de pago
+              <Link
+                href="/programa"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.825rem",
+                  fontWeight: 600,
+                  color: "var(--muted)",
+                  textDecoration: "none",
+                  textAlign: "right",
+                }}
+              >
+                <span>
+                  <span style={{ display: "block", fontSize: "0.65rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Siguiente</span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    {next.titulo.replace(/^Módulo \d+ – /, "")}
+                    <Lock size={12} />
+                  </span>
+                </span>
+                <ChevronRight size={15} />
+              </Link>
+            )
           )}
         </div>
       </div>
@@ -316,25 +397,50 @@ export default async function ModuloPage({
           </div>
         )}
 
-        {/* Link to progress report */}
-        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
-          <Link
-            href="/app/progreso"
-            style={{
-              fontSize: "0.775rem",
-              color: "var(--muted)",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.375rem",
-              borderBottom: "1px dotted var(--border)",
-              paddingBottom: "1px",
-              width: "fit-content",
-            }}
-          >
-            Ver informe de progreso →
-          </Link>
-        </div>
+        {/* Link to progress report (solo para usuarios con pago) */}
+        {hasPaid && (
+          <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+            <Link
+              href="/app/progreso"
+              style={{
+                fontSize: "0.775rem",
+                color: "var(--muted)",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                borderBottom: "1px dotted var(--border)",
+                paddingBottom: "1px",
+                width: "fit-content",
+              }}
+            >
+              Ver informe de progreso →
+            </Link>
+          </div>
+        )}
+
+        {/* CTA de upgrade en sidebar para usuarios sin pago */}
+        {!hasPaid && (
+          <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+            <Link
+              href="/programa"
+              style={{
+                display: "block",
+                padding: "0.75rem",
+                backgroundColor: "var(--foreground)",
+                color: "var(--background)",
+                textDecoration: "none",
+                textAlign: "center",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+              }}
+            >
+              Desbloquear programa — 799 €
+            </Link>
+          </div>
+        )}
       </aside>
 
     </div>

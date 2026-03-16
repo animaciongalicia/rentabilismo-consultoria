@@ -1,4 +1,4 @@
-import { CheckCircle, ArrowRight, AlertCircle } from "lucide-react";
+import { CheckCircle, ArrowRight, AlertCircle, Lock, Gift } from "lucide-react";
 import Link from "next/link";
 import CheckoutButton from "./CheckoutButton";
 
@@ -14,17 +14,18 @@ const PARA_QUIEN = [
   "Buscas acompañamiento real, no teoría ni motivación vacía",
 ];
 
+// Módulo 1 está marcado como gratuito al crear cuenta
 const QUE_TRABAJAMOS = [
-  { area: "Mentalidad", texto: "El punto de partida. Sin esto, lo demás no sirve." },
-  { area: "Diagnóstico", texto: "Qué está funcionando, qué no y por qué." },
-  { area: "Finanzas", texto: "Dónde entra y dónde se va el dinero realmente." },
-  { area: "Precios", texto: "Si estás cobrando lo que vale lo que haces." },
-  { area: "Operaciones", texto: "Cómo dejar de ser imprescindible para todo." },
-  { area: "Equipo", texto: "Si tienes las personas correctas en los puestos correctos." },
-  { area: "Ventas", texto: "Cómo conseguir clientes que valgan la pena." },
-  { area: "Marketing", texto: "Cómo te posicionas y qué percepción genera tu negocio." },
-  { area: "Estrategia", texto: "Hacia dónde vas y si el camino tiene sentido." },
-  { area: "Plan de acción", texto: "Qué vas a hacer, en qué orden y con qué recursos." },
+  { area: "Mentalidad", texto: "El punto de partida. Sin esto, lo demás no sirve.", gratis: true },
+  { area: "Diagnóstico", texto: "Qué está funcionando, qué no y por qué.", gratis: false },
+  { area: "Finanzas", texto: "Dónde entra y dónde se va el dinero realmente.", gratis: false },
+  { area: "Precios", texto: "Si estás cobrando lo que vale lo que haces.", gratis: false },
+  { area: "Operaciones", texto: "Cómo dejar de ser imprescindible para todo.", gratis: false },
+  { area: "Equipo", texto: "Si tienes las personas correctas en los puestos correctos.", gratis: false },
+  { area: "Ventas", texto: "Cómo conseguir clientes que valgan la pena.", gratis: false },
+  { area: "Marketing", texto: "Cómo te posicionas y qué percepción genera tu negocio.", gratis: false },
+  { area: "Estrategia", texto: "Hacia dónde vas y si el camino tiene sentido.", gratis: false },
+  { area: "Plan de acción", texto: "Qué vas a hacer, en qué orden y con qué recursos.", gratis: false },
 ];
 
 export default function ProgramaPage({
@@ -79,10 +80,13 @@ export default function ProgramaPage({
           en ese momento, no pasa nada. Vuelve cuando lo estés.
         </div>
 
-        {/* Las 10 áreas */}
+        {/* Las 10 áreas del programa */}
         <div style={{ marginBottom: "3rem" }}>
-          <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1rem" }}>
+          <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem" }}>
             Las 10 áreas del programa
+          </div>
+          <div style={{ fontSize: "0.775rem", color: "var(--muted)", marginBottom: "1rem" }}>
+            El Módulo 1 está incluido gratis al crear tu cuenta. El resto se desbloquea con el acceso completo.
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.625rem" }}>
             {QUE_TRABAJAMOS.map((item, i) => (
@@ -90,14 +94,34 @@ export default function ProgramaPage({
                 display: "flex",
                 gap: "0.875rem",
                 padding: "0.875rem 1rem",
-                border: "1px solid var(--border)",
+                border: item.gratis ? "1px solid var(--foreground)" : "1px solid var(--border)",
                 backgroundColor: "var(--card)",
+                position: "relative",
               }}>
                 <div style={{ fontSize: "0.6rem", fontWeight: 800, color: "var(--muted)", minWidth: "18px", paddingTop: "2px" }}>
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: "0.825rem", marginBottom: "0.2rem" }}>{item.area}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem" }}>
+                    <div style={{ fontWeight: 700, fontSize: "0.825rem" }}>{item.area}</div>
+                    {item.gratis ? (
+                      <span style={{
+                        fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.06em",
+                        textTransform: "uppercase", color: "#16a34a",
+                        border: "1px solid #16a34a", padding: "0.1rem 0.35rem",
+                        borderRadius: "2px", display: "flex", alignItems: "center", gap: "0.2rem",
+                      }}>
+                        <Gift size={9} /> Gratis
+                      </span>
+                    ) : (
+                      <span style={{
+                        fontSize: "0.55rem", fontWeight: 600, color: "var(--muted)",
+                        display: "flex", alignItems: "center", gap: "0.2rem",
+                      }}>
+                        <Lock size={9} /> Acceso completo
+                      </span>
+                    )}
+                  </div>
                   <div style={{ fontSize: "0.775rem", color: "var(--muted)" }}>{item.texto}</div>
                 </div>
               </div>
@@ -112,10 +136,10 @@ export default function ProgramaPage({
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
             {[
-              "Acceso completo a los 10 módulos desde el primer día",
-              "Avanza a tu ritmo, sin fechas límite ni presión",
-              "Acceso permanente — el programa es tuyo para siempre",
-              "Sin suscripciones ni pagos adicionales",
+              "Crea tu cuenta gratis — accede al Módulo 1 (Mentalidad) de inmediato.",
+              "Si el programa encaja contigo, desbloquea los 9 módulos restantes con un pago único.",
+              "Acceso permanente — el programa es tuyo para siempre, sin suscripciones.",
+              "Sin letra pequeña ni pagos adicionales.",
             ].map(item => (
               <div key={item} style={{ display: "flex", gap: "0.75rem", fontSize: "0.875rem", color: "var(--muted)" }}>
                 <span style={{ color: "var(--foreground)", fontWeight: 700, flexShrink: 0 }}>—</span>
@@ -125,21 +149,44 @@ export default function ProgramaPage({
           </div>
         </div>
 
-        {/* CTA — sin precio visible */}
+        {/* CTA principal — flujo claro en dos pasos */}
         <div style={{ padding: "2rem", border: "1px solid var(--foreground)", backgroundColor: "var(--card)" }}>
           <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem" }}>
             ¿Listo para empezar?
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-            Si llevas leyendo esta página y algo te ha resonado, ese es el indicativo.
-            El primer paso es registrarte. Si ya tienes cuenta, puedes acceder directamente al programa.
-          </p>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-            <CheckoutButton />
-            <Link href="/registro" className="btn-outline">
-              Crear cuenta primero
+
+          {/* Paso 1: cuenta gratis */}
+          <div style={{ marginBottom: "1.5rem", padding: "1.25rem", border: "1px solid var(--border)", backgroundColor: "var(--background)" }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem" }}>
+              Paso 1 — Gratis
+            </div>
+            <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1rem" }}>
+              Crea tu cuenta y accede al Módulo 1 (Mentalidad Empresarial) sin pagar nada.
+              Si te convence, das el siguiente paso.
+            </p>
+            <Link href="/registro" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+              Crear cuenta gratis <ArrowRight size={14} />
             </Link>
+            <div style={{ marginTop: "0.625rem", fontSize: "0.725rem", color: "var(--muted)" }}>
+              ¿Ya tienes cuenta?{" "}
+              <Link href="/login" style={{ color: "var(--foreground)", fontWeight: 600, textDecoration: "underline" }}>
+                Inicia sesión
+              </Link>
+            </div>
           </div>
+
+          {/* Paso 2: acceso completo */}
+          <div style={{ padding: "1.25rem", border: "1px solid var(--border)", backgroundColor: "var(--background)" }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem" }}>
+              Paso 2 — 799 € · Pago único
+            </div>
+            <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1rem" }}>
+              Desbloquea los 10 módulos completos. Acceso permanente, sin suscripciones.
+              Si ya tienes cuenta, haz clic aquí para pagar directamente.
+            </p>
+            <CheckoutButton />
+          </div>
+
           <p style={{ marginTop: "1rem", fontSize: "0.75rem", color: "var(--muted)" }}>
             Pago único. Acceso permanente. Sin letra pequeña.
           </p>

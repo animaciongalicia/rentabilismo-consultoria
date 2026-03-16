@@ -52,14 +52,25 @@ export default async function HomePage() {
           método claro para decidir.
         </p>
 
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1.25rem" }}>
           <Link href="/registro" className="btn-primary">
-            Empezar ahora{" "}
+            Empezar ahora — gratis{" "}
             <ArrowRight size={14} style={{ display: "inline", verticalAlign: "middle", marginLeft: "0.3rem" }} />
           </Link>
           <Link href="/como-funciona" className="btn-outline">
             Ver cómo funciona
           </Link>
+        </div>
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: "0.5rem",
+          fontSize: "0.775rem", color: "var(--muted)",
+          padding: "0.5rem 0.875rem",
+          border: "1px solid var(--border)",
+          backgroundColor: "var(--card)",
+        }}>
+          <span style={{ fontWeight: 700, color: "var(--foreground)" }}>Módulo 1 · Mentalidad</span>
+          <span>—</span>
+          <span>Incluido gratis al crear tu cuenta</span>
         </div>
       </section>
 
@@ -215,10 +226,16 @@ export default async function HomePage() {
             el precio irá subiendo. Si ya estás dentro, tu acceso no cambia.
           </p>
 
-          <Link href="/programa" className="btn-primary" style={{ textAlign: "center" }}>
-            Acceder al programa{" "}
+          <Link href="/registro" className="btn-primary" style={{ textAlign: "center" }}>
+            Crear cuenta gratis{" "}
             <ArrowRight size={14} style={{ display: "inline", verticalAlign: "middle", marginLeft: "0.3rem" }} />
           </Link>
+          <div style={{ fontSize: "0.725rem", color: "var(--muted)", marginTop: "0.5rem" }}>
+            O si ya tienes cuenta,{" "}
+            <Link href="/programa" style={{ color: "var(--foreground)", fontWeight: 600, textDecoration: "underline" }}>
+              accede al pago directamente
+            </Link>
+          </div>
         </div>
       </section>
 

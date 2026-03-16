@@ -14,7 +14,8 @@ export default function CheckoutButton() {
     const res = await fetch('/api/checkout', { method: 'POST' })
 
     if (res.status === 401) {
-      window.location.href = '/login'
+      // No logueado → registro (primer paso del flujo)
+      window.location.href = '/registro'
       return
     }
 
