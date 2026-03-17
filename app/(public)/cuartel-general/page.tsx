@@ -127,7 +127,14 @@ export default async function CuartelGeneralPublicPage() {
                 }
               </div>
 
-              <div style={{ fontWeight: 700, fontSize: "0.875rem" }}>{agente.nombre}</div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.875rem" }}>{agente.nombre}</div>
+                {agente.etiqueta && (
+                  <div style={{ fontSize: "0.65rem", color: "var(--muted)", marginTop: "0.2rem", letterSpacing: "0.04em" }}>
+                    {agente.etiqueta}
+                  </div>
+                )}
+              </div>
 
               <p style={{ fontSize: "0.8rem", color: "#555", lineHeight: 1.6, margin: 0, flex: 1 }}>
                 {agente.descripcion}

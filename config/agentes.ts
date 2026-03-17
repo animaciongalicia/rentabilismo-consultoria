@@ -5,6 +5,7 @@
 export type Agente = {
   slug:          string;
   nombre:        string;
+  etiqueta?:     string;   // Nombre descriptivo opcional (se muestra bajo el nombre principal)
   descripcion:   string;   // 1 frase para la tarjeta del grid
   contexto:      string;   // Párrafo explicativo en la página del agente
   placeholder:   string;   // Texto de ayuda en el textarea
@@ -22,10 +23,11 @@ export const AGENTES: Agente[] = [
   },
   {
     slug:        "agente-escandallos",
-    nombre:      "Agente Escandallos",
+    nombre:      "El Coste Real",
+    etiqueta:    "Dineros",
     descripcion: "Calcula el coste real de cada producto o servicio con precisión.",
-    contexto:    "Te ayuda a desgranar el coste total de lo que produces o vendes: materias primas, mano de obra, costes indirectos y mermas. Con un escandallo bien hecho sabrás exactamente cuánto te cuesta hacer lo que haces y cuánto margen real te queda.",
-    placeholder: "Ej: Tengo un plato de menú (o un producto/servicio). Los ingredientes/materiales cuestan X, tardo Y horas en hacerlo y tengo estos costes fijos…",
+    contexto:    "Te ayuda a desgranar el coste total de lo que produces o vendes: materias primas, mano de obra, costes indirectos y mermas. Con los números bien hechos sabrás exactamente cuánto te cuesta hacer lo que haces y cuánto margen real te queda.",
+    placeholder: "Ej: Tengo un producto o servicio. Los materiales/costes directos son X, tardo Y horas en hacerlo y tengo estos costes fijos…",
     modulo:      "Módulo 3 – Control Financiero",
   },
   {

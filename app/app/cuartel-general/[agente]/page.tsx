@@ -71,9 +71,14 @@ export default async function AgentePage({
         <div className="page-eyebrow">
           {String(index + 1).padStart(2, "0")} / {String(AGENTES.length).padStart(2, "0")}
         </div>
-        <h1 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", marginBottom: "0.875rem" }}>
+        <h1 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", marginBottom: agente.etiqueta ? "0.375rem" : "0.875rem" }}>
           {agente.nombre}
         </h1>
+        {agente.etiqueta && (
+          <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "0.875rem", letterSpacing: "0.04em" }}>
+            {agente.etiqueta}
+          </div>
+        )}
         <p style={{ fontSize: "0.925rem", color: "#444", lineHeight: 1.75, marginBottom: "0.5rem" }}>
           {agente.contexto}
         </p>

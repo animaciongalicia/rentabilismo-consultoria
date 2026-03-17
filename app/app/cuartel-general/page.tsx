@@ -61,7 +61,7 @@ export default async function CuartelGeneralPage() {
           </div>
           <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7 }}>
             Una serie de asistentes de IA entrenados para tareas concretas:
-            analizar competencia, fijar precios, calcular escandallos, revisar ideas…
+            analizar competencia, fijar precios, revisar costes, evaluar ideas…
             Cada agente trabaja contigo en un área específica y te da respuestas directas,
             sin rodeos y sin contenido genérico.
           </p>
@@ -121,8 +121,15 @@ export default async function CuartelGeneralPage() {
                 }
               </div>
 
-              {/* Nombre */}
-              <div style={{ fontWeight: 700, fontSize: "0.875rem" }}>{agente.nombre}</div>
+              {/* Nombre + etiqueta opcional */}
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.875rem" }}>{agente.nombre}</div>
+                {agente.etiqueta && (
+                  <div style={{ fontSize: "0.65rem", color: "var(--muted)", marginTop: "0.2rem", letterSpacing: "0.04em" }}>
+                    {agente.etiqueta}
+                  </div>
+                )}
+              </div>
 
               {/* Descripción */}
               <p style={{ fontSize: "0.8rem", color: "#555", lineHeight: 1.6, margin: 0, flex: 1 }}>
