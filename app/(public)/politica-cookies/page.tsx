@@ -1,6 +1,4 @@
-// BOCETO — Política de Cookies
-// Obligatorio por Ley 34/2002 (LSSI-CE) y RGPD.
-// Rellenar todos los [TODO] antes de publicar.
+// Política de Cookies — rentabilismo.com
 
 export const metadata = {
   title: "Política de Cookies — Rentabilismo",
@@ -74,32 +72,51 @@ const CookieTable = ({ rows }: { rows: CookieRow[] }) => (
   </div>
 );
 
-// TODO: completar con las cookies reales que use el sitio
-// Para auditarlas: abre DevTools → Application → Cookies después de navegar el sitio
 const COOKIES_TECNICAS: CookieRow[] = [
   {
-    nombre: "sb-[project]-auth-token",
+    nombre: "sb-*-auth-token",
     tipo: "Técnica / sesión",
     proveedor: "Supabase",
-    finalidad: "Mantiene la sesión autenticada del usuario",
+    finalidad: "Mantiene la sesión autenticada del usuario en la plataforma",
     duracion: "Sesión / 1 año",
   },
   {
-    nombre: "[TODO: nombre cookie sesión]",
+    nombre: "__stripe_mid",
+    tipo: "Técnica",
+    proveedor: "Stripe",
+    finalidad: "Identifica el navegador para prevención de fraude en el proceso de pago",
+    duracion: "1 año",
+  },
+  {
+    nombre: "__stripe_sid",
     tipo: "Técnica / sesión",
-    proveedor: "Propio",
-    finalidad: "[TODO: descripción]",
-    duracion: "[TODO]",
+    proveedor: "Stripe",
+    finalidad: "Identifica la sesión durante el proceso de pago seguro",
+    duracion: "30 minutos",
   },
 ];
 
 const COOKIES_ANALITICAS: CookieRow[] = [
   {
-    nombre: "[TODO: ej. _ga]",
+    nombre: "_ga",
     tipo: "Analítica",
-    proveedor: "[TODO: Google Analytics / Plausible / etc.]",
-    finalidad: "Medir el uso del sitio y el comportamiento de los usuarios de forma agregada",
-    duracion: "[TODO: ej. 2 años]",
+    proveedor: "Google Analytics 4",
+    finalidad: "Distingue usuarios únicos para medir el uso del sitio de forma agregada",
+    duracion: "2 años",
+  },
+  {
+    nombre: "_ga_XXXXXXXX",
+    tipo: "Analítica",
+    proveedor: "Google Analytics 4",
+    finalidad: "Mantiene el estado de la sesión de Analytics",
+    duracion: "2 años",
+  },
+  {
+    nombre: "_gid",
+    tipo: "Analítica",
+    proveedor: "Google Analytics 4",
+    finalidad: "Distingue usuarios para estadísticas de sesión",
+    duracion: "24 horas",
   },
 ];
 
@@ -157,10 +174,11 @@ export default function PoliticaCookiesPage() {
         consentimiento.</P>
         <CookieTable rows={COOKIES_ANALITICAS} />
 
-        <P style={{ marginTop: "1.25rem", marginBottom: 0, fontSize: "0.8rem", color: "var(--muted)" }}>
-          [TODO: si usas cookies publicitarias o de redes sociales, añadir una sección
-          adicional. Si no las usas, declararlo explícitamente: "No usamos cookies
-          publicitarias ni de terceros con fines comerciales."]
+        <P style={{ marginTop: "1.25rem", marginBottom: 0 }}>
+          <strong>No usamos cookies publicitarias ni de seguimiento de redes sociales.</strong>{" "}
+          Las únicas cookies de terceros presentes en este sitio son las indicadas en la
+          tabla anterior (Stripe, para el proceso de pago, y Google Analytics, con fines
+          estadísticos).
         </P>
       </Section>
 
@@ -175,9 +193,9 @@ export default function PoliticaCookiesPage() {
           de gestión de cookies que encontrarás en el pie de página.
         </P>
         <P style={{ margin: 0, fontSize: "0.825rem", color: "var(--muted)" }}>
-          [TODO: si usas una herramienta de gestión de consentimiento (CMP) como Axeptio,
-          Cookiebot, CookieYes…, indicarla aquí y describir cómo funciona el panel de
-          preferencias del usuario.]
+          Si en algún momento no ves el aviso de cookies, puedes gestionar tus preferencias
+          directamente desde la configuración de privacidad de tu navegador (ver sección
+          siguiente).
         </P>
       </Section>
 
@@ -211,7 +229,7 @@ export default function PoliticaCookiesPage() {
           relevantes mediante el banner de cookies.
         </P>
         <P style={{ margin: 0 }}>
-          Última actualización: <strong>[TODO: mes y año]</strong>.
+          Última actualización: <strong>18 de marzo de 2026</strong>.
         </P>
       </Section>
 

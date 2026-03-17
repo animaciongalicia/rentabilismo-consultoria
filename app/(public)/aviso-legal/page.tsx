@@ -1,6 +1,4 @@
-// BOCETO — Aviso Legal
-// Obligatorio por Ley 34/2002 (LSSI-CE), art. 10.
-// Rellenar todos los [TODO] con datos reales antes de publicar.
+// Aviso Legal — rentabilismo.com
 
 export const metadata = {
   title: "Aviso Legal — Rentabilismo",
@@ -76,12 +74,10 @@ export default function AvisoLegalPage() {
       {/* Datos del titular */}
       <Section label="Datos del titular">
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Field label="Razón social"        value="[TODO: nombre completo o denominación social]" />
-          <Field label="NIF / CIF"           value="[TODO: NIF o CIF]" />
-          <Field label="Domicilio social"    value="[TODO: calle, número, código postal, municipio, provincia]" />
-          <Field label="Email de contacto"   value="[TODO: hola@rentabilismo.com o similar]" />
-          <Field label="Teléfono"            value="[TODO: opcional, o eliminar esta fila]" />
-          <Field label="Registro Mercantil"  value="[TODO: si procede — Tomo X, Folio X, Hoja X — o eliminar si no aplica]" />
+          <Field label="Razón social"        value="Inversiones SHISO SL (marca comercial: Consultoría Método)" />
+          <Field label="NIF / CIF"           value="[Pendiente — completar con CIF antes de publicar]" />
+          <Field label="Domicilio social"    value="Ronda de Montealto 4, 15002, A Coruña (La Coruña)" />
+          <Field label="Email de contacto"   value="hola@rentabilismo.com" />
         </div>
       </Section>
 
@@ -156,11 +152,10 @@ export default function AvisoLegalPage() {
           Las presentes condiciones se rigen por la legislación española vigente. Para la
           resolución de cualquier litigio derivado de la interpretación o aplicación de
           este Aviso Legal, las partes se someten, con renuncia expresa a cualquier otro
-          fuero, a los Juzgados y Tribunales de{" "}
-          <strong>[TODO: ciudad del domicilio social]</strong>.
+          fuero, a los Juzgados y Tribunales de <strong>A Coruña</strong>.
         </P>
         <P style={{ margin: 0 }}>
-          Última actualización: <strong>[TODO: mes y año]</strong>.
+          Última actualización: <strong>18 de marzo de 2026</strong>.
         </P>
       </Section>
 

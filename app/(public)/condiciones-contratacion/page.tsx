@@ -1,7 +1,4 @@
-// BOCETO — Condiciones de Contratación
-// Regula la venta del programa online. Obligatorio por LGDCU (RDL 1/2007)
-// y Ley 34/2002 (LSSI-CE) para ventas a consumidores finales.
-// Rellenar todos los [TODO] antes de publicar.
+// Condiciones de Contratación — rentabilismo.com
 
 import { PRECIO_PROGRAMA } from "@/config/opciones";
 
@@ -72,8 +69,9 @@ export default function CondicionesContratacionPage() {
       {/* Partes */}
       <Section label="Partes del contrato">
         <P>
-          <strong>Vendedor:</strong> [TODO: nombre / razón social], con NIF [TODO] y
-          domicilio en [TODO: dirección completa]. Email de contacto: [TODO].
+          <strong>Vendedor:</strong> Inversiones SHISO SL (marca comercial: Consultoría Método),
+          con CIF <strong>[Pendiente — completar antes de publicar]</strong> y domicilio en
+          Ronda de Montealto 4, 15002, A Coruña (La Coruña). Email de contacto: hola@rentabilismo.com.
         </P>
         <P style={{ margin: 0 }}>
           <strong>Comprador:</strong> La persona física o jurídica que realiza la compra
@@ -104,11 +102,8 @@ export default function CondicionesContratacionPage() {
         </P>
         <P>
           El pago se realiza en un único cargo mediante tarjeta de crédito o débito, a través
-          del proveedor de pagos <strong>[TODO: Stripe / Redsys]</strong>. No almacenamos
-          los datos de tu tarjeta: son procesados directamente por el proveedor de pagos.
-        </P>
-        <P style={{ margin: 0 }}>
-          [TODO: si ofreces financiación, cuotas o métodos de pago adicionales, describirlos aquí.]
+          del proveedor de pagos <strong>Stripe Inc.</strong> No almacenamos los datos de tu
+          tarjeta: son procesados directamente y de forma segura por Stripe.
         </P>
       </Section>
 
@@ -149,9 +144,10 @@ export default function CondicionesContratacionPage() {
           consentido expresamente al completar la compra.
         </P>
         <P>
-          [TODO: si decides ofrecer un período de garantía o reembolso voluntario
-          (ej. 14 días), descríbelo aquí con claridad: condiciones, qué se considerará
-          "haber accedido", cómo solicitar el reembolso y en qué plazo se procesa.]
+          No se aplica período de reembolso voluntario adicional. El acceso a los contenidos
+          digitales comienza de forma inmediata tras la confirmación del pago, con consentimiento
+          expreso del Comprador, por lo que se pierde el derecho de desistimiento de conformidad
+          con el artículo 103 m) del RDL 1/2007.
         </P>
         <P style={{ margin: 0, fontSize: "0.825rem", color: "var(--muted)" }}>
           En cualquier caso, el comprador puede ejercer sus derechos de consumidor ante
@@ -170,7 +166,7 @@ export default function CondicionesContratacionPage() {
         <P>
           El acceso se mantiene de forma indefinida mientras la plataforma esté operativa.
           Si Rentabilismo dejase de operar, el Vendedor notificará a los usuarios con un
-          mínimo de <strong>[TODO: ej. 90 días]</strong> de antelación por email.
+          mínimo de <strong>90 días</strong> de antelación por email.
         </P>
         <P style={{ margin: 0 }}>
           El Vendedor puede ampliar, modificar o retirar contenidos del programa, siempre
@@ -198,7 +194,7 @@ export default function CondicionesContratacionPage() {
           Se emitirá una factura por cada compra y se enviará al email facilitado durante
           el registro. Si necesitas factura con datos de empresa, indica el CIF y la
           razón social durante el proceso de pago o escríbenos a{" "}
-          <strong>[TODO: email de facturación]</strong> en los [TODO: ej. 15] días
+          <strong>hola@rentabilismo.com</strong> en los <strong>15 días</strong>{" "}
           siguientes a la compra.
         </P>
       </Section>
@@ -212,12 +208,12 @@ export default function CondicionesContratacionPage() {
         </P>
         <P>
           Para la resolución de cualquier controversia, las partes acuerdan someterse
-          a los Juzgados y Tribunales de <strong>[TODO: ciudad del domicilio social]</strong>,
+          a los Juzgados y Tribunales de <strong>A Coruña</strong>,
           sin perjuicio del fuero que corresponda a los consumidores según la normativa
           de protección de consumidores y usuarios.
         </P>
         <P style={{ margin: 0 }}>
-          Última actualización: <strong>[TODO: mes y año]</strong>.
+          Última actualización: <strong>18 de marzo de 2026</strong>.
         </P>
       </Section>
 

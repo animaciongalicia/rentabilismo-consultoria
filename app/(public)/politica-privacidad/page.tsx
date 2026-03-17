@@ -1,6 +1,4 @@
-// BOCETO — Política de Privacidad
-// Obligatorio por RGPD (Reglamento UE 2016/679) y LOPDGDD (LO 3/2018).
-// Rellenar todos los [TODO] antes de publicar.
+// Política de Privacidad — rentabilismo.com
 
 export const metadata = {
   title: "Política de Privacidad — Rentabilismo",
@@ -81,7 +79,7 @@ const TRATAMIENTOS: [string, string, string, string][] = [
   [
     "Gestión de pagos",
     "Ejecución del contrato (art. 6.1.b RGPD)",
-    "Datos de facturación — tarjeta procesada por [TODO: Stripe / Redsys]",
+    "Datos de facturación — tarjeta procesada directamente por Stripe Inc.",
     "5 años (obligación fiscal)",
   ],
   [
@@ -93,8 +91,8 @@ const TRATAMIENTOS: [string, string, string, string][] = [
   [
     "Análisis de uso y mejora de la plataforma",
     "Interés legítimo (art. 6.1.f RGPD)",
-    "Datos de navegación anonimizados — [TODO: indicar herramienta]",
-    "[TODO: plazo según herramienta analítica]",
+    "Datos de navegación anonimizados — Google Analytics 4",
+    "26 meses (retención por defecto de GA4)",
   ],
 ];
 
@@ -129,14 +127,10 @@ export default function PoliticaPrivacidadPage() {
 
       {/* Responsable */}
       <Section label="Responsable del tratamiento">
-        <P><strong>Identidad:</strong> [TODO: nombre / razón social]</P>
-        <P><strong>NIF / CIF:</strong> [TODO]</P>
-        <P><strong>Domicilio:</strong> [TODO: dirección completa]</P>
-        <P><strong>Email de contacto:</strong> [TODO: hola@rentabilismo.com]</P>
-        <P style={{ margin: 0 }}>
-          <strong>Delegado de Protección de Datos (DPD):</strong>{" "}
-          [TODO: si nombras DPD, indicar nombre y email — si no procede, eliminar esta línea]
-        </P>
+        <P><strong>Identidad:</strong> Inversiones SHISO SL (marca comercial: Consultoría Método)</P>
+        <P><strong>NIF / CIF:</strong> [Pendiente — completar con CIF antes de publicar]</P>
+        <P><strong>Domicilio:</strong> Ronda de Montealto 4, 15002, A Coruña (La Coruña)</P>
+        <P style={{ margin: 0 }}><strong>Email de contacto:</strong> hola@rentabilismo.com</P>
       </Section>
 
       {/* Finalidades, bases y plazos */}
@@ -157,9 +151,10 @@ export default function PoliticaPrivacidadPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: "0", marginBottom: "0.875rem" }}>
           {[
             ["Supabase Inc.", "Alojamiento de base de datos y autenticación", "EE.UU. — SCCs vigentes"],
-            ["[TODO: Stripe / Redsys]", "Procesamiento de pagos", "[TODO: país y garantías]"],
-            ["[TODO: proveedor email]", "Envío de comunicaciones transaccionales", "[TODO: país y garantías]"],
-            ["[TODO: herramienta analítica]", "Análisis de uso del sitio", "[TODO: país y garantías]"],
+            ["Stripe Inc.", "Procesamiento de pagos", "EE.UU. — SCCs vigentes"],
+            ["Supabase Inc.", "Envío de emails transaccionales (confirmación, etc.)", "EE.UU. — SCCs vigentes"],
+            ["Google LLC (Analytics)", "Análisis de uso del sitio web", "EE.UU. — SCCs vigentes"],
+            ["Google LLC (Search Console)", "Análisis de rendimiento en búsqueda (no datos de usuarios)", "EE.UU. — SCCs vigentes"],
           ].map(([prov, uso, pais]) => (
             <div key={prov} style={{
               display: "grid", gridTemplateColumns: "1fr 1.5fr 1fr",
@@ -174,8 +169,9 @@ export default function PoliticaPrivacidadPage() {
           ))}
         </div>
         <P style={{ margin: 0, fontSize: "0.8rem", color: "var(--muted)" }}>
-          [TODO: si hay transferencias internacionales fuera del EEE, detallar garantías
-          (Cláusulas Contractuales Tipo, decisión de adecuación, etc.)]
+          Todos los proveedores indicados están ubicados en EE.UU. Las transferencias internacionales
+          se amparan en las Cláusulas Contractuales Tipo (SCCs) aprobadas por la Comisión Europea
+          (Decisión de Ejecución UE 2021/914).
         </P>
       </Section>
 
@@ -183,7 +179,7 @@ export default function PoliticaPrivacidadPage() {
       <Section label="Tus derechos">
         <P>
           En cualquier momento puedes ejercer los siguientes derechos enviando un email
-          a <strong>[TODO: email de privacidad]</strong> con copia de tu DNI o documento
+          a <strong>hola@rentabilismo.com</strong> con copia de tu DNI o documento
           identificativo equivalente:
         </P>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "0.875rem" }}>
@@ -216,8 +212,9 @@ export default function PoliticaPrivacidadPage() {
           frente a accesos no autorizados, pérdida o destrucción accidental.
         </P>
         <P style={{ margin: 0 }}>
-          [TODO: si quieres detallar medidas concretas — cifrado en tránsito (TLS), cifrado
-          en reposo, control de accesos por roles, backups — añádelas aquí.]
+          Entre las medidas aplicadas se incluyen: cifrado en tránsito mediante TLS, cifrado
+          en reposo gestionado por Supabase, control de accesos basado en roles y autenticación
+          segura mediante tokens firmados.
         </P>
       </Section>
 
@@ -228,7 +225,7 @@ export default function PoliticaPrivacidadPage() {
           hagamos, lo notificaremos por email o mediante un aviso visible en el Sitio.
         </P>
         <P style={{ margin: 0 }}>
-          Última actualización: <strong>[TODO: mes y año]</strong>.
+          Última actualización: <strong>18 de marzo de 2026</strong>.
         </P>
       </Section>
 
