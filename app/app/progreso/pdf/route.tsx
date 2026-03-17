@@ -35,11 +35,11 @@ export async function GET() {
   // ── Verificar acceso de pago ───────────────────────────────
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid, role")
+    .select("has_paid, role, plan")
     .eq("id", user.id)
     .single();
 
-  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
   if (!hasPaid) {
     return NextResponse.json(

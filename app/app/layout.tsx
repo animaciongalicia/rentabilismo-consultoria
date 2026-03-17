@@ -34,7 +34,7 @@ export default async function AppLayout({
     .eq("id", user.id)
     .single();
 
-  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
   // La protección real de rutas la hace proxy.ts (middleware).
   // Aquí solo redirigimos si por algún motivo llega a rutas de pago sin pagar.

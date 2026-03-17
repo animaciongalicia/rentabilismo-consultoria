@@ -47,11 +47,11 @@ export default async function ModuloPage({
   // Verificar estado de pago para mostrar CTA apropiado
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid, role")
+    .select("has_paid, role, plan")
     .eq("id", user.id)
     .single();
 
-  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role);
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
   // Lessons for this module (from config)
   const lessons = getLessonsForModule(slug);

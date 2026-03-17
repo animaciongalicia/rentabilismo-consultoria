@@ -45,10 +45,10 @@ export default async function ProgresoPage() {
   // Verificar si puede descargar PDF (solo usuarios con acceso completo)
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid, role")
+    .select("has_paid, role, plan")
     .eq("id", user.id)
     .single();
-  const canDownloadPDF = hasFullAccess(profile?.has_paid ?? false, profile?.role);
+  const canDownloadPDF = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
   // Load all saved responses for this user (non-empty only)
   const { data: responses } = await supabase

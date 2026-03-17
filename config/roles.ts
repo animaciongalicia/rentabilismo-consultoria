@@ -20,8 +20,12 @@ export function isSuperUser(role: string | null | undefined): boolean {
   return SUPER_ROLES.includes(role as Role);
 }
 
-export function hasFullAccess(hasPaid: boolean, role: string | null | undefined): boolean {
-  return hasPaid || isSuperUser(role);
+export function hasFullAccess(
+  hasPaid: boolean,
+  role: string | null | undefined,
+  plan?: string | null,
+): boolean {
+  return hasPaid || isSuperUser(role) || hasActivePlan(plan);
 }
 
 // ── Planes (modelo comercial) ────────────────────────────────────
