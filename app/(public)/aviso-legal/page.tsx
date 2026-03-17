@@ -33,8 +33,8 @@ const Section = ({
   </section>
 );
 
-const P = ({ children }: { children: React.ReactNode }) => (
-  <p style={{ margin: "0 0 0.875rem" }}>{children}</p>
+const P = ({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) => (
+  <p style={{ margin: "0 0 0.875rem", ...style }}>{children}</p>
 );
 
 const Field = ({ label, value }: { label: string; value: string }) => (
