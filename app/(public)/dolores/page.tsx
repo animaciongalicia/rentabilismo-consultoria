@@ -8,11 +8,6 @@ export const metadata = {
 
 const DOLORES = [
   {
-    titulo: "Has pagado cursos que prometían el cambio",
-    descripcion:
-      "Compraste el método, hiciste los módulos, aplicaste las técnicas. Pero la realidad de tu negocio no cambió. O cambió dos semanas y luego todo volvió a ser igual. El problema no eres tú. El problema es que nadie te acompañó a aplicarlo a tu caso concreto.",
-  },
-  {
     titulo: "Tu asesor o gestor te lleva los números pero no te entiende",
     descripcion:
       "Te dicen cuánto has facturado, cuánto debes de IVA y cuándo tienes que pagar. Pero cuando les preguntas por qué no te queda dinero a fin de mes, o qué deberías cambiar para ganar más, la respuesta es un silencio incómodo o un consejo genérico. Necesitas más que alguien que rellene formularios.",
@@ -36,6 +31,11 @@ const DOLORES = [
     titulo: "Tienes claro que algo hay que cambiar pero no sabes por dónde empezar",
     descripcion:
       "La sensación de que hay demasiadas cosas rotas a la vez es paralizante. No puedes arreglar todo al mismo tiempo. El primer paso es saber qué es lo que más duele y qué tiene más impacto. Eso es exactamente lo que trabajamos primero.",
+  },
+  {
+    titulo: "Has pagado cursos que prometían el cambio",
+    descripcion:
+      "Compraste el método, hiciste los módulos, aplicaste las técnicas. Pero la realidad de tu negocio no cambió. O cambió dos semanas y luego todo volvió a ser igual. El problema no eres tú. El problema es que nadie te acompañó a aplicarlo a tu caso concreto.",
   },
 ];
 
