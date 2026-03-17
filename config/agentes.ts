@@ -92,6 +92,22 @@ export const AGENTES: Agente[] = [
     placeholder: "Ej: Sé que tengo que mejorar en X, Y y Z pero no sé por dónde empezar. Mi situación ahora mismo es… y lo que quiero conseguir en 60 días es…",
     modulo:      "Módulo 10 – Tu Plan de Acción",
   },
+  {
+    slug:        "agente-evaluador-ideas",
+    nombre:      "Agente Evaluador de Ideas",
+    descripcion: "Analiza si una idea de negocio tiene sentido real antes de que inviertas tiempo y dinero.",
+    contexto:    "Te ayuda a evaluar cualquier idea de negocio con criterio: si hay mercado real, si los números pueden cuadrar, si tienes la capacidad para ejecutarla y cuáles son los riesgos principales. No se trata de entusiasmar ni de desanimar, sino de ver la idea con claridad antes de comprometerse.",
+    placeholder: "Ej: Tengo la idea de montar un negocio de… Me dirijo a… Creo que el cliente pagaría X. Mi ventaja respecto a lo que ya existe sería… Lo que me genera más duda es…",
+    modulo:      "Módulo 9 – Estrategia y Crecimiento",
+  },
+  {
+    slug:        "agente-ventas-sin-vender",
+    nombre:      "Agente Ventas sin Vender",
+    descripcion: "Cierra más sin presionar: vende desde la confianza, no desde la insistencia.",
+    contexto:    "Te ayuda a repensar tu proceso de venta para que el cliente llegue a la decisión de compra de forma natural. Cómo generar confianza antes de la conversación, cómo hacer preguntas que abren en lugar de cerrar, cómo tratar las objeciones sin parecer un vendedor y cómo cerrar sin forzar.",
+    placeholder: "Ej: Mi ticket medio es X y el proceso de venta ahora mismo funciona así… Lo que más me cuesta es… Las objeciones más frecuentes son… y suelo responder con…",
+    modulo:      "Módulo 7 – Ventas y Captación",
+  },
 ];
 
 // Herramientas externas gratuitas
