@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, User, ShieldCheck, BarChart2, Lock, Users, Cpu } from "lucide-react";
 import { MODULOS } from "@/config/modulos";
-import { PRECIO_FUNDADOR, PRECIO_PROGRAMA } from "@/config/opciones";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 import { isSuperUser, isFounderPlan } from "@/config/roles";
 
 export { MODULOS };
@@ -73,7 +73,7 @@ export default function SidebarModulos({
       </div>
 
       {/* Lista de módulos */}
-      <nav style={{ flex: 1, padding: "0.75rem 0" }}>
+      <nav style={{ padding: "0.75rem 0" }}>
         {MODULOS.map((mod, i) => {
           const href = `/app/modulos/${mod.slug}`;
           const isActive = pathname === href || pathname.startsWith(href + '/');
@@ -93,7 +93,7 @@ export default function SidebarModulos({
                   padding: "0.625rem 1.25rem",
                   fontSize: "0.8rem",
                   lineHeight: 1.4,
-                  color: "#555",
+                  color: "#888",
                   backgroundColor: "transparent",
                   borderLeft: "2px solid transparent",
                   userSelect: "none",
@@ -104,7 +104,7 @@ export default function SidebarModulos({
                   <span style={{
                     display: "block",
                     fontSize: "0.6rem",
-                    color: "#444",
+                    color: "#666",
                     letterSpacing: "0.06em",
                     marginBottom: "0.15rem",
                     textTransform: "uppercase",
@@ -113,7 +113,7 @@ export default function SidebarModulos({
                   </span>
                   {mod.titulo.replace(/^Módulo \d+ – /, "")}
                 </span>
-                <Lock size={11} style={{ color: "#444", flexShrink: 0 }} />
+                <Lock size={11} style={{ color: "#ccc", flexShrink: 0 }} />
               </div>
             );
           }
@@ -130,7 +130,7 @@ export default function SidebarModulos({
                 padding: "0.625rem 1.25rem",
                 fontSize: "0.8rem",
                 lineHeight: 1.4,
-                color: isActive ? "#fff" : "#888",
+                color: isActive ? "#fff" : "#bbb",
                 backgroundColor: isActive ? "#1a1a1a" : "transparent",
                 textDecoration: "none",
                 borderLeft: isActive ? "2px solid #fff" : "2px solid transparent",
@@ -209,10 +209,13 @@ export default function SidebarModulos({
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}>
-            Desbloquear — {PRECIO_FUNDADOR} €
+            Desbloquear — {PRECIO_PROGRAMA} €
           </Link>
         </div>
       )}
+
+      {/* Spacer flexible — empuja bottom links hacia abajo */}
+      <div style={{ flex: 1 }} />
 
       {/* Bottom links */}
       <div style={{ borderTop: "1px solid #1e1e1e" }}>

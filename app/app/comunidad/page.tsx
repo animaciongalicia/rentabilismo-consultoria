@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import ComunidadClient from "./ComunidadClient";
 
@@ -22,7 +23,8 @@ export default async function ComunidadPage() {
 
   if (!user) redirect("/registro");
 
-  const { data: profiles, error } = await supabase
+  const admin = createAdminClient();
+  const { data: profiles, error } = await admin
     .from("profiles")
     .select("id, full_name, country, sector, pain_phrase, role, created_at")
     .order("created_at", { ascending: false });

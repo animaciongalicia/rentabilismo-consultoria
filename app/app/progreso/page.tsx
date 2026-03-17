@@ -158,110 +158,102 @@ export default async function ProgresoPage() {
             ))}
           </div>
 
-          {/* Report body — one section per module */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "3rem" }}>
-            {sortedModules.map((mod) => {
+          {/* Report body — one collapsible section per module */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0", border: "1px solid var(--border)", overflow: "hidden" }}>
+            {sortedModules.map((mod, modIdx) => {
               const lessonMap = grouped.get(mod.slug)!;
               const lessons = getLessonsForModule(mod.slug);
               const progress = progressMap.get(mod.slug);
+              const isLast = modIdx === sortedModules.length - 1;
 
               return (
-                <section key={mod.slug}>
-                  {/* Module header */}
-                  <div style={{
+                <details
+                  key={mod.slug}
+                  style={{ borderBottom: isLast ? "none" : "1px solid var(--border)" }}
+                >
+                  <summary style={{
                     display: "flex",
-                    alignItems: "baseline",
+                    alignItems: "center",
                     justifyContent: "space-between",
                     gap: "1rem",
-                    borderBottom: "2px solid var(--foreground)",
-                    paddingBottom: "0.625rem",
-                    marginBottom: "1.75rem",
-                    flexWrap: "wrap",
+                    padding: "1rem 1.25rem",
+                    cursor: "pointer",
+                    listStyle: "none",
+                    backgroundColor: "var(--card)",
+                    userSelect: "none",
                   }}>
-                    <h2 style={{ fontSize: "1rem", margin: 0 }}>
-                      {mod.titulo}
-                    </h2>
-                    {progress && (
+                    <span style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: 0 }}>
                       <span style={{
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        color: "var(--muted)",
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
+                        fontSize: "0.65rem", fontWeight: 800, color: "var(--muted)",
+                        letterSpacing: "0.08em", flexShrink: 0,
                       }}>
-                        {progress.completed_lessons}/{progress.total_lessons} lecciones
+                        {String(sortedModules.indexOf(mod) + 1).padStart(2, "0")}
                       </span>
-                    )}
-                  </div>
+                      <span style={{ fontSize: "0.875rem", fontWeight: 700 }}>
+                        {mod.titulo}
+                      </span>
+                    </span>
+                    <span style={{
+                      fontSize: "0.65rem", fontWeight: 700,
+                      color: "var(--muted)", letterSpacing: "0.06em",
+                      textTransform: "uppercase", flexShrink: 0,
+                    }}>
+                      {progress
+                        ? `${progress.completed_lessons}/${progress.total_lessons} lecciones`
+                        : `${lessonMap.size} lecciones`}
+                    </span>
+                  </summary>
 
-                  {/* Lessons in module order */}
-                  {lessons
-                    .filter(l => lessonMap.has(l.lessonSlug))
-                    .map(lesson => {
-                      const lessonResponses = lessonMap.get(lesson.lessonSlug)!;
-                      return (
-                        <div key={lesson.lessonSlug} style={{ marginBottom: "1.75rem" }}>
-                          <div style={{
-                            fontSize: "0.8rem",
-                            fontWeight: 700,
-                            marginBottom: "0.875rem",
-                            color: "var(--foreground)",
-                          }}>
-                            {lesson.orderIndex}. {lesson.title}
-                          </div>
-
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-                            {lessonResponses
-                              .sort((a, b) => a.exercise_key.localeCompare(b.exercise_key))
-                              .map(r => {
-                                const ex = lesson.exercises.find(e => e.exerciseKey === r.exercise_key);
-                                return (
-                                  <div
-                                    key={r.exercise_key}
-                                    style={{
+                  {/* Lesson responses */}
+                  <div style={{ padding: "1.25rem", backgroundColor: "var(--background)", display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+                    {lessons
+                      .filter(l => lessonMap.has(l.lessonSlug))
+                      .map(lesson => {
+                        const lessonResponses = lessonMap.get(lesson.lessonSlug)!;
+                        return (
+                          <div key={lesson.lessonSlug}>
+                            <div style={{
+                              fontSize: "0.8rem", fontWeight: 700,
+                              marginBottom: "0.875rem", color: "var(--foreground)",
+                            }}>
+                              {lesson.orderIndex}. {lesson.title}
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                              {lessonResponses
+                                .sort((a, b) => a.exercise_key.localeCompare(b.exercise_key))
+                                .map(r => {
+                                  const ex = lesson.exercises.find(e => e.exerciseKey === r.exercise_key);
+                                  return (
+                                    <div key={r.exercise_key} style={{
                                       border: "1px solid var(--border)",
                                       backgroundColor: "var(--card)",
                                       padding: "1.125rem 1.25rem",
-                                    }}
-                                  >
-                                    {ex && (
-                                      <p style={{
-                                        fontSize: "0.775rem",
-                                        color: "var(--muted)",
-                                        marginBottom: "0.625rem",
-                                        lineHeight: 1.6,
-                                        fontStyle: "italic",
-                                      }}>
-                                        {ex.prompt}
+                                    }}>
+                                      {ex && (
+                                        <p style={{
+                                          fontSize: "0.775rem", color: "var(--muted)",
+                                          marginBottom: "0.625rem", lineHeight: 1.6, fontStyle: "italic",
+                                        }}>
+                                          {ex.prompt}
+                                        </p>
+                                      )}
+                                      <p style={{ fontSize: "0.9rem", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>
+                                        {r.response}
                                       </p>
-                                    )}
-                                    <p style={{
-                                      fontSize: "0.9rem",
-                                      lineHeight: 1.8,
-                                      margin: 0,
-                                      whiteSpace: "pre-wrap",
-                                    }}>
-                                      {r.response}
-                                    </p>
-                                    <div style={{
-                                      fontSize: "0.65rem",
-                                      color: "var(--muted)",
-                                      marginTop: "0.75rem",
-                                    }}>
-                                      Guardado: {new Date(r.updated_at).toLocaleDateString("es-ES", {
-                                        day: "2-digit",
-                                        month: "long",
-                                        year: "numeric",
-                                      })}
+                                      <div style={{ fontSize: "0.65rem", color: "var(--muted)", marginTop: "0.75rem" }}>
+                                        Guardado: {new Date(r.updated_at).toLocaleDateString("es-ES", {
+                                          day: "2-digit", month: "long", year: "numeric",
+                                        })}
+                                      </div>
                                     </div>
-                                  </div>
-                                );
-                              })}
+                                  );
+                                })}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                </section>
+                        );
+                      })}
+                  </div>
+                </details>
               );
             })}
           </div>

@@ -101,14 +101,22 @@ export default async function PerfilPage() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "1.5rem" }}>
-          {/* Avatar */}
-          <div style={{
-            width: "56px", height: "56px", borderRadius: "50%",
-            backgroundColor: ROLE_COLOR[role] ?? "#6b7280",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "1.1rem", fontWeight: 800, color: "#fff", flexShrink: 0,
-          }}>
-            {initials}
+          {/* Avatar con indicador online */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <div style={{
+              width: "56px", height: "56px", borderRadius: "50%",
+              backgroundColor: ROLE_COLOR[role] ?? "#6b7280",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "1.1rem", fontWeight: 800, color: "#fff",
+            }}>
+              {initials}
+            </div>
+            <span style={{
+              position: "absolute", bottom: "2px", right: "2px",
+              width: "12px", height: "12px", borderRadius: "50%",
+              backgroundColor: "#16a34a",
+              border: "2px solid var(--background)",
+            }} />
           </div>
           <div>
             <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: "0.25rem" }}>
