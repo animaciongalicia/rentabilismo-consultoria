@@ -6,16 +6,25 @@ export const metadata = {
   description: "Has dado el primer paso. Ahora empieza el trabajo real.",
 };
 
-// Esta página aparece después del registro (con o sin confirmación de email).
-// Si Supabase tiene autoconfirm ON → el usuario puede entrar directamente al app.
-// Si Supabase tiene autoconfirm OFF → debe confirmar el email primero.
-export default function BienvenidaPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ confirmed?: string }>;
-}) {
+const MODULOS_LIBRES = [
+  { titulo: "El Punto de Partida", sub: "Mentalidad y modelo mental", libre: true },
+];
+
+const MODULOS_9 = [
+  "Diagnóstico de Rentabilidad",
+  "Finanzas reales",
+  "Producto y Servicio",
+  "Estrategia de Precios",
+  "Marketing y Publicidad",
+  "Procesos y Operaciones",
+  "Personas y Equipo",
+  "Ventas",
+  "Estrategia y Crecimiento",
+];
+
+export default function BienvenidaPage() {
   return (
-    <div style={{ maxWidth: "680px", margin: "0 auto", padding: "clamp(3rem, 6vw, 6rem) clamp(1.25rem, 5vw, 2rem)" }}>
+    <div style={{ padding: "3rem 3.5rem", maxWidth: "860px" }}>
 
       {/* Eyebrow */}
       <div style={{
@@ -26,24 +35,28 @@ export default function BienvenidaPage({
       </div>
 
       {/* Titular */}
-      <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", marginBottom: "1rem", lineHeight: 1.15 }}>
+      <h1 style={{
+        fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
+        marginBottom: "1rem", lineHeight: 1.15,
+        letterSpacing: "-0.03em",
+      }}>
         Bienvenido. Esto no es un curso.
       </h1>
 
       {/* Mensaje directo */}
-      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "0.875rem" }}>
+      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "0.875rem", maxWidth: "600px" }}>
         Lo que acabas de abrir es un proceso de consultoría guiada. No hay vídeos de motivación,
         no hay teoría vacía, no hay promesas de hacerte rico rápido.
       </p>
-      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "2rem" }}>
+      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "600px" }}>
         Hay preguntas incómodas, ejercicios que obligan a pensar y un método que ha funcionado
         con empresarios reales. Lo que hagas con eso depende de ti.
       </p>
 
-      {/* Lo que viene ahora */}
+      {/* Lo que empieza ahora */}
       <div style={{
         border: "1px solid var(--border)", backgroundColor: "var(--card)",
-        padding: "1.5rem", marginBottom: "2rem",
+        padding: "1.5rem", marginBottom: "2rem", maxWidth: "600px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
@@ -54,7 +67,7 @@ export default function BienvenidaPage({
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           {[
             "El Punto de Partida — tu primer módulo, gratuito, ya disponible.",
-            "4 lecciones sobre cómo piensan los empresarios que escalan (y cómo dejan de hacerlo).",
+            "4 lecciones para ver cómo estás pensando sobre tu negocio y qué cambiar primero.",
             "Ejercicios escritos que nadie va a leer por ti. Tú los haces, tú los aprovechas.",
             "Sin presión, sin fechas límite. Este es tu proceso.",
           ].map(item => (
@@ -66,62 +79,112 @@ export default function BienvenidaPage({
         </div>
       </div>
 
-      {/* Aviso de email si aplica */}
-      <ConfirmacionEmailAviso />
+      {/* Aviso confirmación email — Rentabilismo lo requiere */}
+      <div style={{
+        padding: "0.875rem 1rem",
+        border: "1px solid #e8c56a",
+        backgroundColor: "#fffbf0",
+        marginBottom: "1.5rem",
+        fontSize: "0.825rem",
+        lineHeight: 1.6,
+        color: "#7a5500",
+        maxWidth: "600px",
+      }}>
+        <strong style={{ display: "block", marginBottom: "0.25rem" }}>
+          Revisa tu email antes de entrar.
+        </strong>
+        Rentabilismo requiere que confirmes tu dirección antes de acceder al programa.
+        Busca el correo de confirmación y haz clic en el enlace.{" "}
+        <span style={{ fontSize: "0.75rem", color: "#8a6a00" }}>¿No lo ves? Revisa spam.</span>
+      </div>
 
-      {/* CTA principal */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-        <Link href="/app/modulos/modulo-1-mentalidad" className="btn-primary" style={{
+      {/* CTA */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "3rem" }}>
+        <Link href="/registro" className="btn-primary" style={{
           display: "inline-flex", alignItems: "center", gap: "0.5rem",
           padding: "0.875rem 1.5rem", fontSize: "0.95rem", fontWeight: 800,
-          letterSpacing: "0.01em",
+          letterSpacing: "0.01em", width: "fit-content",
         }}>
-          Empezar El Punto de Partida <ArrowRight size={16} />
+          Únete <ArrowRight size={16} />
         </Link>
         <div style={{ fontSize: "0.775rem", color: "var(--muted)" }}>
-          O{" "}
+          ¿Ya confirmaste?{" "}
           <Link href="/login" style={{ color: "var(--foreground)", fontWeight: 600, textDecoration: "underline" }}>
-            entra con tu cuenta
+            Entra con tu cuenta
           </Link>
-          {" "}si ya confirmaste el email.
         </div>
       </div>
 
       {/* Separador */}
-      <div style={{ borderTop: "1px solid var(--border)", margin: "2.5rem 0" }} />
+      <div style={{ borderTop: "1px solid var(--border)", marginBottom: "2.5rem" }} />
 
-      {/* Programa completo — visión a futuro */}
+      {/* Programa completo */}
       <div>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
-          textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
+          textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem",
         }}>
           Lo que te espera cuando estés listo
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 200px), 1fr))", gap: "0.5rem" }}>
-          {[
-            "Diagnóstico de Rentabilidad",
-            "Finanzas reales",
-            "Producto y Servicio",
-            "Estrategia de Precios",
-            "Marketing y Publicidad",
-            "Procesos y Operaciones",
-            "Personas y Equipo",
-            "Ventas",
-            "Estrategia y Crecimiento",
-            "Tu Plan de Acción",
-          ].map(mod => (
+
+        {/* Módulo 1 — ancho completo, libre */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          gap: "1rem",
+          padding: "0.875rem 1.25rem",
+          border: "1px solid var(--foreground)",
+          marginBottom: "0.5rem",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <div style={{ fontSize: "0.825rem", fontWeight: 700 }}>El Punto de Partida</div>
+            <div style={{ fontSize: "0.75rem", color: "var(--muted)" }}>Mentalidad y modelo mental · 4 lecciones</div>
+          </div>
+          <span style={{
+            fontSize: "0.6rem", fontWeight: 900, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "#16a34a", border: "1px solid #16a34a",
+            padding: "0.2rem 0.6rem",
+          }}>
+            Libre
+          </span>
+        </div>
+
+        {/* Módulos 2–10 — 3 columnas */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "0.5rem",
+          marginBottom: "0.5rem",
+        }}>
+          {MODULOS_9.map(mod => (
             <div key={mod} style={{
               display: "flex", alignItems: "center", gap: "0.5rem",
-              padding: "0.5rem 0.75rem",
+              padding: "0.625rem 0.875rem",
               border: "1px solid var(--border)",
-              fontSize: "0.775rem", color: "#555",
+              fontSize: "0.775rem", color: "var(--muted)",
             }}>
               <Lock size={10} style={{ color: "#444", flexShrink: 0 }} />
               {mod}
             </div>
           ))}
         </div>
+
+        {/* Plan de Acción — ancho completo, cierre */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          gap: "1rem",
+          padding: "0.875rem 1.25rem",
+          border: "1px solid var(--border)",
+          backgroundColor: "var(--card)",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <div style={{ fontSize: "0.825rem", fontWeight: 700, color: "var(--muted)" }}>Tu Plan de Acción</div>
+            <div style={{ fontSize: "0.75rem", color: "#555" }}>El cierre del proceso — todo confluye aquí</div>
+          </div>
+          <Lock size={12} style={{ color: "#444", flexShrink: 0 }} />
+        </div>
+
         <p style={{ marginTop: "1rem", fontSize: "0.775rem", color: "var(--muted)", lineHeight: 1.6 }}>
           10 módulos desbloqueables con un solo pago.{" "}
           <Link href="/programa" style={{ color: "var(--foreground)", fontWeight: 600, textDecoration: "underline" }}>
@@ -130,29 +193,6 @@ export default function BienvenidaPage({
         </p>
       </div>
 
-    </div>
-  );
-}
-
-// Aviso de confirmación de email (solo si Supabase tiene confirmación activa)
-async function ConfirmacionEmailAviso() {
-  return (
-    <div style={{
-      padding: "0.875rem 1rem",
-      border: "1px solid #e8c56a",
-      backgroundColor: "#fffbf0",
-      marginBottom: "1.5rem",
-      fontSize: "0.825rem",
-      lineHeight: 1.6,
-      color: "#7a5500",
-    }}>
-      <strong style={{ display: "block", marginBottom: "0.25rem" }}>
-        Revisa tu email antes de entrar.
-      </strong>
-      Si Supabase requiere confirmación, haz clic en el enlace que te hemos enviado
-      y vuelve aquí. Si ya lo hiciste, pulsa "Empezar" directamente.
-      <br />
-      <span style={{ fontSize: "0.75rem", color: "#8a6a00" }}>¿No lo ves? Revisa spam.</span>
     </div>
   );
 }
