@@ -30,7 +30,7 @@ const Section = ({
     }}>
       {label}
     </div>
-    <div style={{ fontSize: "0.9rem", lineHeight: 1.9, color: "var(--foreground)", maxWidth: "640px" }}>
+    <div style={{ fontSize: "0.9rem", lineHeight: 1.9, color: "var(--foreground)", textAlign: "justify" as const }}>
       {children}
     </div>
   </section>
