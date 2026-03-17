@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, LogIn, UserPlus, HelpCircle, HeartCrack, Brain, BookOpen } from "lucide-react";
+import { Home, Users, LogIn, UserPlus, HelpCircle, HeartCrack, Brain, BookOpen, Cpu } from "lucide-react";
 
 const NAV_SECTIONS = [
   {
@@ -13,6 +13,7 @@ const NAV_SECTIONS = [
       { href: "/dolores",        label: "¿Eres tú?",      icon: HeartCrack },
       { href: "/mentalidad",     label: "Mentalidad",     icon: Brain },
       { href: "/programa",       label: "El Programa",    icon: BookOpen },
+      { href: "/cuartel-general", label: "Cuartel General", icon: Cpu },
     ],
   },
   {

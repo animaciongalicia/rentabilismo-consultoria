@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { MODULO_GRATUITO_SLUG } from "@/config/modulos";
 
 export const metadata = {
   title: "Cómo se trabaja aquí — Rentabilismo",
@@ -11,7 +12,7 @@ export default async function ComoFuncionaPage() {
   // Verificar si el usuario está logueado para el CTA del Módulo 1
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const modulo1Href = user ? "/app/modulos/modulo-1-mentalidad" : "/registro";
+  const modulo1Href = user ? `/app/modulos/${MODULO_GRATUITO_SLUG}` : "/registro";
 
   return (
     <div>

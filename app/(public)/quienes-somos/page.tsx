@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Quiénes somos — Rentabilismo",
   description:
-    "Un equipo con más de 125 años de consultoría acumulada y 15 gestionando negocios propios. Rentabilismo nace de haber estado donde están nuestros clientes.",
+    "Más de 25 años de experiencia en consultoría empresarial y negocios propios. Detrás de Rentabilismo no hay teoría: hay cicatrices y resultados reales.",
 };
 
 export default function QuienesSomosPage() {

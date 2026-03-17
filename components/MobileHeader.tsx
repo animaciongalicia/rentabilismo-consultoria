@@ -6,18 +6,19 @@ import { usePathname } from "next/navigation";
 import {
   Menu, X,
   Home, Users, LogIn, UserPlus,
-  HelpCircle, HeartCrack, Brain, BookOpen,
+  HelpCircle, HeartCrack, Brain, BookOpen, Cpu,
 } from "lucide-react";
 
 const NAV_SECTIONS = [
   {
     label: "Descubre",
     items: [
-      { href: "/",              label: "Inicio",        icon: Home },
-      { href: "/como-funciona", label: "Cómo funciona", icon: HelpCircle },
-      { href: "/dolores",       label: "¿Eres tú?",     icon: HeartCrack },
-      { href: "/mentalidad",    label: "Mentalidad",    icon: Brain },
-      { href: "/programa",      label: "El Programa",   icon: BookOpen },
+      { href: "/",               label: "Inicio",          icon: Home },
+      { href: "/como-funciona",  label: "Cómo funciona",   icon: HelpCircle },
+      { href: "/dolores",        label: "¿Eres tú?",       icon: HeartCrack },
+      { href: "/mentalidad",     label: "Mentalidad",      icon: Brain },
+      { href: "/programa",       label: "El Programa",     icon: BookOpen },
+      { href: "/cuartel-general", label: "Cuartel General", icon: Cpu },
     ],
   },
   {

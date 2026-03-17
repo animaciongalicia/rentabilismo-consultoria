@@ -2,10 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SidebarModulos from "@/components/SidebarModulos";
 import { hasFullAccess, ROLES } from "@/config/roles";
+import { MODULO_GRATUITO_SLUG } from "@/config/modulos";
 
 // Rutas de /app accesibles sin pago (solo requieren estar logueado)
 const FREE_APP_PATHS = [
-  '/app/modulos/modulo-1-mentalidad',
+  `/app/modulos/${MODULO_GRATUITO_SLUG}`,
   '/app/perfil',
   '/app/comunidad',
   '/app/progreso',
