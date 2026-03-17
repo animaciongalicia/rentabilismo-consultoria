@@ -43,7 +43,7 @@ export default function LoginForm() {
     }
 
     // Full page reload ensures server picks up the new session cookies.
-    window.location.href = "/app";
+    window.location.href = "/app/perfil";
   };
 
   return (

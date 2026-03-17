@@ -137,6 +137,8 @@ h1, h2, h3, h4 {
 .main-content {
   margin-left: 240px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Mobile header: solo visible en móvil */

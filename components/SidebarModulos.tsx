@@ -93,7 +93,7 @@ export default function SidebarModulos({
                   padding: "0.625rem 1.25rem",
                   fontSize: "0.8rem",
                   lineHeight: 1.4,
-                  color: "#2e2e2e",
+                  color: "#555",
                   backgroundColor: "transparent",
                   borderLeft: "2px solid transparent",
                   userSelect: "none",
@@ -104,7 +104,7 @@ export default function SidebarModulos({
                   <span style={{
                     display: "block",
                     fontSize: "0.6rem",
-                    color: "#252525",
+                    color: "#444",
                     letterSpacing: "0.06em",
                     marginBottom: "0.15rem",
                     textTransform: "uppercase",
@@ -113,7 +113,7 @@ export default function SidebarModulos({
                   </span>
                   {mod.titulo.replace(/^Módulo \d+ – /, "")}
                 </span>
-                <Lock size={11} style={{ color: "#252525", flexShrink: 0 }} />
+                <Lock size={11} style={{ color: "#444", flexShrink: 0 }} />
               </div>
             );
           }

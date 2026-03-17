@@ -8,7 +8,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       <Sidebar />
       <MobileHeader />
       <main className="main-content">
-        {children}
+        <div style={{ flex: 1 }}>{children}</div>
         <Footer />
       </main>
     </>

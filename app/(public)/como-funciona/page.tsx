@@ -12,7 +12,7 @@ export default async function ComoFuncionaPage() {
   // Verificar si el usuario está logueado para el CTA del Módulo 1
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const modulo1Href = user ? `/app/modulos/${MODULO_GRATUITO_SLUG}` : "/registro";
+  const modulo1Href = `/app/modulos/${MODULO_GRATUITO_SLUG}`;
 
   return (
     <div>
@@ -77,19 +77,6 @@ export default async function ComoFuncionaPage() {
           ))}
         </div>
 
-        <p style={{
-          fontSize: "0.95rem",
-          color: "#333",
-          lineHeight: 1.8,
-          maxWidth: "680px",
-          padding: "1.25rem",
-          border: "1px solid var(--border)",
-          backgroundColor: "var(--card)",
-        }}>
-          Piensa en esto como una consultoría premium empaquetada: mismo criterio,
-          mismo método, pero a tu ritmo, sin tener que cuadrar agendas ni enseñar
-          tus papeles a nadie.
-        </p>
       </section>
 
       {/* ── 2. EL RITMO DE TRABAJO ───────────────────────────── */}
@@ -110,10 +97,10 @@ export default async function ComoFuncionaPage() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0", marginBottom: "1.5rem" }}>
           {[
-            { n: "01", txt: "Cada módulo arranca con un vídeo de 10–12 minutos: el problema, el enfoque y qué puedes esperar cambiar." },
-            { n: "02", txt: "Después vienen 4–5 lecciones de teoría y trabajo real: textos claros, ejemplos de empresa y ejercicios con tus datos." },
-            { n: "03", txt: "Si reservas 3 horas a la semana, en el primer mes implementas mejoras concretas. En el segundo mes ajustas y refinas." },
-            { n: "04", txt: "En 2 meses tienes mejoras notables. No promesas: decisiones tomadas, números revisados y procesos cambiados." },
+            { n: "01", txt: "Vídeo de arranque de 10–12 min: el problema, el enfoque y qué vas a cambiar." },
+            { n: "02", txt: "4–5 lecciones con teoría, casos reales y ejercicios con tus propios números." },
+            { n: "03", txt: "3 horas a la semana: primeras mejoras concretas en el primer mes." },
+            { n: "04", txt: "En 2 meses: decisiones tomadas, números revisados y procesos cambiados." },
           ].map((item, i, arr) => (
             <div key={i} style={{
               display: "flex",
@@ -191,14 +178,16 @@ export default async function ComoFuncionaPage() {
               padding: "1.25rem",
               backgroundColor: "var(--background)",
             }}>
-              <div style={{
-                fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em",
-                textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem",
-              }}>
-                {capa.n}
-              </div>
-              <div style={{ fontSize: "0.95rem", fontWeight: 800, marginBottom: "0.5rem" }}>
-                {capa.titulo}.
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <span style={{
+                  fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em",
+                  textTransform: "uppercase", color: "var(--muted)", flexShrink: 0,
+                }}>
+                  {capa.n}
+                </span>
+                <span style={{ fontSize: "0.95rem", fontWeight: 800 }}>
+                  {capa.titulo}.
+                </span>
               </div>
               <p style={{ fontSize: "0.825rem", color: "#444", lineHeight: 1.65, margin: 0 }}>
                 {capa.texto}
@@ -249,22 +238,11 @@ export default async function ComoFuncionaPage() {
           ))}
         </div>
 
-        <p style={{ fontSize: "0.925rem", color: "#333", lineHeight: 1.8, maxWidth: "640px", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "0.925rem", color: "#333", lineHeight: 1.8, maxWidth: "640px" }}>
           No son tareas para &laquo;entregarle al profe&raquo;. Es un cuaderno de trabajo vivo
-          sobre tu empresa, que solo tú ves y que puedes revisar cuando quieras.
+          sobre tu empresa, que solo tú ves y que puedes revisar cuando quieras y que más adelante
+          podrás descargar un informe con todo tu trabajo y tus decisiones clave.
         </p>
-
-        <div style={{
-          padding: "0.875rem 1.25rem",
-          border: "1px solid var(--border)",
-          backgroundColor: "var(--card)",
-          fontSize: "0.8rem",
-          color: "#444",
-          display: "inline-block",
-          maxWidth: "540px",
-        }}>
-          Más adelante podrás descargar un informe con todo tu trabajo y tus decisiones clave.
-        </div>
       </section>
 
       {/* ── 5. MÓDULO 1 GRATIS ───────────────────────────────── */}
@@ -280,7 +258,7 @@ export default async function ComoFuncionaPage() {
           Módulo 1 — Gratis
         </div>
         <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", marginBottom: "1.5rem" }}>
-          El cambio empieza por ti. Por eso el primer paso es gratuito.
+          El cambio empieza por ti y por eso es el más importante.
         </h2>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem", marginBottom: "1.75rem" }}>
@@ -350,7 +328,7 @@ export default async function ComoFuncionaPage() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
           {[
-            "Entras a los 10 módulos del programa (Mentalidad, Diagnóstico, Producto/Servicio, Precios, Publicidad y Marketing, Procesos y Operaciones, Personas y Equipo, Estrategia y Plan de Acción).",
+            "Acceso a los 10 módulos: Diagnóstico de Rentabilidad, Finanzas, Producto y Servicio, Estrategia de Precios, Operaciones y Procesos, Equipo y Liderazgo, Ventas y Captación, Marketing y Posicionamiento, Estrategia y Crecimiento y Tu Plan de Acción.",
             "Acceso de por vida al programa, a las mejoras que vaya añadiendo y a nuevos casos prácticos.",
             "Puedes volver a usar la plataforma cada vez que quieras revisar tu negocio, abrir una línea nueva o ajustar precios.",
           ].map((item, i, arr) => (
