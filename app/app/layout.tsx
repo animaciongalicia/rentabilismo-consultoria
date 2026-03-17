@@ -78,8 +78,8 @@ export default async function AppLayout({
   return (
     <div style={{ display: "flex" }}>
       <SidebarModulos
-        role={profile.role ?? ROLES.FREE}
-        plan={profile.plan ?? "free"}
+        role={profile?.role ?? ROLES.FREE}
+        plan={profile?.plan ?? "free"}
         hasPaid={hasPaid}
         progressMap={progressMap}
       />
