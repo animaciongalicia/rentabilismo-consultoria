@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ExternalLink, ArrowRight, Cpu, Lock } from "lucide-react";
 import { AGENTES, HERRAMIENTAS_EXTERNAS } from "@/config/agentes";
 import { hasFullAccess } from "@/config/roles";
-import { PRECIO_FUNDADOR } from "@/config/opciones";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 
 export const metadata = {
   title: "Cuartel General — Rentabilismo",
@@ -90,7 +90,7 @@ export default async function CuartelGeneralPublicPage() {
               className="btn-primary"
               style={{ whiteSpace: "nowrap", fontSize: "0.8rem" }}
             >
-              {user ? `Desbloquear — ${PRECIO_FUNDADOR} €` : "Unirse al programa"}
+              {user ? `Desbloquear — ${PRECIO_PROGRAMA} €` : "Unirse al programa"}
             </Link>
           </div>
         )}

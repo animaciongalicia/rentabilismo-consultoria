@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getModulo, getAllSlugs } from "@/lib/mdx";
 import { MODULOS } from "@/config/modulos";
@@ -43,14 +43,11 @@ export default async function ModuloPage({
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/registro");
 
   // Verificar estado de pago para mostrar CTA apropiado
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("has_paid, role, plan, full_name")
-    .eq("id", user.id)
-    .single();
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("has_paid, role, plan, full_name").eq("id", user.id).single()
+    : { data: null };
 
   const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
@@ -58,12 +55,9 @@ export default async function ModuloPage({
   const lessons = getLessonsForModule(slug);
 
   // Which lessons has the user completed?
-  const { data: responsesData } = await supabase
-    .from("exercise_responses")
-    .select("lesson_slug")
-    .eq("user_id", user.id)
-    .eq("module_slug", slug)
-    .neq("response", "");
+  const { data: responsesData } = user
+    ? await supabase.from("exercise_responses").select("lesson_slug").eq("user_id", user.id).eq("module_slug", slug).neq("response", "")
+    : { data: null };
 
   const completedSlugs = new Set(
     (responsesData ?? []).map((r) => r.lesson_slug)

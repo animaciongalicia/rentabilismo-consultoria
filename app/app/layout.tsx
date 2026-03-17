@@ -1,8 +1,18 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import SidebarModulos from "@/components/SidebarModulos";
 import { hasFullAccess, ROLES } from "@/config/roles";
 import { MODULO_GRATUITO_SLUG } from "@/config/modulos";
+
+// Rutas de /app accesibles sin sesión (visitantes)
+const GUEST_APP_PATHS = [
+  `/app/modulos/${MODULO_GRATUITO_SLUG}`,
+]
+
+function isGuestAppPath(pathname: string): boolean {
+  return GUEST_APP_PATHS.some(p => pathname === p || pathname.startsWith(p + '/'))
+}
 
 // Rutas de /app accesibles sin pago (solo requieren estar logueado)
 const FREE_APP_PATHS = [
@@ -24,10 +34,25 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') ?? '';
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) redirect("/registro");
+  // Sin sesión: solo permitir rutas guest (proxy.ts ya redirige el resto)
+  if (!user) {
+    if (!isGuestAppPath(pathname)) redirect("/registro");
+    // Visitante en módulo 1: renderizar con defaults vacíos
+    return (
+      <div style={{ display: "flex" }}>
+        <SidebarModulos hasPaid={false} />
+        <main style={{ marginLeft: "260px", flex: 1, minHeight: "100vh", backgroundColor: "var(--background)" }}>
+          {children}
+        </main>
+      </div>
+    );
+  }
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -37,11 +62,6 @@ export default async function AppLayout({
 
   const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
-  // La protección real de rutas la hace proxy.ts (middleware).
-  // Aquí solo redirigimos si por algún motivo llega a rutas de pago sin pagar.
-  // Las rutas gratuitas (M1, perfil, comunidad) se permiten sin pago.
-  // Nota: este layout no tiene acceso al pathname, así que la protección fina
-  // ya la gestiona proxy.ts. Aquí solo bloqueamos si no hay perfil.
   if (!profile) redirect("/registro");
 
   // Fetch module progress for sidebar indicators (one query, all modules)

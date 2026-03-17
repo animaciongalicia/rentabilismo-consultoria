@@ -10,9 +10,20 @@ const FREE_APP_PATHS = [
   '/app/progreso',
 ]
 
+// Rutas de /app accesibles sin ningún tipo de sesión (visitantes)
+const GUEST_APP_PATHS = [
+  '/app/modulos/modulo-1-mentalidad',
+]
+
 function isFreeAppPath(pathname: string): boolean {
   return FREE_APP_PATHS.some(
     (free) => pathname === free || pathname.startsWith(free + '/')
+  )
+}
+
+function isGuestAppPath(pathname: string): boolean {
+  return GUEST_APP_PATHS.some(
+    (p) => pathname === p || pathname.startsWith(p + '/')
   )
 }
 
@@ -46,11 +57,16 @@ export async function proxy(request: NextRequest) {
 
   // ── Protección de rutas /app/** ──────────────────────────
   if (pathname.startsWith('/app')) {
-    // Sin sesión → registro (primera acción natural del flujo)
+    // Sin sesión → permitir rutas guest; resto → registro
     if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/registro'
-      return NextResponse.redirect(url)
+      if (!isGuestAppPath(pathname)) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/registro'
+        return NextResponse.redirect(url)
+      }
+      // Guest en ruta permitida: pasar con header de pathname para el layout
+      supabaseResponse.headers.set('x-pathname', pathname)
+      return supabaseResponse
     }
 
     // Rutas gratuitas: Módulo 1, perfil y comunidad no requieren pago
