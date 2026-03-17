@@ -8,6 +8,7 @@ import { hasFullAccess } from "@/config/roles";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Lock, ArrowRight } from "lucide-react";
+import WelcomeBanner from "@/components/WelcomeBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +48,7 @@ export default async function ModuloPage({
   // Verificar estado de pago para mostrar CTA apropiado
   const { data: profile } = await supabase
     .from("profiles")
-    .select("has_paid, role, plan")
+    .select("has_paid, role, plan, full_name")
     .eq("id", user.id)
     .single();
 
@@ -79,6 +80,12 @@ export default async function ModuloPage({
   const next = currentIndex < MODULOS.length - 1 ? MODULOS[currentIndex + 1] : null;
 
   return (
+    <>
+      {/* Banner de bienvenida — solo primera visita, solo Módulo 0 */}
+      {isModulo1 && !hasPaid && (
+        <WelcomeBanner name={profile?.full_name ?? null} />
+      )}
+
     <div className="modulo-layout">
 
       {/* ── LEFT COLUMN: video + MDX overview ─────────────── */}
@@ -165,34 +172,67 @@ export default async function ModuloPage({
           <MDXRemote source={content} />
         </div>
 
-        {/* CTA de upgrade para usuarios sin pago en Módulo 1 */}
+        {/* CTA de upgrade para usuarios sin pago en Módulo 0 */}
         {isModulo1 && !hasPaid && (
-          <div style={{
-            marginTop: "3rem",
-            padding: "2rem",
-            border: "1px solid var(--foreground)",
-            backgroundColor: "var(--card)",
-          }}>
+          progressPercent === 100 ? (
+            /* Módulo completado: mensaje de felicitación + CTA */
             <div style={{
-              fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
-              textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
+              marginTop: "3rem",
+              padding: "2rem",
+              border: "1px solid #16a34a",
+              backgroundColor: "#f0fdf4",
             }}>
-              ¿Seguimos?
+              <div style={{
+                fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
+                textTransform: "uppercase", color: "#15803d", marginBottom: "0.75rem",
+              }}>
+                ✓ Módulo completado
+              </div>
+              <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem", color: "#14532d" }}>
+                Has terminado el Módulo 0.
+              </h2>
+              <p style={{ fontSize: "0.875rem", color: "#166534", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+                Si lo has hecho de verdad, ya tienes más claridad mental sobre tu negocio
+                que la mayoría de empresarios. El resto del programa baja a tierra:
+                diagnóstico de rentabilidad, finanzas reales, precios, operaciones, equipo,
+                ventas, marketing, estrategia y tu plan de acción en 60 días.
+                Un solo pago, acceso permanente.
+              </p>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+                <Link href="/programa" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", backgroundColor: "#15803d", borderColor: "#15803d" }}>
+                  Ver el programa completo — {PRECIO_PROGRAMA} € <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
-            <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem" }}>
-              Desbloquea los 9 módulos restantes
-            </h2>
-            <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-              Si el Módulo 1 te ha resultado útil, el resto del programa profundiza en
-              diagnóstico, finanzas, precios, operaciones, equipo, ventas, marketing,
-              estrategia y tu plan de acción. Un solo pago, acceso permanente.
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
-              <Link href="/programa" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
-                Ver el programa completo — {PRECIO_PROGRAMA} € <ArrowRight size={14} />
-              </Link>
+          ) : (
+            /* Módulo en progreso: CTA genérico */
+            <div style={{
+              marginTop: "3rem",
+              padding: "2rem",
+              border: "1px solid var(--foreground)",
+              backgroundColor: "var(--card)",
+            }}>
+              <div style={{
+                fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
+                textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
+              }}>
+                ¿Seguimos?
+              </div>
+              <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem" }}>
+                Desbloquea los 9 módulos restantes
+              </h2>
+              <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+                Si este módulo te ha resultado útil, el resto del programa profundiza en
+                diagnóstico, finanzas, precios, operaciones, equipo, ventas, marketing,
+                estrategia y tu plan de acción. Un solo pago, acceso permanente.
+              </p>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+                <Link href="/programa" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                  Ver el programa completo — {PRECIO_PROGRAMA} € <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
-          </div>
+          )
         )}
 
         {/* Module prev/next navigation */}
@@ -256,7 +296,7 @@ export default async function ModuloPage({
                   gap: "0.5rem",
                   fontSize: "0.825rem",
                   fontWeight: 600,
-                  color: "var(--muted)",
+                  color: progressPercent === 100 ? "var(--foreground)" : "var(--muted)",
                   textDecoration: "none",
                   textAlign: "right",
                 }}
@@ -445,5 +485,6 @@ export default async function ModuloPage({
       </aside>
 
     </div>
+    </>
   );
 }

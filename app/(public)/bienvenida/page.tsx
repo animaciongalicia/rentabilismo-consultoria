@@ -27,7 +27,7 @@ export default function BienvenidaPage() {
           Te hemos enviado un enlace de confirmación. Haz clic en él para activar tu cuenta.
         </p>
         <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "2rem" }}>
-          Una vez confirmado, podrás acceder al <strong style={{ color: "var(--foreground)" }}>Módulo 1 — Mentalidad</strong>{" "}
+          Una vez confirmado, podrás acceder al <strong style={{ color: "var(--foreground)" }}>Módulo 0 – Mentalidad</strong>{" "}
           de forma completamente gratuita.
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
