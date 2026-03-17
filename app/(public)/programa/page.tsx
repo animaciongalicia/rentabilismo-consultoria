@@ -21,6 +21,7 @@ const MODULO_CERO = { area: "El Punto de Partida", texto: "Mentalidad empresaria
 const MODULOS_PAGO = [
   { area: "Diagnóstico de Rentabilidad", texto: "Qué está funcionando, qué no y por qué. La radiografía honesta de tu negocio." },
   { area: "Finanzas", texto: "Números que importan: márgenes, costes, flujo de caja y dónde se va el dinero realmente." },
+  { area: "Producto y Servicio", texto: "Qué vendes exactamente, a quién y si lo estás posicionando y enfocando bien." },
   { area: "Estrategia de Precios", texto: "Si estás cobrando lo que vale lo que haces y cómo corregirlo sin perder clientes." },
   { area: "Operaciones y Procesos", texto: "Cómo dejar de ser imprescindible para todo y construir una empresa que funcione sin ti." },
   { area: "Equipo y Liderazgo", texto: "Si tienes las personas correctas en los puestos correctos y cómo gestionarlo bien." },
@@ -85,7 +86,7 @@ export default function ProgramaPage({
         {/* Los 11 módulos del programa */}
         <div style={{ marginBottom: "3rem" }}>
           <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.5rem" }}>
-            Los 10 módulos del programa
+            Los 11 módulos del programa
           </div>
           <div style={{ fontSize: "0.775rem", color: "var(--muted)", marginBottom: "1rem" }}>
             El primer módulo está incluido gratis al crear tu cuenta. El resto se desbloquea con el acceso completo.
@@ -157,7 +158,7 @@ export default function ProgramaPage({
           <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
             {[
               "Crea tu cuenta gratis — accede a El Punto de Partida de inmediato.",
-              "Si el programa encaja contigo, desbloquea los 9 módulos restantes con un pago único.",
+              "Si el programa encaja contigo, desbloquea los 10 módulos restantes con un pago único.",
               "Acceso permanente — el programa es tuyo para siempre, sin suscripciones.",
               "Sin letra pequeña ni pagos adicionales.",
             ].map(item => (
@@ -201,7 +202,7 @@ export default function ProgramaPage({
               Paso 2 — {PRECIO_PROGRAMA} € · Pago único
             </div>
             <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1rem" }}>
-              Desbloquea los 9 módulos de pago. Acceso permanente, sin suscripciones.
+              Desbloquea los 10 módulos de pago. Acceso permanente, sin suscripciones.
               Si ya tienes cuenta, haz clic aquí para pagar directamente.
             </p>
             <CheckoutButton />

@@ -128,7 +128,7 @@ export default function PoliticaPrivacidadPage() {
       {/* Responsable */}
       <Section label="Responsable del tratamiento">
         <P><strong>Identidad:</strong> Inversiones SHISO SL (marca comercial: Consultoría Método)</P>
-        <P><strong>NIF / CIF:</strong> [Pendiente — completar con CIF antes de publicar]</P>
+        <P><strong>NIF / CIF:</strong> B 70319223</P>
         <P><strong>Domicilio:</strong> Ronda de Montealto 4, 15002, A Coruña (La Coruña)</P>
         <P style={{ margin: 0 }}><strong>Email de contacto:</strong> hola@rentabilismo.com</P>
       </Section>

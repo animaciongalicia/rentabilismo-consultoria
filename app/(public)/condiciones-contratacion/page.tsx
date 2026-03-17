@@ -70,7 +70,7 @@ export default function CondicionesContratacionPage() {
       <Section label="Partes del contrato">
         <P>
           <strong>Vendedor:</strong> Inversiones SHISO SL (marca comercial: Consultoría Método),
-          con CIF <strong>[Pendiente — completar antes de publicar]</strong> y domicilio en
+          con CIF <strong>B 70319223</strong> y domicilio en
           Ronda de Montealto 4, 15002, A Coruña (La Coruña). Email de contacto: hola@rentabilismo.com.
         </P>
         <P style={{ margin: 0 }}>
@@ -136,18 +136,33 @@ export default function CondicionesContratacionPage() {
       </Section>
 
       {/* Derecho de desistimiento */}
-      <Section label="Derecho de desistimiento">
+      <Section label="Política de reembolsos y derecho de desistimiento">
         <P>
           De conformidad con el artículo 103 m) del Real Decreto Legislativo 1/2007
           (LGDCU), <strong>el Comprador pierde el derecho de desistimiento</strong> en el
           momento en que accede a los contenidos digitales del programa, si así lo ha
-          consentido expresamente al completar la compra.
+          consentido expresamente al completar la compra. Dicho consentimiento se recoge
+          de forma explícita durante el proceso de pago.
         </P>
         <P>
-          No se aplica período de reembolso voluntario adicional. El acceso a los contenidos
-          digitales comienza de forma inmediata tras la confirmación del pago, con consentimiento
-          expreso del Comprador, por lo que se pierde el derecho de desistimiento de conformidad
-          con el artículo 103 m) del RDL 1/2007.
+          <strong>No se realizan devoluciones</strong> una vez que el Comprador ha accedido
+          a los contenidos del programa. El acceso se activa de forma inmediata tras la
+          confirmación del pago, lo que implica la pérdida del derecho de desistimiento
+          descrita en el párrafo anterior.
+        </P>
+        <P>
+          <strong>Excepción — fallo técnico imputable al Vendedor:</strong> Si por un
+          error técnico atribuible exclusivamente al Vendedor el Comprador no puede acceder
+          a los contenidos tras el pago, y dicho error no se resuelve en un plazo razonable
+          (máximo 5 días hábiles desde la notificación), se procesará el reembolso íntegro
+          del importe abonado. Para solicitarlo, escribe a <strong>hola@rentabilismo.com</strong>{" "}
+          con el número de pedido y descripción del problema.
+        </P>
+        <P>
+          <strong>Disputas y cargos no reconocidos:</strong> Si crees que se ha realizado
+          un cargo sin tu autorización, contacta primero con nosotros en hola@rentabilismo.com
+          antes de iniciar una disputa con tu banco. Resolvemos cualquier incidencia de
+          facturación en un plazo máximo de 5 días hábiles.
         </P>
         <P style={{ margin: 0, fontSize: "0.825rem", color: "var(--muted)" }}>
           En cualquier caso, el comprador puede ejercer sus derechos de consumidor ante

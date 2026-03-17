@@ -97,28 +97,22 @@ export default function QuienesSomosPage() {
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(2, 1fr)",
           gap: "1px",
           border: "1px solid var(--border)",
           marginBottom: "2rem",
         }}>
           {[
-            { cifra: "125+", texto: "años de consultoría acumulada en el equipo" },
-            { cifra: "15+", texto: "años gestionando negocios propios en el barro" },
-            { cifra: "Cientos", texto: "de empresas acompañadas en múltiples sectores" },
-            { cifra: "Método", texto: "construido desde la práctica, no desde el aula" },
-          ].map(({ cifra, texto }) => (
+            "Muchos años de consultoría acumulada en el equipo",
+            "Varios años de experiencia gestionando negocios propios en el barro",
+            "Múltiples empresas acompañadas en distintos sectores",
+            "Método construido desde la práctica, no desde el aula",
+          ].map((texto) => (
             <div key={texto} style={{
               padding: "1.5rem",
               backgroundColor: "var(--card)",
             }}>
-              <div style={{
-                fontSize: "1.4rem", fontWeight: 900,
-                letterSpacing: "-0.03em", marginBottom: "0.4rem",
-              }}>
-                {cifra}
-              </div>
-              <div style={{ fontSize: "0.825rem", color: "var(--muted)", lineHeight: 1.55 }}>
+              <div style={{ fontSize: "0.9rem", lineHeight: 1.6, color: "var(--foreground)" }}>
                 {texto}
               </div>
             </div>

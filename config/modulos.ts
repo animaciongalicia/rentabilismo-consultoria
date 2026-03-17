@@ -11,6 +11,7 @@ export const MODULOS: ModuloConfig[] = [
   { slug: "modulo-1-mentalidad",   titulo: "El Punto de Partida" },
   { slug: "modulo-2-diagnostico",  titulo: "Módulo 1 – Diagnóstico de Rentabilidad" },
   { slug: "modulo-3-finanzas",     titulo: "Módulo 2 – Finanzas" },
+  { slug: "modulo-producto",       titulo: "Módulo 3 – Producto y Servicio" },
   { slug: "modulo-4-precios",      titulo: "Módulo 4 – Estrategia de Precios" },
   { slug: "modulo-5-operaciones",  titulo: "Módulo 5 – Operaciones y Procesos" },
   { slug: "modulo-6-equipo",       titulo: "Módulo 6 – Equipo y Liderazgo" },

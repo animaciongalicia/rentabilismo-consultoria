@@ -75,7 +75,7 @@ export default function AvisoLegalPage() {
       <Section label="Datos del titular">
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Field label="Razón social"        value="Inversiones SHISO SL (marca comercial: Consultoría Método)" />
-          <Field label="NIF / CIF"           value="[Pendiente — completar con CIF antes de publicar]" />
+          <Field label="NIF / CIF"           value="B 70319223" />
           <Field label="Domicilio social"    value="Ronda de Montealto 4, 15002, A Coruña (La Coruña)" />
           <Field label="Email de contacto"   value="hola@rentabilismo.com" />
         </div>

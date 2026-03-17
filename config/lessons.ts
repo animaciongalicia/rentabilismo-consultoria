@@ -254,6 +254,84 @@ export const LESSONS_CONFIG: LessonConfig[] = [
     ],
   },
 
+  // ── MÓDULO 3: PRODUCTO Y SERVICIO ─────────────────────────────
+  {
+    moduleSlug: "modulo-producto",
+    lessonSlug: "mp-l1-que-vendes-realmente",
+    title: "Qué vendes realmente",
+    intro: "Hay una diferencia entre lo que tú describes y lo que el cliente entiende que está comprando. Esa diferencia tiene consecuencias directas en expectativas, conflictos y bajas. Esta lección te ayuda a cerrar esa brecha.",
+    orderIndex: 1,
+    exercises: [
+      {
+        exerciseKey: "principal",
+        prompt: "Describe en 3-5 líneas tu producto o servicio principal como si se lo explicaras a alguien que no te conoce. Sin jerga, sin términos técnicos. ¿Qué problema resuelve, para quién y qué consigue el cliente al contratarte?",
+        orderIndex: 1,
+      },
+      {
+        exerciseKey: "extra-1",
+        prompt: "¿Coincide esa descripción con lo que encuentran en tu web o en tu última propuesta? Si las comparas, ¿dónde hay diferencias y qué podrían malinterpretar?",
+        orderIndex: 2,
+      },
+    ],
+  },
+  {
+    moduleSlug: "modulo-producto",
+    lessonSlug: "mp-l2-a-quien-va-dirigido",
+    title: "A quién va dirigido de verdad",
+    intro: "No todo el mundo puede ser tu cliente. Cuanto más claro tengas a quién quieres ayudar y a quién no, más fácil es posicionarte, comunicar y vender. Y más fácil es decir que no cuando conviene.",
+    orderIndex: 2,
+    exercises: [
+      {
+        exerciseKey: "principal",
+        prompt: "Describe a tu cliente ideal en términos concretos: sector, tamaño, situación, problema que tiene y cómo toma decisiones. Si tienes varios perfiles, elige el que más te gustaría tener.",
+        orderIndex: 1,
+      },
+      {
+        exerciseKey: "extra-1",
+        prompt: "¿Qué tipo de cliente te da más problemas, consume más tiempo del que paga o no valora lo que haces? ¿Qué tienen en común? ¿Hay alguna forma de evitar captarlos en el futuro?",
+        orderIndex: 2,
+      },
+    ],
+  },
+  {
+    moduleSlug: "modulo-producto",
+    lessonSlug: "mp-l3-cartera-con-sentido",
+    title: "Tu cartera de servicios tiene sentido",
+    intro: "Muchas empresas acumulan servicios por inercia: porque un cliente lo pidió una vez, porque parecía una oportunidad, porque da miedo decir que no. Revisar qué queda y qué sobra es una de las decisiones con mayor impacto en el margen.",
+    orderIndex: 3,
+    exercises: [
+      {
+        exerciseKey: "principal",
+        prompt: "Lista todos los productos o servicios que ofreces actualmente. Para cada uno: ¿qué margen real te deja, cuánto tiempo consume y cuántos clientes lo contratan? ¿Hay alguno que ya no debería estar en tu cartera?",
+        orderIndex: 1,
+      },
+      {
+        exerciseKey: "extra-1",
+        prompt: "¿Hay algún servicio que podrías especializar, mejorar o eliminar para concentrarte en lo que realmente funciona? ¿Qué te lo impide hoy?",
+        orderIndex: 2,
+      },
+    ],
+  },
+  {
+    moduleSlug: "modulo-producto",
+    lessonSlug: "mp-l4-como-lo-presentas",
+    title: "Cómo lo presentas al mercado",
+    intro: "El mismo servicio presentado de formas distintas puede generar resultados radicalmente diferentes. No hace falta ser copywriter. Hace falta ser claro sobre qué problema resuelves, para quién y qué lo diferencia de los demás.",
+    orderIndex: 4,
+    exercises: [
+      {
+        exerciseKey: "principal",
+        prompt: "Completa esta frase: 'Ayudo a [tipo de cliente] a [resultado concreto] a través de [método o proceso], a diferencia de [alternativas], que [limitación de esas alternativas]'. ¿Es suficientemente diferenciador o podría decirlo cualquiera de tu sector?",
+        orderIndex: 1,
+      },
+      {
+        exerciseKey: "extra-1",
+        prompt: "Revisa cómo aparece tu propuesta de valor en tu web, en LinkedIn o en tus propuestas comerciales. ¿Está orientada a lo que el cliente quiere conseguir o a lo que tú haces? ¿Qué cambiarías?",
+        orderIndex: 2,
+      },
+    ],
+  },
+
   // ── MÓDULO 4: ESTRATEGIA DE PRECIOS ───────────────────────────
   {
     moduleSlug: "modulo-4-precios",
