@@ -366,7 +366,7 @@ h1, h2, h3, h4 {
 
 .footer-tagline {
   font-size: 0.8rem;
-  color: #888;
+  color: #aaa;
   line-height: 1.7;
   margin: 0 0 0.625rem;
   max-width: 380px;
@@ -374,12 +374,12 @@ h1, h2, h3, h4 {
 
 .footer-creator {
   font-size: 0.775rem;
-  color: #555;
+  color: #777;
   margin: 0;
 }
 
 .footer-creator strong {
-  color: #888;
+  color: #bbb;
 }
 
 .footer-nav,
@@ -394,13 +394,13 @@ h1, h2, h3, h4 {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #444;
+  color: #666;
   margin: 0 0 0.25rem;
 }
 
 .footer-link {
   font-size: 0.825rem;
-  color: #777;
+  color: #aaa;
   text-decoration: none;
   letter-spacing: 0.01em;
   transition: color 0.15s;
@@ -411,11 +411,11 @@ h1, h2, h3, h4 {
 }
 
 .footer-link--dim {
-  color: #555;
+  color: #777;
 }
 
 .footer-link--dim:hover {
-  color: #888;
+  color: #aaa;
 }
 
 .footer-brand {

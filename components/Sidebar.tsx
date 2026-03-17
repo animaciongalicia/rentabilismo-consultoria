@@ -90,15 +90,6 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
-      <div style={{
-        borderTop: "1px solid #1e1e1e",
-        paddingTop: "1rem",
-        fontSize: "0.65rem",
-        color: "#333",
-      }}>
-        © 2026 Rentabilismo
-      </div>
     </aside>
   );
 }
