@@ -14,6 +14,15 @@ export type Agente = {
 
 export const AGENTES: Agente[] = [
   {
+    slug:        "agente-mentalidad",
+    nombre:      "El Espejo",
+    etiqueta:    "Mentalidad",
+    descripcion: "Identifica las creencias y patrones que frenan tu negocio sin que te des cuenta.",
+    contexto:    "Te ayuda a hacer consciente el modelo mental con el que gestionas tu empresa: las historias que te cuentas, las decisiones que tomas por miedo y los hábitos que perpetúan los problemas. No para hacer terapia, sino para que puedas cambiar lo que hay que cambiar.",
+    placeholder: "Ej: Me cuesta delegar porque… Cuando algo va mal en el negocio, lo primero que pienso es… La decisión que llevo más tiempo posponiendo es… Lo que más me frena ahora mismo es…",
+    modulo:      "El Punto de Partida",
+  },
+  {
     slug:        "agente-precios",
     nombre:      "¿Y Si Subes El Precio?",
     etiqueta:    "Precios",
