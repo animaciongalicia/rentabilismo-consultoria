@@ -87,24 +87,7 @@ export default async function AgentePage({
 
       <div style={{ borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
 
-      {/* ── AVISO PLACEHOLDER ─────────────────────────────── */}
-      <div style={{
-        padding: "0.875rem 1rem",
-        border: "1px solid var(--border)",
-        backgroundColor: "var(--card)",
-        fontSize: "0.8rem",
-        color: "var(--muted)",
-        lineHeight: 1.65,
-        marginBottom: "1.75rem",
-      }}>
-        <strong style={{ color: "var(--foreground)" }}>Integración IA en preparación.</strong>
-        {" "}El formulario ya funciona y registra tu consulta.
-        Cuando activemos la conexión con OpenAI recibirás respuestas en tiempo real dentro de esta misma página.
-        Las consultas de esta fase son para calibrar el agente.
-      </div>
-
-      {/* ── FORMULARIO (Client Component) ─────────────────── */}
-      {/* TODO: AgenteForm llama a /api/agentes cuando esté implementada la IA */}
+      {/* ── FORMULARIO ────────────────────────────────────── */}
       <AgenteForm
         agenteSlug={agente.slug}
         placeholder={agente.placeholder}

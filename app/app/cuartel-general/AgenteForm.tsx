@@ -9,10 +9,10 @@ interface Props {
 }
 
 export default function AgenteForm({ agenteSlug, placeholder }: Props) {
-  const [consulta,   setConsulta]   = useState("");
-  const [respuesta,  setRespuesta]  = useState<string | null>(null);
-  const [cargando,   setCargando]   = useState(false);
-  const [error,      setError]      = useState<string | null>(null);
+  const [consulta,  setConsulta]  = useState("");
+  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [cargando,  setCargando]  = useState(false);
+  const [error,     setError]     = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,29 +23,29 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
     setRespuesta(null);
 
     try {
-      // ── TODO: aquí irá la llamada real al backend ─────────────────────────
-      // Endpoint a implementar: POST /api/agentes
-      // Body: { agenteSlug, consulta }
-      // El endpoint llamará a la API de OpenAI con el prompt del agente + la consulta.
-      // ─────────────────────────────────────────────────────────────────────
-      //
-      // Ejemplo de llamada futura:
-      // const res = await fetch("/api/agentes", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ agenteSlug, consulta }),
-      // });
-      // const data = await res.json();
-      // if (!res.ok) throw new Error(data.error ?? "Error del servidor");
-      // setRespuesta(data.respuesta);
-      //
-      // Por ahora, simulamos una respuesta placeholder:
-      await new Promise(r => setTimeout(r, 800)); // simula latencia
-      setRespuesta(
-        `[Integración con IA próximamente]\n\nTu consulta ha sido recibida correctamente. ` +
-        `Cuando activemos la conexión con OpenAI, aquí recibirás la respuesta del ${agenteSlug.replace(/-/g, " ").replace("agente", "Agente")}.`
-      );
-      // ─────────────────────────────────────────────────────────────────────
+      const res = await fetch("/api/agentes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ agenteSlug, consulta }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? `Error ${res.status}`);
+      }
+
+      // Leer el stream de texto
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let text = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        text += decoder.decode(value, { stream: true });
+        setRespuesta(text);
+      }
+
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado.");
     } finally {
@@ -56,7 +56,7 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
 
-      {/* Textarea de consulta */}
+      {/* Textarea */}
       <div>
         <label style={{
           display: "block",
@@ -81,7 +81,7 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
         </div>
       </div>
 
-      {/* Botón enviar */}
+      {/* Enviar */}
       <div>
         <button
           type="submit"
@@ -94,7 +94,7 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
           }}
         >
           {cargando
-            ? <><Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} /> Procesando...</>
+            ? <><Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} /> Analizando...</>
             : "Enviar consulta"}
         </button>
       </div>
@@ -111,8 +111,8 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
         </div>
       )}
 
-      {/* Respuesta */}
-      {respuesta && (
+      {/* Respuesta en streaming */}
+      {respuesta !== null && (
         <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
           <div style={{
             fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
@@ -128,11 +128,56 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
             lineHeight: 1.75,
             whiteSpace: "pre-wrap",
             color: "var(--foreground)",
+            minHeight: "3rem",
           }}>
             {respuesta}
+            {cargando && (
+              <span style={{
+                display: "inline-block",
+                width: "2px", height: "1em",
+                backgroundColor: "var(--foreground)",
+                marginLeft: "2px",
+                verticalAlign: "text-bottom",
+                animation: "blink 0.8s step-end infinite",
+              }} />
+            )}
           </div>
+
+          {!cargando && (
+            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={() => { setConsulta(""); setRespuesta(null); }}
+                style={{
+                  fontSize: "0.75rem", color: "var(--muted)",
+                  background: "none", border: "none",
+                  cursor: "pointer", textDecoration: "underline", padding: 0,
+                }}
+              >
+                Nueva consulta
+              </button>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard?.writeText(respuesta)}
+                style={{
+                  fontSize: "0.75rem", color: "var(--muted)",
+                  background: "none", border: "none",
+                  cursor: "pointer", textDecoration: "underline", padding: 0,
+                }}
+              >
+                Copiar respuesta
+              </button>
+            </div>
+          )}
         </div>
       )}
+
+      <style>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+      `}</style>
     </form>
   );
 }
