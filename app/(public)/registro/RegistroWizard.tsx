@@ -110,9 +110,30 @@ export default function RegistroWizard() {
       return;
     }
 
-    // Redirigir a la página de bienvenida.
-    // Si Supabase tiene email confirmation activo, el usuario verá el aviso de email.
-    // Si está desactivado, puede entrar directamente desde /bienvenida.
+    // Cinturón + tirantes: si el trigger de BD no existe o falló,
+    // aseguramos que el perfil se crea antes de redirigir.
+    const { data: { user: newUser } } = await supabase.auth.getUser();
+    if (newUser) {
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", newUser.id)
+        .single();
+
+      if (!existingProfile) {
+        await supabase.from("profiles").insert({
+          id:               newUser.id,
+          full_name:        allData.full_name,
+          age:              allData.age,
+          country:          allData.country,
+          pain_phrase:      allData.pain_phrase,
+          sector:           allData.sector,
+          business_size:    allData.business_size,
+          objetivo_60_dias: allData.objetivo_60_dias,
+        });
+      }
+    }
+
     window.location.href = "/bienvenida";
     return;
   };

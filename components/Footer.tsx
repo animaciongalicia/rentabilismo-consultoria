@@ -1,11 +1,10 @@
 import Link from "next/link";
 
-const NAV_LINKS = [
-  { href: "/",              label: "Sobre Rentabilismo" },
-  { href: "/el-muro",       label: "Comunidad" },
-  { href: "/como-funciona", label: "Cómo funciona" },
-  { href: "/programa",      label: "El Programa" },
+const EMPRESA_LINKS = [
+  { href: "/quienes-somos", label: "Quiénes somos" },
+  { href: "/como-funciona", label: "Cómo trabajamos" },
   { href: "/dolores",       label: "¿Es para mí?" },
+  { href: "/contacto",      label: "Contacto" },
 ];
 
 const LEGAL_LINKS = [
@@ -35,10 +34,10 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* ── Col 2: navegación ─────────────────────────── */}
+        {/* ── Col 2: empresa ────────────────────────────── */}
         <nav className="footer-nav">
-          <p className="footer-col-label">Navega</p>
-          {NAV_LINKS.map(({ href, label }) => (
+          <p className="footer-col-label">La empresa</p>
+          {EMPRESA_LINKS.map(({ href, label }) => (
             <Link key={href} href={href} className="footer-link">
               {label}
             </Link>
