@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import PerfilForm from "./PerfilForm";
 import { MODULOS } from "@/config/modulos";
