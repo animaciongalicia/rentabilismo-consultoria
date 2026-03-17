@@ -62,8 +62,6 @@ export default async function AppLayout({
 
   const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
-  if (!profile) redirect("/registro");
-
   // Fetch module progress for sidebar indicators (one query, all modules)
   const { data: progressData } = await supabase
     .from("module_progress")

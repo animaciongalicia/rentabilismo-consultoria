@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import PerfilForm from "./PerfilForm";
 import { MODULOS } from "@/config/modulos";
 import { getLessonsForModule } from "@/config/lessons";
@@ -46,8 +45,11 @@ export default async function PerfilPage() {
       .limit(15),
   ]);
 
-  const profile = profileResult.data;
-  if (!profile) redirect("/login");
+  const profile = profileResult.data ?? {
+    full_name: null, country: null, pain_phrase: null, sector: null,
+    business_size: null, objetivo_60_dias: null, role: "free",
+    has_paid: false, created_at: new Date().toISOString(), global_progress_pct: 0,
+  };
 
   // Build module progress map
   const progressMap = new Map(
