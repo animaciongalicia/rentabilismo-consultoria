@@ -167,7 +167,7 @@ export default function ComunidadClient({
         }}>
           {filtered.map((profile) => {
             const isCurrentUser = profile.id === currentUserId;
-            const role = profile.role ?? ROLES.FREE;
+            const role = ROLES.FREE;
             const initials = getInitials(profile.full_name);
             const joinDate = new Date(profile.created_at).toLocaleDateString("es-ES", {
               year: "numeric",

@@ -13,7 +13,6 @@ export type PublicProfile = {
   country: string | null;
   sector: string | null;
   pain_phrase: string | null;
-  role: string | null;
   created_at: string;
 };
 
@@ -26,7 +25,7 @@ export default async function ComunidadPage() {
   const admin = createAdminClient();
   const { data: profiles, error } = await admin
     .from("profiles")
-    .select("id, full_name, country, sector, pain_phrase, role, created_at")
+    .select("id, full_name, country, sector, pain_phrase, created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -45,7 +44,6 @@ export default async function ComunidadPage() {
     country: p.country,
     sector: p.sector ?? null,
     pain_phrase: p.pain_phrase,
-    role: p.role,
     created_at: p.created_at,
   }));
 
