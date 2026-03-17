@@ -1,10 +1,12 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getLesson, getLessonsForModule } from "@/config/lessons";
 import LessonExercises from "@/components/LessonExercises";
 import { MODULOS } from "@/config/modulos";
+import { hasFullAccess } from "@/config/roles";
+import { PRECIO_PROGRAMA } from "@/config/opciones";
 
 export const dynamic = "force-dynamic";
 
@@ -39,8 +41,19 @@ export default async function LessonPage({
   const prevLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < lessons.length - 1 ? lessons[currentIndex + 1] : null;
 
-  // Module metadata for breadcrumb
+  // Module metadata for breadcrumb + navigation
   const moduloMeta = MODULOS.find(m => m.slug === slug);
+  const moduloIndex = MODULOS.findIndex(m => m.slug === slug);
+  const nextModulo = moduloIndex < MODULOS.length - 1 ? MODULOS[moduloIndex + 1] : null;
+
+  // Profile for paid check
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("has_paid, role, plan")
+    .eq("id", user.id)
+    .single();
+  const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
+  const isLastLesson = !nextLesson;
 
   // Load existing responses for this lesson (server-side, no loading flash)
   const { data: responsesData } = await supabase
@@ -145,6 +158,75 @@ export default async function LessonPage({
         lessonSlug={lessonSlug}
         exercises={exercises}
       />
+
+      {/* Banner de módulo completado — solo en última lección */}
+      {isLastLesson && (
+        <div style={{
+          marginTop: "3rem",
+          padding: "2rem",
+          border: "1px solid #16a34a",
+          backgroundColor: "#f0fdf4",
+        }}>
+          <div style={{
+            fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "#15803d", marginBottom: "0.625rem",
+          }}>
+            ✓ Última lección del módulo
+          </div>
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem", color: "#14532d" }}>
+            Has terminado {moduloMeta?.titulo ?? "este módulo"}.
+          </h2>
+          <p style={{ fontSize: "0.875rem", color: "#166534", lineHeight: 1.7, marginBottom: "1.25rem" }}>
+            Bien hecho. Cada módulo que completas es una capa menos de confusión sobre tu negocio.
+            No pases al siguiente sin haber respondido con honestidad en este.
+          </p>
+          {nextModulo && (
+            hasPaid ? (
+              <Link
+                href={`/app/modulos/${nextModulo.slug}`}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                  padding: "0.625rem 1.25rem",
+                  backgroundColor: "#15803d", color: "#fff",
+                  fontWeight: 700, fontSize: "0.825rem",
+                  textDecoration: "none", letterSpacing: "0.02em",
+                }}
+              >
+                Siguiente módulo: {nextModulo.titulo.replace(/^Módulo \d+ – /, "")}
+                <ArrowRight size={14} />
+              </Link>
+            ) : (
+              <Link
+                href="/programa"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                  padding: "0.625rem 1.25rem",
+                  backgroundColor: "#15803d", color: "#fff",
+                  fontWeight: 700, fontSize: "0.825rem",
+                  textDecoration: "none", letterSpacing: "0.02em",
+                }}
+              >
+                Ver el programa completo — {PRECIO_PROGRAMA} €
+                <ArrowRight size={14} />
+              </Link>
+            )
+          )}
+          {!nextModulo && (
+            <Link
+              href="/app/progreso"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                padding: "0.625rem 1.25rem",
+                backgroundColor: "#15803d", color: "#fff",
+                fontWeight: 700, fontSize: "0.825rem",
+                textDecoration: "none",
+              }}
+            >
+              Ver mi progreso completo <ArrowRight size={14} />
+            </Link>
+          )}
+        </div>
+      )}
 
       {/* Lesson navigation */}
       <div style={{

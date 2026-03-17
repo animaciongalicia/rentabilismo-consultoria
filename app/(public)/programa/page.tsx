@@ -15,8 +15,8 @@ const PARA_QUIEN = [
   "Buscas acompañamiento real, no teoría ni motivación vacía",
 ];
 
-// Módulo 0 está marcado como gratuito al crear cuenta
-const MODULO_CERO = { area: "Mentalidad", texto: "El punto de partida. Sin esto, lo demás no sirve.", gratis: true };
+// El Punto de Partida está marcado como gratuito al crear cuenta
+const MODULO_CERO = { area: "El Punto de Partida", texto: "Mentalidad empresarial. Sin esto, lo demás no sirve.", gratis: true };
 
 const MODULOS_PAGO = [
   { area: "Diagnóstico", texto: "Qué está funcionando, qué no y por qué." },
@@ -38,7 +38,7 @@ export default function ProgramaPage({
 }) {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "4rem 3.5rem 3rem", maxWidth: "920px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem)", maxWidth: "920px" }}>
         <CancelBanner searchParams={searchParams} />
 
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
@@ -56,7 +56,7 @@ export default function ProgramaPage({
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
+      <section style={{ padding: "clamp(1.5rem, 5vw, 3.5rem)", maxWidth: "920px" }}>
 
         {/* ¿Para quién es? */}
         <div style={{ marginBottom: "3rem" }}>
@@ -89,7 +89,7 @@ export default function ProgramaPage({
             Los 11 módulos del programa
           </div>
           <div style={{ fontSize: "0.775rem", color: "var(--muted)", marginBottom: "1rem" }}>
-            El Módulo 0 está incluido gratis al crear tu cuenta. El resto se desbloquea con el acceso completo.
+            El primer módulo está incluido gratis al crear tu cuenta. El resto se desbloquea con el acceso completo.
           </div>
 
           {/* Módulo 0 — full width */}
@@ -121,7 +121,7 @@ export default function ProgramaPage({
           </div>
 
           {/* Módulos 1-10 — 2 columnas */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.625rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "0.625rem" }}>
             {MODULOS_PAGO.map((item, i) => (
               <div key={item.area} style={{
                 display: "flex",
@@ -157,7 +157,7 @@ export default function ProgramaPage({
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
             {[
-              "Crea tu cuenta gratis — accede al Módulo 0 (Mentalidad) de inmediato.",
+              "Crea tu cuenta gratis — accede a El Punto de Partida de inmediato.",
               "Si el programa encaja contigo, desbloquea los 10 módulos restantes con un pago único.",
               "Acceso permanente — el programa es tuyo para siempre, sin suscripciones.",
               "Sin letra pequeña ni pagos adicionales.",
@@ -182,7 +182,7 @@ export default function ProgramaPage({
               Paso 1 — Gratis
             </div>
             <p style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1rem" }}>
-              Crea tu cuenta y accede al Módulo 0 (Mentalidad Empresarial) sin pagar nada.
+              Crea tu cuenta y accede a "El Punto de Partida" (Mentalidad) sin pagar nada.
               Si te convence, das el siguiente paso.
             </p>
             <Link href="/registro" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>

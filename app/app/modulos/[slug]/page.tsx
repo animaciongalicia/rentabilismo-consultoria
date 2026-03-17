@@ -189,10 +189,10 @@ export default async function ModuloPage({
                 ✓ Módulo completado
               </div>
               <h2 style={{ fontSize: "1.25rem", marginBottom: "0.625rem", color: "#14532d" }}>
-                Has terminado el Módulo 0.
+                Has terminado El Punto de Partida.
               </h2>
               <p style={{ fontSize: "0.875rem", color: "#166534", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-                Si lo has hecho de verdad, ya tienes más claridad mental sobre tu negocio
+                Si lo has hecho de verdad, ya tienes más claridad sobre tu negocio
                 que la mayoría de empresarios. El resto del programa baja a tierra:
                 diagnóstico de rentabilidad, finanzas reales, precios, operaciones, equipo,
                 ventas, marketing, estrategia y tu plan de acción en 60 días.

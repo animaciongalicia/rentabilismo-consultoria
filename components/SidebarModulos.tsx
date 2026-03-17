@@ -81,11 +81,10 @@ export default function SidebarModulos({
           const isLocked = !hasPaid && !isModulo1;
 
           if (isLocked) {
-            // Módulos 1-10 bloqueados para usuarios sin pago
+            // Módulos bloqueados: visibles pero no clicables (solo ver, no usar)
             return (
-              <Link
+              <div
                 key={mod.slug}
-                href="/programa"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -94,19 +93,18 @@ export default function SidebarModulos({
                   padding: "0.625rem 1.25rem",
                   fontSize: "0.8rem",
                   lineHeight: 1.4,
-                  color: "#444",
+                  color: "#2e2e2e",
                   backgroundColor: "transparent",
-                  textDecoration: "none",
                   borderLeft: "2px solid transparent",
-                  cursor: "pointer",
+                  userSelect: "none",
+                  cursor: "default",
                 }}
-                title="Desbloquear con acceso completo"
               >
                 <span style={{ minWidth: 0 }}>
                   <span style={{
                     display: "block",
                     fontSize: "0.6rem",
-                    color: "#333",
+                    color: "#252525",
                     letterSpacing: "0.06em",
                     marginBottom: "0.15rem",
                     textTransform: "uppercase",
@@ -115,8 +113,8 @@ export default function SidebarModulos({
                   </span>
                   {mod.titulo.replace(/^Módulo \d+ – /, "")}
                 </span>
-                <Lock size={11} style={{ color: "#333", flexShrink: 0 }} />
-              </Link>
+                <Lock size={11} style={{ color: "#252525", flexShrink: 0 }} />
+              </div>
             );
           }
 

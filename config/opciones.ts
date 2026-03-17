@@ -34,7 +34,7 @@ export const BUSINESS_SIZES: TamanoOpcion[] = [
 export const PRECIO_FUNDADOR = 497;
 
 /** Precio normal futuro (después del lanzamiento fundador). */
-export const PRECIO_PROGRAMA = 797;
+export const PRECIO_PROGRAMA = 799;
 
 /** Fecha límite para el precio fundador (inclusive). 0 = sin límite de fecha. */
 export const FOUNDER_DEADLINE: Date | null = new Date('2026-09-30T23:59:59Z');

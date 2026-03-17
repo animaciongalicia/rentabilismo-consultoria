@@ -8,7 +8,7 @@ export interface ModuloConfig {
 }
 
 export const MODULOS: ModuloConfig[] = [
-  { slug: "modulo-1-mentalidad",   titulo: "Módulo 0 – Mentalidad Empresarial" },
+  { slug: "modulo-1-mentalidad",   titulo: "El Punto de Partida" },
   { slug: "modulo-2-diagnostico",  titulo: "Módulo 1 – Diagnóstico de Rentabilidad" },
   { slug: "modulo-3-finanzas",     titulo: "Módulo 2 – Finanzas" },
   { slug: "modulo-producto",       titulo: "Módulo 3 – Producto y Servicio" },
