@@ -104,15 +104,6 @@ export const AGENTES: Agente[] = [
     modulo:      "Módulo 8 – Marketing y Posicionamiento",
   },
   {
-    slug:        "agente-plan-accion",
-    nombre:      "De Una Vez",
-    etiqueta:    "Plan de Acción",
-    descripcion: "Convierte diagnósticos y decisiones en un plan concreto y ejecutable.",
-    contexto:    "Te ayuda a transformar lo que sabes que hay que hacer en pasos concretos, ordenados por impacto y viabilidad. Sin excesos de planificación, sin parálisis por análisis. Un plan que puedas empezar a ejecutar esta semana.",
-    placeholder: "Ej: Sé que tengo que mejorar en X, Y y Z pero no sé por dónde empezar. Mi situación ahora mismo es… y lo que quiero conseguir en 60 días es…",
-    modulo:      "Módulo 10 – Tu Plan de Acción",
-  },
-  {
     slug:        "agente-evaluador-ideas",
     nombre:      "¿Negocio o Hobby?",
     etiqueta:    "Evaluador de Ideas",
