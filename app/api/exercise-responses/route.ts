@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { getLessonsForModule } from "@/config/lessons";
+import { MODULOS } from "@/config/modulos";
+
+const TOTAL_LESSONS_ALL = MODULOS.reduce((sum, m) => sum + getLessonsForModule(m.slug).length, 0);
 
 // ── GET /api/exercise-responses?moduleSlug=…&lessonSlug=… ─────────────────
 // Returns the current user's saved responses for a module (and optionally a
@@ -131,10 +134,9 @@ export async function POST(request: Request) {
     .eq("user_id", user.id);
 
   if (allProgress && allProgress.length > 0) {
-    const totalDone     = allProgress.reduce((s, p) => s + p.completed_lessons, 0);
-    const totalPossible = allProgress.reduce((s, p) => s + p.total_lessons, 0);
-    const globalPct     = totalPossible > 0
-      ? Math.min(100, Math.round((totalDone / totalPossible) * 100))
+    const totalDone = allProgress.reduce((s, p) => s + p.completed_lessons, 0);
+    const globalPct = TOTAL_LESSONS_ALL > 0
+      ? Math.min(100, Math.round((totalDone / TOTAL_LESSONS_ALL) * 100))
       : 0;
 
     await supabase

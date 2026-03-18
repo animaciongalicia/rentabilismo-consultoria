@@ -17,9 +17,6 @@ function getInitials(name: string | null) {
   return name.split(" ").slice(0, 2).map(n => n[0]).join("").toUpperCase();
 }
 
-function roundProgress(pct: number): number {
-  return Math.round(pct / 20) * 20;
-}
 
 function normStr(s: string | null | undefined): string {
   return (s ?? "").trim().toLowerCase();
@@ -94,7 +91,7 @@ export default function ElMuroClient({
 function ProfileCard({ profile: p }: { profile: MuroProfile }) {
   const initials = getInitials(p.full_name);
   const color = avatarColor(p.full_name);
-  const progress = roundProgress(p.global_progress_pct ?? 0);
+  const pct = p.global_progress_pct ?? 0;
 
   return (
     <div style={{ padding: "1.25rem", backgroundColor: "var(--background)", display: "flex", flexDirection: "column", gap: "0.875rem" }}>
@@ -123,15 +120,17 @@ function ProfileCard({ profile: p }: { profile: MuroProfile }) {
         </div>
       )}
 
-      {/* Progreso global */}
-      <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.35rem" }}>
-          <div style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)" }}>Progreso</div>
-          <div style={{ fontSize: "0.7rem", fontWeight: 800, color: progress === 100 ? "#16a34a" : "var(--foreground)" }}>{progress}%</div>
+      {/* Progreso: 10 bloques */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "2px", flex: 1 }}>
+          {Array.from({ length: 10 }, (_, i) => {
+            const filled = pct >= (i + 1) * 10;
+            return (
+              <div key={i} style={{ flex: 1, height: "6px", backgroundColor: filled ? (pct === 100 ? "#16a34a" : "var(--foreground)") : "var(--border)" }} />
+            );
+          })}
         </div>
-        <div style={{ height: "4px", backgroundColor: "var(--border)" }}>
-          <div style={{ height: "100%", width: `${progress}%`, backgroundColor: progress === 100 ? "#16a34a" : "var(--foreground)", transition: "width 0.3s ease" }} />
-        </div>
+        <div style={{ fontSize: "0.65rem", fontWeight: 700, color: pct === 100 ? "#16a34a" : "var(--muted)", flexShrink: 0 }}>{pct}%</div>
       </div>
     </div>
   );
