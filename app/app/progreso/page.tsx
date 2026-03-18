@@ -89,7 +89,7 @@ export default async function ProgresoPage() {
   const sortedModules = MODULOS.filter((m) => grouped.has(m.slug));
 
   return (
-    <div className="page-content">
+    <div className="page-content" style={{ maxWidth: "900px" }}>
 
       {/* Header */}
       <div style={{
@@ -108,11 +108,11 @@ export default async function ProgresoPage() {
       </h1>
 
       <p style={{
-        fontSize: "0.9rem",
+        fontSize: "0.875rem",
         color: "var(--muted)",
-        lineHeight: 1.75,
-        marginBottom: "2.5rem",
-        maxWidth: "720px",
+        lineHeight: 1.7,
+        marginBottom: "1.5rem",
+        maxWidth: "680px",
       }}>
         Este informe recoge todo lo que has escrito en los ejercicios del programa.
         Es tuyo, nadie más puede verlo. Úsalo para revisar tu evolución o compartirlo
@@ -127,7 +127,7 @@ export default async function ProgresoPage() {
             gap: "0",
             border: "1px solid var(--border)",
             overflow: "hidden",
-            marginBottom: "3rem",
+            marginBottom: "1.75rem",
           }}>
             {[
               { label: "Módulos trabajados", value: modulesStarted },
@@ -138,13 +138,13 @@ export default async function ProgresoPage() {
                 key={stat.label}
                 style={{
                   flex: 1,
-                  padding: "1.25rem",
+                  padding: "0.875rem",
                   borderRight: i < 2 ? "1px solid var(--border)" : "none",
                   backgroundColor: "var(--card)",
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: "1.75rem", fontWeight: 900 }}>{stat.value}</div>
+                <div style={{ fontSize: "1.4rem", fontWeight: 900 }}>{stat.value}</div>
                 <div style={{
                   fontSize: "0.65rem",
                   color: "var(--muted)",
@@ -176,7 +176,7 @@ export default async function ProgresoPage() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: "1rem",
-                    padding: "1rem 1.25rem",
+                    padding: "0.625rem 1rem",
                     cursor: "pointer",
                     listStyle: "none",
                     backgroundColor: "var(--card)",
@@ -205,7 +205,7 @@ export default async function ProgresoPage() {
                   </summary>
 
                   {/* Lesson responses */}
-                  <div style={{ padding: "1.25rem", backgroundColor: "var(--background)", display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+                  <div style={{ padding: "1rem", backgroundColor: "var(--background)", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                     {lessons
                       .filter(l => lessonMap.has(l.lessonSlug))
                       .map(lesson => {
@@ -227,7 +227,7 @@ export default async function ProgresoPage() {
                                     <div key={r.exercise_key} style={{
                                       border: "1px solid var(--border)",
                                       backgroundColor: "var(--card)",
-                                      padding: "1.125rem 1.25rem",
+                                      padding: "0.875rem 1rem",
                                     }}>
                                       {ex && (
                                         <p style={{
@@ -260,8 +260,8 @@ export default async function ProgresoPage() {
 
           {/* Descarga PDF */}
           <div style={{
-            marginTop: "3rem",
-            padding: "1.25rem 1.5rem",
+            marginTop: "2rem",
+            padding: "1rem 1.25rem",
             border: "1px solid var(--border)",
             backgroundColor: "var(--card)",
             display: "flex",

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ArrowRight } from "lucide-react";
 import ElMuroClient from "./ElMuroClient";
-import { ROLES } from "@/config/roles";
 
 export const metadata = {
   title: "El Muro — Rentabilismo",
@@ -17,37 +16,23 @@ export type MuroProfile = {
   business_size:       string | null;
   pain_phrase:         string | null;
   objetivo_60_dias:    string | null;
-  role:                string | null;
   global_progress_pct: number;
   created_at:          string;
 };
 
-// ── Historias reales (estático — editar manualmente) ──────────
-// Para añadir un caso: copia un objeto, edítalo y descomenta.
 const HISTORIAS_REALES: {
   nombre:    string;
   sector:    string;
   cambio:    string;
   resultado: string;
-}[] = [
-  // {
-  //   nombre:    "Javier R.",
-  //   sector:    "Hostelería y restauración",
-  //   cambio:    "Revisó su carta y eliminó los 8 platos menos rentables.",
-  //   resultado: "Redujo costes de materia prima un 18% sin bajar ventas.",
-  // },
-];
+}[] = [];
 
-// ── Query con fallback ────────────────────────────────────────
-// Si la migración FASE 5 aún no se ha ejecutado en Supabase,
-// las columnas nuevas no existen y la query falla. El fallback
-// garantiza que el Muro siempre muestre los perfiles existentes.
 async function getProfiles(): Promise<MuroProfile[]> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, country, sector, business_size, pain_phrase, objetivo_60_dias, role, global_progress_pct, created_at")
+    .select("id, full_name, country, sector, business_size, pain_phrase, objetivo_60_dias, global_progress_pct, created_at")
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -58,7 +43,7 @@ async function getProfiles(): Promise<MuroProfile[]> {
   // Fallback: columnas pre-migración
   const { data: base, error: baseError } = await supabase
     .from("profiles")
-    .select("id, full_name, country, pain_phrase, role, created_at")
+    .select("id, full_name, country, pain_phrase, created_at")
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -75,7 +60,6 @@ async function getProfiles(): Promise<MuroProfile[]> {
     business_size:       null,
     pain_phrase:         p.pain_phrase,
     objetivo_60_dias:    null,
-    role:                p.role,
     global_progress_pct: 0,
     created_at:          p.created_at,
   }));
@@ -84,27 +68,15 @@ async function getProfiles(): Promise<MuroProfile[]> {
 function getUniqueSectores(profiles: MuroProfile[]): string[] {
   const seen = new Set<string>();
   return profiles
-    .map(p => p.sector)
-    .filter((s): s is string => !!s && s.trim() !== "")
-    .filter(s => { if (seen.has(s)) return false; seen.add(s); return true; })
+    .map(p => p.sector?.trim())
+    .filter((s): s is string => !!s)
+    .filter(s => { const k = s.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
     .sort();
 }
 
 export default async function ElMuroPage() {
   const profiles = await getProfiles();
   const sectores = getUniqueSectores(profiles);
-
-  const counts = {
-    total:    profiles.length,
-    founders: profiles.filter(p => p.role === ROLES.FOUNDER).length,
-    members:  profiles.filter(p => p.role === ROLES.MEMBER).length,
-    free:     profiles.filter(p => p.role === ROLES.FREE).length,
-  };
-
-  const topSectores = sectores
-    .map(s => ({ nombre: s, n: profiles.filter(p => p.sector === s).length }))
-    .sort((a, b) => b.n - a.n)
-    .slice(0, 5);
 
   return (
     <div className="page-content" style={{ maxWidth: "960px" }}>
@@ -123,13 +95,10 @@ export default async function ElMuroPage() {
         </p>
 
         {/* Stats */}
-        {counts.total > 0 && (
+        {profiles.length > 0 && (
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: "1.25rem" }}>
             {[
-              { n: counts.total,    label: "en el muro" },
-              counts.founders > 0 && { n: counts.founders, label: "fundadores" },
-              counts.members  > 0 && { n: counts.members,  label: "miembros" },
-              counts.free     > 0 && { n: counts.free,     label: "exploradores" },
+              { n: profiles.length,  label: "en el muro" },
               sectores.length > 0 && { n: sectores.length, label: "sectores" },
             ].filter(Boolean).map(item => {
               const { n, label } = item as { n: number; label: string };
@@ -144,18 +113,17 @@ export default async function ElMuroPage() {
         )}
 
         {/* Top sectores */}
-        {topSectores.length > 0 && (
+        {sectores.length > 0 && (
           <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-            {topSectores.map(({ nombre, n }) => (
-              <div key={nombre} style={{
-                padding: "0.25rem 0.65rem",
-                border: "1px solid var(--border)",
-                backgroundColor: "var(--card)",
-                fontSize: "0.72rem", color: "var(--muted)",
-              }}>
-                {nombre} <strong style={{ color: "var(--foreground)" }}>({n})</strong>
-              </div>
-            ))}
+            {sectores
+              .map(s => ({ nombre: s, n: profiles.filter(p => p.sector?.trim().toLowerCase() === s.toLowerCase()).length }))
+              .sort((a, b) => b.n - a.n)
+              .slice(0, 5)
+              .map(({ nombre, n }) => (
+                <div key={nombre} style={{ padding: "0.25rem 0.65rem", border: "1px solid var(--border)", backgroundColor: "var(--card)", fontSize: "0.72rem", color: "var(--muted)" }}>
+                  {nombre} <strong style={{ color: "var(--foreground)" }}>({n})</strong>
+                </div>
+              ))}
           </div>
         )}
       </div>
@@ -165,10 +133,7 @@ export default async function ElMuroPage() {
 
       {/* ── GRID CON FILTROS (Client Component) ──────────── */}
       {profiles.length === 0 ? (
-        <div style={{
-          border: "1px solid var(--border)", padding: "2.5rem",
-          maxWidth: "400px", backgroundColor: "var(--card)",
-        }}>
+        <div style={{ border: "1px solid var(--border)", padding: "2.5rem", maxWidth: "400px", backgroundColor: "var(--card)" }}>
           <p style={{ fontWeight: 600, marginBottom: "0.375rem" }}>El Muro está vacío todavía.</p>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "1.25rem" }}>Sé el primero.</p>
           <Link href="/registro" className="btn-primary">Ser el primero</Link>
@@ -178,21 +143,9 @@ export default async function ElMuroPage() {
       )}
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <div style={{
-        marginTop: "3rem",
-        borderTop: "1px solid var(--border)",
-        paddingTop: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.75rem",
-        maxWidth: "480px",
-      }}>
-        <p style={{ fontWeight: 700, fontSize: "0.925rem", margin: 0 }}>
-          ¿Te ves reflejado?
-        </p>
-        <p style={{ color: "var(--muted)", fontSize: "0.825rem", margin: 0 }}>
-          Crea tu cuenta, nombra tu problema y entra al Módulo 1 gratis.
-        </p>
+      <div style={{ marginTop: "3rem", borderTop: "1px solid var(--border)", paddingTop: "2rem", display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "480px" }}>
+        <p style={{ fontWeight: 700, fontSize: "0.925rem", margin: 0 }}>¿Te ves reflejado?</p>
+        <p style={{ color: "var(--muted)", fontSize: "0.825rem", margin: 0 }}>Crea tu cuenta, nombra tu problema y entra al Módulo 1 gratis.</p>
         <div>
           <Link href="/registro" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
             Unirme <ArrowRight size={13} />
@@ -207,34 +160,13 @@ export default async function ElMuroPage() {
           <h2 style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)", marginBottom: "1.5rem" }}>
             Lo que pasa cuando se trabaja de verdad.
           </h2>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "1px",
-            border: "1px solid var(--border)",
-            backgroundColor: "var(--border)",
-          }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)" }}>
             {HISTORIAS_REALES.map((h, i) => (
               <div key={i} style={{ padding: "1.5rem", backgroundColor: "var(--background)" }}>
-                <div style={{
-                  fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
-                  textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem",
-                }}>
-                  {h.sector}
-                </div>
-                <p style={{ fontSize: "0.85rem", color: "#333", lineHeight: 1.65, marginBottom: "0.875rem" }}>
-                  <strong>Cambio:</strong> {h.cambio}
-                </p>
-                <p style={{
-                  fontSize: "0.875rem", fontWeight: 600,
-                  borderLeft: "2px solid var(--foreground)", paddingLeft: "0.75rem",
-                  margin: 0,
-                }}>
-                  {h.resultado}
-                </p>
-                <div style={{ marginTop: "0.875rem", fontSize: "0.7rem", color: "var(--muted)" }}>
-                  — {h.nombre}
-                </div>
+                <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem" }}>{h.sector}</div>
+                <p style={{ fontSize: "0.85rem", color: "#333", lineHeight: 1.65, marginBottom: "0.875rem" }}><strong>Cambio:</strong> {h.cambio}</p>
+                <p style={{ fontSize: "0.875rem", fontWeight: 600, borderLeft: "2px solid var(--foreground)", paddingLeft: "0.75rem", margin: 0 }}>{h.resultado}</p>
+                <div style={{ marginTop: "0.875rem", fontSize: "0.7rem", color: "var(--muted)" }}>— {h.nombre}</div>
               </div>
             ))}
           </div>

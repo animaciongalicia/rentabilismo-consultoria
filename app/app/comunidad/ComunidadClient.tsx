@@ -17,6 +17,10 @@ function getInitials(name: string | null): string {
   return name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
+function normStr(s: string | null | undefined): string {
+  return (s ?? "").trim().toLowerCase();
+}
+
 export default function ComunidadClient({
   profiles,
   currentUserId,
@@ -28,10 +32,18 @@ export default function ComunidadClient({
   const [filterCountry, setFilterCountry] = useState("");
   const [filterSector, setFilterSector] = useState("");
 
-  const countries = useMemo(() =>
-    Array.from(new Set(profiles.map(p => p.country).filter(Boolean) as string[])).sort(),
-    [profiles]
-  );
+  // Países únicos normalizados (case-insensitive), mostramos primera aparición
+  const countries = useMemo(() => {
+    const seen = new Map<string, string>();
+    profiles.forEach(p => {
+      if (p.country) {
+        const k = normStr(p.country);
+        if (!seen.has(k)) seen.set(k, p.country.trim());
+      }
+    });
+    return Array.from(seen.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [profiles]);
+
   const sectors = useMemo(() =>
     Array.from(new Set(profiles.map(p => p.sector).filter(Boolean) as string[])).sort(),
     [profiles]
@@ -40,7 +52,7 @@ export default function ComunidadClient({
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return profiles.filter(p => {
-      if (filterCountry && p.country !== filterCountry) return false;
+      if (filterCountry && normStr(p.country) !== filterCountry) return false;
       if (filterSector && p.sector !== filterSector) return false;
       if (q && !p.full_name?.toLowerCase().includes(q) && !p.pain_phrase?.toLowerCase().includes(q) && !p.sector?.toLowerCase().includes(q)) return false;
       return true;
@@ -68,7 +80,7 @@ export default function ComunidadClient({
         />
         <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)} style={selStyle}>
           <option value="">País</option>
-          {countries.map(c => <option key={c} value={c}>{c}</option>)}
+          {countries.map(([k, label]) => <option key={k} value={k}>{label}</option>)}
         </select>
         <select value={filterSector} onChange={e => setFilterSector(e.target.value)} style={selStyle}>
           <option value="">Sector</option>
