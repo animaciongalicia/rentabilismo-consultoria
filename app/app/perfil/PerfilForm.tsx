@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SECTORES, BUSINESS_SIZES } from "@/config/opciones";
 
 interface Props {
@@ -20,6 +20,9 @@ export default function PerfilForm({ initialData }: Props) {
   const [saved, setSaved] = useState(initialData);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -33,7 +36,8 @@ export default function PerfilForm({ initialData }: Props) {
     if (res.ok) {
       setSaved(values);
       setStatus("saved");
-      setTimeout(() => { setStatus("idle"); setEditing(false); }, 1200);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => { setStatus("idle"); setEditing(false); }, 1200);
     } else {
       const data = await res.json().catch(() => ({}));
       setErrorMsg(data.error ?? "Error al guardar.");

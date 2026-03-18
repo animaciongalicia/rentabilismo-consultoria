@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { PublicProfile } from "./page";
 
 const AVATAR_COLORS = ["#6366f1","#0ea5e9","#10b981","#f59e0b","#8b5cf6","#ec4899","#14b8a6","#ef4444"];
@@ -28,9 +28,15 @@ export default function ComunidadClient({
   profiles: PublicProfile[];
   currentUserId: string;
 }) {
+  const [draft, setDraft] = useState("");
   const [search, setSearch] = useState("");
   const [filterCountry, setFilterCountry] = useState("");
   const [filterSector, setFilterSector] = useState("");
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(draft), 300);
+    return () => clearTimeout(t);
+  }, [draft]);
 
   // Países únicos normalizados (case-insensitive), mostramos primera aparición
   const countries = useMemo(() => {
@@ -74,8 +80,8 @@ export default function ComunidadClient({
         <input
           type="text"
           placeholder="Buscar..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
           style={{ padding: "0.35rem 0.625rem", border: "1px solid var(--border)", backgroundColor: "var(--card)", color: "var(--foreground)", fontSize: "0.775rem", flex: "1 1 140px", fontFamily: "inherit", outline: "none" }}
         />
         <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)} style={selStyle}>
@@ -86,8 +92,8 @@ export default function ComunidadClient({
           <option value="">Sector</option>
           {sectors.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        {(filterCountry || filterSector || search) && (
-          <button onClick={() => { setFilterCountry(""); setFilterSector(""); setSearch(""); }} style={{ ...selStyle, backgroundColor: "transparent", color: "var(--muted)", cursor: "pointer" }}>✕</button>
+        {(filterCountry || filterSector || draft) && (
+          <button onClick={() => { setFilterCountry(""); setFilterSector(""); setDraft(""); setSearch(""); }} style={{ ...selStyle, backgroundColor: "transparent", color: "var(--muted)", cursor: "pointer" }}>✕</button>
         )}
         <span style={{ fontSize: "0.7rem", color: "var(--muted)", marginLeft: "auto" }}>{filtered.length}</span>
       </div>

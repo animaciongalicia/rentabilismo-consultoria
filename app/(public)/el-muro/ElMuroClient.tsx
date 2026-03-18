@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { MuroProfile } from "./page";
 
 const AVATAR_COLORS = ["#6366f1","#0ea5e9","#10b981","#f59e0b","#8b5cf6","#ec4899","#14b8a6","#ef4444"];
@@ -31,7 +31,13 @@ export default function ElMuroClient({
   sectores: string[];
 }) {
   const [filterSector, setFilterSector] = useState("");
+  const [draft, setDraft] = useState("");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(draft), 300);
+    return () => clearTimeout(t);
+  }, [draft]);
 
   const filtered = useMemo(() =>
     profiles.filter(p => {
@@ -62,12 +68,12 @@ export default function ElMuroClient({
         <input
           type="text"
           placeholder="Buscar..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
           style={{ padding: "0.35rem 0.625rem", border: "1px solid var(--border)", backgroundColor: "var(--card)", color: "var(--foreground)", fontSize: "0.775rem", flex: "1 1 160px", fontFamily: "inherit", outline: "none" }}
         />
-        {search && (
-          <button onClick={() => setSearch("")} style={{ padding: "0.35rem 0.625rem", border: "1px solid var(--border)", backgroundColor: "transparent", color: "var(--muted)", fontSize: "0.775rem", cursor: "pointer", fontFamily: "inherit" }}>✕</button>
+        {draft && (
+          <button onClick={() => { setDraft(""); setSearch(""); }} style={{ padding: "0.35rem 0.625rem", border: "1px solid var(--border)", backgroundColor: "transparent", color: "var(--muted)", fontSize: "0.775rem", cursor: "pointer", fontFamily: "inherit" }}>✕</button>
         )}
         <span style={{ marginLeft: "auto", fontSize: "0.75rem", color: "var(--muted)", flexShrink: 0 }}>
           {filtered.length} {filtered.length === 1 ? "empresa" : "empresas"}
