@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 interface Props {
   agenteSlug: string;
-  placeholder: string;
+  placeholder?: string;
 }
 
 export default function AgenteForm({ agenteSlug, placeholder }: Props) {
