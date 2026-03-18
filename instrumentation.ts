@@ -7,7 +7,7 @@ export async function register() {
     "SUPABASE_SERVICE_ROLE_KEY",
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
-    "NEXT_PUBLIC_BASE_URL",
+    "NEXT_PUBLIC_APP_URL",
   ];
 
   const missing = REQUIRED.filter(k => !process.env[k]);
