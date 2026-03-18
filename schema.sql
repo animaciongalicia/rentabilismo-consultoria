@@ -222,6 +222,13 @@ ALTER TABLE public.profiles
     CHECK (plan IN ('free', 'founder', 'member', 'annual', 'premium')),
   ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
 
+-- Sincronizar plan para usuarios que ya tenían acceso antes de la migración.
+-- has_paid=true con plan='free' significa que pagaron antes de que existiera la columna plan.
+-- ▶ Ejecutar tras el ADD COLUMN de arriba.
+UPDATE public.profiles
+SET plan = 'member'
+WHERE has_paid = true AND plan = 'free';
+
 -- Actualizar el trigger para incluir los nuevos campos del signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER

@@ -29,10 +29,11 @@ export default async function ComunidadPage() {
     .order("created_at", { ascending: false });
 
   if (error) {
+    console.error("[Comunidad] Error cargando perfiles:", error.message);
     return (
       <div style={{ maxWidth: "900px", padding: "3rem" }}>
         <div style={{ padding: "1.25rem", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.875rem" }}>
-          Error al cargar el muro: {error.message}
+          No se pudo cargar el muro en este momento. Inténtalo de nuevo.
         </div>
       </div>
     );

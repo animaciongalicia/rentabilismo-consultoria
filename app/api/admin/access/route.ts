@@ -33,5 +33,6 @@ export async function PATCH(request: Request) {
     .eq("id", userId);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  console.log(`[Admin] Acceso ${hasPaid ? "concedido" : "revocado"} — by: ${user.id} (${myProfile.role}) → userId: ${userId}`);
   return NextResponse.json({ ok: true });
 }

@@ -11,22 +11,31 @@ export default function CheckoutButton() {
     setLoading(true)
     setError(null)
 
-    const res = await fetch('/api/checkout', { method: 'POST' })
+    try {
+      const res = await fetch('/api/checkout', { method: 'POST' })
 
-    if (res.status === 401) {
-      // No logueado → registro (primer paso del flujo)
-      window.location.href = '/registro'
-      return
-    }
+      if (res.status === 401) {
+        window.location.href = '/registro'
+        return
+      }
 
-    if (!res.ok) {
-      setError('Error al iniciar el pago. Inténtalo de nuevo.')
+      if (!res.ok) {
+        setError('Error al iniciar el pago. Inténtalo de nuevo.')
+        setLoading(false)
+        return
+      }
+
+      const { url } = await res.json()
+      if (url) {
+        window.location.href = url
+      } else {
+        setError('No se recibió la URL de pago. Inténtalo de nuevo.')
+        setLoading(false)
+      }
+    } catch {
+      setError('Error de conexión. Comprueba tu red e inténtalo de nuevo.')
       setLoading(false)
-      return
     }
-
-    const { url } = await res.json()
-    if (url) window.location.href = url
   }
 
   return (

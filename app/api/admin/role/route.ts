@@ -42,5 +42,6 @@ export async function PATCH(request: Request) {
     .eq("id", userId);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  console.log(`[Admin] Rol cambiado — by: ${user.id} (${myProfile.role}) → userId: ${userId} newRole: ${role}`);
   return NextResponse.json({ ok: true });
 }
