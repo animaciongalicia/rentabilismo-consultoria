@@ -6,19 +6,18 @@ export const metadata = {
 
 export default function OlvideContrasenaPage() {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "4rem 2rem" }}>
-      <div style={{ width: "100%", maxWidth: "400px" }}>
-        <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1rem" }}>
-          Recuperar acceso
-        </div>
-        <h1 style={{ fontSize: "1.875rem", marginBottom: "0.625rem" }}>
+    <div className="page-content" style={{ maxWidth: "480px" }}>
+      <div className="page-header-block">
+        <div className="page-eyebrow">Recuperar acceso</div>
+        <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)", marginBottom: "0.75rem" }}>
           ¿Olvidaste la contraseña?
         </h1>
-        <p style={{ color: "var(--muted)", fontSize: "0.875rem", marginBottom: "2rem", lineHeight: 1.6 }}>
+        <p style={{ color: "var(--muted)", fontSize: "0.95rem" }}>
           Introduce tu email y te mandamos un enlace para crear una nueva.
         </p>
-        <ForgotPasswordForm />
       </div>
+      <div style={{ borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
+      <ForgotPasswordForm />
     </div>
   );
 }
