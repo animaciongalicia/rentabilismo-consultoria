@@ -53,8 +53,6 @@ export async function POST(req: NextRequest) {
         .select('*', { count: 'exact', head: true })
         .eq('plan', 'founder')
       plan = (count ?? 0) < FOUNDER_SEATS ? 'founder' : 'member'
-    } else if (withinDeadline) {
-      plan = 'founder'
     }
 
     const { error } = await supabase
@@ -70,7 +68,7 @@ export async function POST(req: NextRequest) {
       .eq('id', userId)
 
     if (error) {
-      console.error('[Webhook] Error actualizando perfil:', error.message)
+      console.error(`[Webhook] Error actualizando perfil — userId: ${userId} plan: ${plan} —`, error.message)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
