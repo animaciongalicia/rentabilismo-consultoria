@@ -35,7 +35,8 @@ export default function AgenteForm({ agenteSlug, placeholder }: Props) {
       }
 
       // Leer el stream de texto
-      const reader = res.body!.getReader();
+      if (!res.body) throw new Error("El servidor no devolvió respuesta en streaming.");
+      const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let text = "";
 

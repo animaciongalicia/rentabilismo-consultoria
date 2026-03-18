@@ -26,6 +26,7 @@ export default function PerfilForm({ initialData }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (status === "saving") return;
     setStatus("saving");
     setErrorMsg("");
     const res = await fetch("/api/perfil", {
