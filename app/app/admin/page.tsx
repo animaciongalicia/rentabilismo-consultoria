@@ -27,7 +27,7 @@ export default async function AdminPage() {
   const adminClient = createAdminClient();
   const { data: profiles } = await adminClient
     .from("profiles")
-    .select("id, full_name, country, role, has_paid, created_at")
+    .select("id, full_name, country, role, plan, has_paid, created_at")
     .order("created_at", { ascending: false });
 
   // Fetch emails from auth.users via admin API
@@ -40,6 +40,7 @@ export default async function AdminPage() {
     email: emailMap.get(p.id) ?? "—",
     country: (p.country ?? "") as string,
     role: (p.role ?? ROLES.FREE) as string,
+    plan: (p.plan ?? "free") as string,
     has_paid: p.has_paid as boolean,
     created_at: p.created_at as string,
   }));

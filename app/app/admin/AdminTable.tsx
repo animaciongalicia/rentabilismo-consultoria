@@ -9,6 +9,7 @@ interface UserRow {
   email: string;
   country: string;
   role: string;
+  plan: string;
   has_paid: boolean;
   created_at: string;
 }
@@ -16,10 +17,16 @@ interface UserRow {
 const ROLE_LIST = Object.values(ROLES);
 
 const ROLE_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  founder: { label: "Fundador",       color: "#fff",    bg: "#6366f1", icon: "💎" },
-  admin:   { label: "Admin",          color: "#fff",    bg: "#d97706", icon: "🛡️" },
-  member:  { label: "Miembro",        color: "#fff",    bg: "#16a34a", icon: "✅" },
-  free:    { label: "Explorador",     color: "#fff",    bg: "#6b7280", icon: "○" },
+  founder: { label: "Fundador",   color: "#fff", bg: "#6366f1", icon: "💎" },
+  admin:   { label: "Admin",      color: "#fff", bg: "#d97706", icon: "🛡️" },
+  member:  { label: "Miembro",    color: "#fff", bg: "#16a34a", icon: "✅" },
+  free:    { label: "Explorador", color: "#fff", bg: "#6b7280", icon: "○" },
+};
+
+const PLAN_CONFIG: Record<string, { label: string; color: string }> = {
+  founder: { label: "Fundador", color: "#6366f1" },
+  member:  { label: "Miembro",  color: "#16a34a" },
+  free:    { label: "Free",     color: "#6b7280" },
 };
 
 export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: string }) {
@@ -47,6 +54,21 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
     setLoadingId(null);
   }
 
+  async function toggleAccess(userId: string, hasPaid: boolean) {
+    setLoadingId(userId);
+    const res = await fetch("/api/admin/access", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, hasPaid }),
+    });
+    if (res.ok) {
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, has_paid: hasPaid } : u));
+    }
+    setLoadingId(null);
+  }
+
+  const COLS = "1fr 1.4fr 90px 75px 80px 90px";
+
   return (
     <div>
       {/* Search */}
@@ -67,9 +89,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
       <div style={{ border: "1px solid var(--border)", overflow: "hidden" }}>
         {/* Header */}
         <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1.4fr 90px 80px 90px",
-          gap: "0",
+          display: "grid", gridTemplateColumns: COLS,
           padding: "0.625rem 1rem",
           backgroundColor: "var(--card)",
           borderBottom: "1px solid var(--border)",
@@ -79,6 +99,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
           <span>Usuario</span>
           <span>Email</span>
           <span>Rol</span>
+          <span>Plan</span>
           <span>Acceso</span>
           <span>Desde</span>
         </div>
@@ -91,6 +112,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
         )}
         {filtered.map((user, i) => {
           const cfg = ROLE_CONFIG[user.role] ?? ROLE_CONFIG.free;
+          const planCfg = PLAN_CONFIG[user.plan] ?? PLAN_CONFIG.free;
           const initials = user.full_name
             .split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase() || "?";
           const date = new Date(user.created_at).toLocaleDateString("es-ES", {
@@ -102,8 +124,7 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
             <div
               key={user.id}
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1.4fr 90px 80px 90px",
+                display: "grid", gridTemplateColumns: COLS,
                 alignItems: "center",
                 padding: "0.75rem 1rem",
                 borderBottom: i < filtered.length - 1 ? "1px solid var(--border)" : "none",
@@ -165,16 +186,34 @@ export default function AdminTable({ rows, myRole }: { rows: UserRow[]; myRole: 
                 </select>
               </div>
 
-              {/* Paid */}
+              {/* Plan badge */}
               <div>
                 <span style={{
                   fontSize: "0.65rem", fontWeight: 700, padding: "0.15rem 0.5rem",
-                  border: `1px solid ${user.has_paid ? "#16a34a" : "var(--border)"}`,
-                  color: user.has_paid ? "#16a34a" : "var(--muted)",
-                  borderRadius: "2px",
+                  border: `1px solid ${planCfg.color}`,
+                  color: planCfg.color, borderRadius: "2px",
                 }}>
-                  {user.has_paid ? "Activo" : "Free"}
+                  {planCfg.label}
                 </span>
+              </div>
+
+              {/* Acceso toggle */}
+              <div>
+                <button
+                  onClick={() => toggleAccess(user.id, !user.has_paid)}
+                  disabled={isLoading}
+                  title={user.has_paid ? "Revocar acceso" : "Conceder acceso"}
+                  style={{
+                    fontSize: "0.65rem", fontWeight: 700, padding: "0.15rem 0.5rem",
+                    border: `1px solid ${user.has_paid ? "#16a34a" : "var(--border)"}`,
+                    color: user.has_paid ? "#16a34a" : "var(--muted)",
+                    backgroundColor: "transparent", borderRadius: "2px",
+                    cursor: isLoading ? "not-allowed" : "pointer",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  {user.has_paid ? "Activo" : "Free"}
+                </button>
               </div>
 
               {/* Date */}
