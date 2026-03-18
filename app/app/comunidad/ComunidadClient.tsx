@@ -2,44 +2,19 @@
 
 import { useState, useMemo } from "react";
 import type { PublicProfile } from "./page";
-import { ROLES } from "@/config/roles";
 
-const ROLE_LABEL: Record<string, string> = {
-  founder: "Fundador",
-  admin: "Administrador",
-  member: "Miembro",
-  free: "Explorador",
-};
+const AVATAR_COLORS = ["#6366f1","#0ea5e9","#10b981","#f59e0b","#8b5cf6","#ec4899","#14b8a6","#ef4444"];
 
-const ROLE_COLOR: Record<string, string> = {
-  founder: "#6366f1",
-  admin: "#d97706",
-  member: "#16a34a",
-  free: "#6b7280",
-};
-
-function getUniqueCountries(profiles: PublicProfile[]): string[] {
-  const countries = profiles
-    .map((p) => p.country)
-    .filter((c): c is string => !!c && c.trim() !== "");
-  return Array.from(new Set(countries)).sort();
-}
-
-function getUniqueSectors(profiles: PublicProfile[]): string[] {
-  const sectors = profiles
-    .map((p) => p.sector)
-    .filter((s): s is string => !!s && s.trim() !== "");
-  return Array.from(new Set(sectors)).sort();
+function avatarColor(name: string | null): string {
+  if (!name) return "#6b7280";
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
 }
 
 function getInitials(name: string | null): string {
   if (!name) return "?";
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+  return name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
 export default function ComunidadClient({
@@ -49,29 +24,32 @@ export default function ComunidadClient({
   profiles: PublicProfile[];
   currentUserId: string;
 }) {
-  const [filterCountry, setFilterCountry] = useState<string>("");
-  const [filterSector, setFilterSector] = useState<string>("");
+  const [search, setSearch] = useState("");
+  const [filterCountry, setFilterCountry] = useState("");
+  const [filterSector, setFilterSector] = useState("");
 
-  const countries = useMemo(() => getUniqueCountries(profiles), [profiles]);
-  const sectors   = useMemo(() => getUniqueSectors(profiles), [profiles]);
+  const countries = useMemo(() =>
+    Array.from(new Set(profiles.map(p => p.country).filter(Boolean) as string[])).sort(),
+    [profiles]
+  );
+  const sectors = useMemo(() =>
+    Array.from(new Set(profiles.map(p => p.sector).filter(Boolean) as string[])).sort(),
+    [profiles]
+  );
 
   const filtered = useMemo(() => {
-    return profiles.filter((p) => {
+    const q = search.toLowerCase();
+    return profiles.filter(p => {
       if (filterCountry && p.country !== filterCountry) return false;
-      if (filterSector  && p.sector  !== filterSector)  return false;
+      if (filterSector && p.sector !== filterSector) return false;
+      if (q && !p.full_name?.toLowerCase().includes(q) && !p.pain_phrase?.toLowerCase().includes(q) && !p.sector?.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [profiles, filterCountry, filterSector]);
+  }, [profiles, filterCountry, filterSector, search]);
 
   if (profiles.length === 0) {
     return (
-      <div style={{
-        padding: "3rem",
-        textAlign: "center",
-        border: "1px solid var(--border)",
-        color: "var(--muted)",
-        fontSize: "0.875rem",
-      }}>
+      <div style={{ padding: "2rem", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.875rem", textAlign: "center" }}>
         Todavía no hay empresarios presentándose aquí.
       </div>
     );
@@ -80,190 +58,64 @@ export default function ComunidadClient({
   return (
     <div>
       {/* Filtros */}
-      <div style={{
-        display: "flex", gap: "0.75rem", flexWrap: "wrap",
-        marginBottom: "2rem", alignItems: "center",
-      }}>
-        <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Filtrar:
-        </div>
-
-        <select
-          value={filterCountry}
-          onChange={(e) => setFilterCountry(e.target.value)}
-          style={{
-            padding: "0.4rem 0.75rem",
-            border: "1px solid var(--border)",
-            backgroundColor: "var(--card)",
-            color: "var(--foreground)",
-            fontSize: "0.8rem",
-            cursor: "pointer",
-          }}
-        >
-          <option value="">Todos los países</option>
-          {countries.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
+      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem", alignItems: "center" }}>
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ padding: "0.35rem 0.625rem", border: "1px solid var(--border)", backgroundColor: "var(--card)", color: "var(--foreground)", fontSize: "0.775rem", flex: "1 1 140px", fontFamily: "inherit", outline: "none" }}
+        />
+        <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)} style={selStyle}>
+          <option value="">País</option>
+          {countries.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
-
-        <select
-          value={filterSector}
-          onChange={(e) => setFilterSector(e.target.value)}
-          style={{
-            padding: "0.4rem 0.75rem",
-            border: "1px solid var(--border)",
-            backgroundColor: "var(--card)",
-            color: "var(--foreground)",
-            fontSize: "0.8rem",
-            cursor: "pointer",
-          }}
-        >
-          <option value="">Todos los sectores</option>
-          {sectors.map((s) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
+        <select value={filterSector} onChange={e => setFilterSector(e.target.value)} style={selStyle}>
+          <option value="">Sector</option>
+          {sectors.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-
-        {(filterCountry || filterSector) && (
-          <button
-            onClick={() => { setFilterCountry(""); setFilterSector(""); }}
-            style={{
-              padding: "0.4rem 0.75rem",
-              border: "1px solid var(--border)",
-              backgroundColor: "transparent",
-              color: "var(--muted)",
-              fontSize: "0.75rem",
-              cursor: "pointer",
-            }}
-          >
-            Limpiar filtros
-          </button>
+        {(filterCountry || filterSector || search) && (
+          <button onClick={() => { setFilterCountry(""); setFilterSector(""); setSearch(""); }} style={{ ...selStyle, backgroundColor: "transparent", color: "var(--muted)", cursor: "pointer" }}>✕</button>
         )}
-
-        <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginLeft: "auto" }}>
-          {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
-        </div>
+        <span style={{ fontSize: "0.7rem", color: "var(--muted)", marginLeft: "auto" }}>{filtered.length}</span>
       </div>
 
-      {/* Grid de perfiles */}
+      {/* Grid 3 columnas */}
       {filtered.length === 0 ? (
-        <div style={{
-          padding: "3rem",
-          textAlign: "center",
-          border: "1px solid var(--border)",
-          color: "var(--muted)",
-          fontSize: "0.875rem",
-        }}>
-          No hay perfiles con estos filtros.
-        </div>
+        <div style={{ padding: "2rem", textAlign: "center", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.875rem" }}>Sin resultados.</div>
       ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "1px",
-          border: "1px solid var(--border)",
-          backgroundColor: "var(--border)",
-          overflow: "hidden",
-        }}>
-          {filtered.map((profile) => {
-            const isCurrentUser = profile.id === currentUserId;
-            const role = ROLES.FREE;
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", border: "1px solid var(--border)", backgroundColor: "var(--border)", overflow: "hidden" }}>
+          {filtered.map(profile => {
+            const isMe = profile.id === currentUserId;
+            const color = avatarColor(profile.full_name);
             const initials = getInitials(profile.full_name);
-            const joinDate = new Date(profile.created_at).toLocaleDateString("es-ES", {
-              year: "numeric",
-              month: "short",
-            });
-
             return (
-              <div
-                key={profile.id}
-                style={{
-                  padding: "1.25rem",
-                  backgroundColor: isCurrentUser ? "var(--card)" : "var(--background)",
-                  position: "relative",
-                }}
-              >
-                {isCurrentUser && (
-                  <div style={{
-                    position: "absolute",
-                    top: "0.625rem",
-                    right: "0.75rem",
-                    fontSize: "0.6rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    color: "var(--muted)",
-                  }}>
-                    Tú
-                  </div>
+              <div key={profile.id} style={{ padding: "0.75rem", backgroundColor: isMe ? "var(--card)" : "var(--background)", position: "relative" }}>
+                {isMe && (
+                  <span style={{ position: "absolute", top: "0.5rem", right: "0.5rem", fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)" }}>Tú</span>
                 )}
 
-                {/* Avatar + nombre */}
-                <div style={{ display: "flex", alignItems: "center", gap: "0.875rem", marginBottom: "0.875rem" }}>
-                  <div style={{
-                    width: "40px", height: "40px", borderRadius: "50%",
-                    backgroundColor: ROLE_COLOR[role] ?? "#6b7280",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "0.85rem", fontWeight: 800, color: "#fff", flexShrink: 0,
-                  }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.375rem" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.6rem", fontWeight: 800, color: "#fff", flexShrink: 0 }}>
                     {initials}
                   </div>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: "0.875rem", marginBottom: "0.2rem" }}>
-                      {profile.full_name ?? "Empresario anónimo"}
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: "0.8rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {profile.full_name ?? "Anónimo"}
                     </div>
-                    <div style={{ display: "flex", gap: "0.375rem", alignItems: "center", flexWrap: "wrap" }}>
-                      {profile.country && (
-                        <span style={{ fontSize: "0.7rem", color: "var(--muted)" }}>
-                          {profile.country}
-                        </span>
-                      )}
-                      <span style={{
-                        fontSize: "0.6rem", fontWeight: 700,
-                        letterSpacing: "0.06em", textTransform: "uppercase",
-                        padding: "0.1rem 0.35rem",
-                        backgroundColor: ROLE_COLOR[role] ?? "#6b7280",
-                        color: "#fff", borderRadius: "2px",
-                      }}>
-                        {ROLE_LABEL[role] ?? role}
-                      </span>
+                    <div style={{ fontSize: "0.65rem", color: "var(--muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {[profile.country, profile.sector].filter(Boolean).join(" · ") || "—"}
                     </div>
                   </div>
                 </div>
 
-                {/* Sector */}
-                <div style={{ marginBottom: "0.625rem", fontSize: "0.75rem", color: "var(--muted)" }}>
-                  {profile.sector ?? "Sector no indicado"}
-                </div>
-
-                {/* Frase de dolor */}
                 {profile.pain_phrase ? (
-                  <p style={{
-                    fontSize: "0.8rem",
-                    color: "var(--muted)",
-                    lineHeight: 1.6,
-                    fontStyle: "italic",
-                    margin: 0,
-                    paddingTop: "0.75rem",
-                    borderTop: "1px solid var(--border)",
-                  }}>
+                  <p style={{ fontSize: "0.72rem", color: "var(--muted)", lineHeight: 1.45, fontStyle: "italic", margin: 0, paddingTop: "0.375rem", borderTop: "1px solid var(--border)", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
                     &ldquo;{profile.pain_phrase}&rdquo;
                   </p>
                 ) : (
-                  <p style={{
-                    fontSize: "0.75rem",
-                    color: "var(--border)",
-                    margin: 0,
-                    paddingTop: "0.75rem",
-                    borderTop: "1px solid var(--border)",
-                  }}>
-                    Sin frase todavía
-                  </p>
+                  <p style={{ fontSize: "0.7rem", color: "var(--border)", margin: 0, paddingTop: "0.375rem", borderTop: "1px solid var(--border)" }}>—</p>
                 )}
-
-                <div style={{ marginTop: "0.75rem", fontSize: "0.65rem", color: "#444" }}>
-                  Desde {joinDate}
-                </div>
               </div>
             );
           })}
@@ -272,3 +124,13 @@ export default function ComunidadClient({
     </div>
   );
 }
+
+const selStyle: React.CSSProperties = {
+  padding: "0.35rem 0.625rem",
+  border: "1px solid var(--border)",
+  backgroundColor: "var(--card)",
+  color: "var(--foreground)",
+  fontSize: "0.775rem",
+  cursor: "pointer",
+  fontFamily: "inherit",
+};
