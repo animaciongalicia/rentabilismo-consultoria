@@ -25,12 +25,6 @@ function normStr(s: string | null | undefined): string {
   return (s ?? "").trim().toLowerCase();
 }
 
-const BUSINESS_SIZE_LABEL: Record<string, string> = {
-  autonomo: "Autónomo",
-  "2-5":    "2-5 personas",
-  "6-20":   "6-20 personas",
-  "+20":    "+20 personas",
-};
 
 export default function ElMuroClient({
   profiles,
@@ -118,23 +112,6 @@ function ProfileCard({ profile: p }: { profile: MuroProfile }) {
           </div>
         </div>
       </div>
-
-      {/* Tamaño */}
-      {p.business_size && (
-        <div style={{ fontSize: "0.72rem", color: "var(--muted)", letterSpacing: "0.04em" }}>
-          {BUSINESS_SIZE_LABEL[p.business_size] ?? p.business_size}
-        </div>
-      )}
-
-      {/* Problema */}
-      {p.pain_phrase && (
-        <div>
-          <div style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.3rem" }}>Problema</div>
-          <p style={{ margin: 0, fontSize: "0.825rem", lineHeight: 1.55, fontStyle: "italic", color: "var(--foreground)", borderLeft: "2px solid var(--border)", paddingLeft: "0.625rem" }}>
-            &ldquo;{p.pain_phrase}&rdquo;
-          </p>
-        </div>
-      )}
 
       {/* Objetivo 60 días */}
       {p.objetivo_60_dias && (
