@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { getLessonsForModule } from "@/config/lessons";
-import { MODULOS } from "@/config/modulos";
+import { MODULOS, MODULO_GRATUITO_SLUG } from "@/config/modulos";
+import { hasFullAccess } from "@/config/roles";
 
 const TOTAL_LESSONS_ALL = MODULOS.reduce((sum, m) => sum + getLessonsForModule(m.slug).length, 0);
 
@@ -19,6 +20,17 @@ export async function GET(request: Request) {
 
   if (!moduleSlug) {
     return NextResponse.json({ error: "moduleSlug requerido" }, { status: 400 });
+  }
+
+  if (moduleSlug !== MODULO_GRATUITO_SLUG) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("has_paid, role, plan")
+      .eq("id", user.id)
+      .single();
+    if (!hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan)) {
+      return NextResponse.json({ error: "Sin acceso" }, { status: 403 });
+    }
   }
 
   let query = supabase
@@ -57,6 +69,21 @@ export async function POST(request: Request) {
 
   if (!moduleSlug || !lessonSlug || !exerciseKey || response === undefined) {
     return NextResponse.json({ error: "Parámetros incompletos" }, { status: 400 });
+  }
+
+  if (typeof response === "string" && response.length > 10000) {
+    return NextResponse.json({ error: "Respuesta demasiado larga" }, { status: 400 });
+  }
+
+  if (moduleSlug !== MODULO_GRATUITO_SLUG) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("has_paid, role, plan")
+      .eq("id", user.id)
+      .single();
+    if (!hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan)) {
+      return NextResponse.json({ error: "Sin acceso" }, { status: 403 });
+    }
   }
 
   // Upsert the response
@@ -114,7 +141,7 @@ export async function POST(request: Request) {
   const lessonJustCompleted = completedLessons > prevCompletedLessons;
   const moduleJustCompleted = completedLessons >= totalLessons && prevCompletedLessons < totalLessons;
 
-  await supabase
+  const { error: progressError } = await supabase
     .from("module_progress")
     .upsert(
       {
@@ -126,6 +153,10 @@ export async function POST(request: Request) {
       },
       { onConflict: "user_id,module_slug" }
     );
+
+  if (progressError) {
+    console.error(`[exercise-responses] Error actualizando module_progress — userId: ${user.id} moduleSlug: ${moduleSlug} —`, progressError.message);
+  }
 
   // Recalcular progreso global y guardarlo en profiles para El Muro (lectura pública)
   const { data: allProgress } = await supabase

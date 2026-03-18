@@ -41,6 +41,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'user_id no encontrado' }, { status: 400 })
     }
 
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!UUID_RE.test(userId)) {
+      console.error(`[Webhook] userId con formato inválido: ${userId}`)
+      return NextResponse.json({ error: 'user_id inválido' }, { status: 400 })
+    }
+
     const supabase = createAdminClient()
     const now = new Date()
 
