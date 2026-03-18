@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { BUSINESS_SIZES } from "@/config/opciones";
 
 export async function PATCH(request: Request) {
   const supabase = await createClient();
@@ -22,7 +23,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "El nombre es obligatorio" }, { status: 400 });
   }
 
-  const VALID_SIZES = ["autonomo", "2-5", "6-20", "+20", ""];
+  const VALID_SIZES = [...BUSINESS_SIZES.map(s => s.value), ""];
   if (business_size !== undefined && !VALID_SIZES.includes(business_size)) {
     return NextResponse.json({ error: "Tamaño de negocio no válido" }, { status: 400 });
   }

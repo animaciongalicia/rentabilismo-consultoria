@@ -41,6 +41,16 @@ export const MENSAJES_LECCION: Record<string, string> = {
   "m3-l4-control-caja":
     "Control de caja establecido. Sin esto, todo lo demás es teoría.",
 
+  // Módulo Producto — Producto y Servicio
+  "mp-l1-que-vendes-realmente":
+    "Has puesto en palabras lo que realmente vendes. Muchos nunca hacen esa distinción.",
+  "mp-l2-a-quien-va-dirigido":
+    "Tu cliente ideal está definido. Ahora puedes hablar directamente a él, no a todos.",
+  "mp-l3-cartera-con-sentido":
+    "Has auditado tu cartera. Lo que no sirve tiene nombre ahora.",
+  "mp-l4-como-lo-presentas":
+    "Tu propuesta de valor está escrita. De aquí a comunicarla hay un paso.",
+
   // Módulo 4 — Precios
   "m4-l1-coste-real":
     "Coste real calculado. Muchos empresarios nunca llegan a este número.",
@@ -125,6 +135,8 @@ export const MENSAJES_MODULO: Record<string, string> = {
     "Diagnóstico terminado. Ya sabes exactamente dónde está el problema.",
   "modulo-3-finanzas":
     "Las finanzas están sobre la mesa. Ahora cada decisión tiene base real.",
+  "modulo-producto":
+    "Producto y posicionamiento revisados. Ahora sabes qué vendes, a quién y cómo explicarlo.",
   "modulo-4-precios":
     "Precios revisados. A partir de aquí, cada venta tiene sentido económico.",
   "modulo-5-operaciones":
