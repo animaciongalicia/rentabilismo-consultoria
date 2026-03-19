@@ -21,7 +21,7 @@ export default async function HomePage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "3.5rem 3.5rem 2.5rem",
-        maxWidth: "920px",
+        maxWidth: "1000px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -156,7 +156,7 @@ export default async function HomePage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "2.5rem 3.5rem",
-        maxWidth: "920px",
+        maxWidth: "1000px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -239,7 +239,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── 4. COMUNIDAD Y PRÓXIMO PASO ────────────────────────── */}
-      <section style={{ padding: "2.5rem 3.5rem", maxWidth: "920px" }}>
+      <section style={{ padding: "2.5rem 3.5rem", maxWidth: "1000px" }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
           textTransform: "uppercase", color: "var(--muted)", marginBottom: "2rem",

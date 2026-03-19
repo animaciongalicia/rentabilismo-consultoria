@@ -19,7 +19,7 @@ const Section = ({
   <section style={{
     borderBottom: last ? "none" : "1px solid var(--border)",
     padding: "2.5rem 3.5rem",
-    maxWidth: "820px",
+    maxWidth: "860px",
   }}>
     <div style={{
       fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -45,7 +45,7 @@ export default function CondicionesContratacionPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "3rem 3.5rem 2.5rem",
-        maxWidth: "820px",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -60,7 +60,7 @@ export default function CondicionesContratacionPage() {
         }}>
           Condiciones de Contratación
         </h1>
-        <p style={{ fontSize: "0.875rem", color: "var(--muted)", margin: 0, lineHeight: 1.7, maxWidth: "580px" }}>
+        <p style={{ fontSize: "0.875rem", color: "var(--muted)", margin: 0, lineHeight: 1.7, maxWidth: "780px" }}>
           Estas condiciones regulan la compra del acceso completo al programa Rentabilismo.
           Léelas antes de finalizar tu compra. Si tienes dudas, escríbenos antes de pagar.
         </p>

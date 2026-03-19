@@ -25,7 +25,7 @@ export default async function CuartelGeneralPage() {
   const hasPaid = hasFullAccess(profile?.has_paid ?? false, profile?.role, profile?.plan);
 
   return (
-    <div className="page-content" style={{ maxWidth: "920px" }}>
+    <div className="page-content" style={{ maxWidth: "1000px" }}>
 
       {/* ── CABECERA ─────────────────────────────────────── */}
       <div className="page-header-block">
@@ -33,7 +33,7 @@ export default async function CuartelGeneralPage() {
         <h1 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", marginBottom: "0.875rem" }}>
           Tu arsenal de herramientas.
         </h1>
-        <p style={{ fontSize: "0.925rem", color: "#444", lineHeight: 1.75, maxWidth: "620px" }}>
+        <p style={{ fontSize: "0.925rem", color: "#444", lineHeight: 1.75, maxWidth: "780px" }}>
           Agentes de IA entrenados para tareas concretas de negocio
           y herramientas externas que ya puedes usar hoy.
           Cada uno está pensado para resolver un problema específico, no para entretener.

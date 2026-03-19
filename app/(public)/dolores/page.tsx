@@ -42,7 +42,7 @@ const DOLORES = [
 export default function DoloresPage() {
   return (
     <div>
-      <section style={{ borderBottom: "1px solid var(--border)", padding: "2.5rem 3.5rem 2rem", maxWidth: "920px" }}>
+      <section style={{ borderBottom: "1px solid var(--border)", padding: "2.5rem 3.5rem 2rem", maxWidth: "1000px" }}>
         <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.25rem" }}>
           ¿Eres tú?
         </div>
@@ -55,7 +55,7 @@ export default function DoloresPage() {
         </p>
       </section>
 
-      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "920px" }}>
+      <section style={{ padding: "3.5rem 3.5rem", maxWidth: "1000px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
           {DOLORES.map((dolor, i) => (
             <div key={dolor.titulo} style={{

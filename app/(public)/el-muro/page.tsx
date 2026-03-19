@@ -79,7 +79,7 @@ export default async function ElMuroPage() {
   const sectores = getUniqueSectores(profiles);
 
   return (
-    <div className="page-content" style={{ maxWidth: "960px" }}>
+    <div className="page-content" style={{ maxWidth: "1000px" }}>
 
       {/* ── CABECERA ─────────────────────────────────────── */}
       <div className="page-header-block">
@@ -89,7 +89,7 @@ export default async function ElMuroPage() {
           Rentabilismo lo construyen<br />empresarios que hacen, no que miran.
         </h1>
 
-        <p style={{ fontSize: "0.925rem", color: "#444", lineHeight: 1.75, maxWidth: "620px", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "0.925rem", color: "#444", lineHeight: 1.75, maxWidth: "780px", marginBottom: "1.5rem" }}>
           Aquí ves quién está dentro, qué sectores hay, qué objetivos persiguen
           y cómo avanzan. Sin humo. Sin casos de éxito maquillados. Solo trabajo real.
         </p>

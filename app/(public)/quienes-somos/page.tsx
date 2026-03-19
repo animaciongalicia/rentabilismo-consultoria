@@ -14,7 +14,7 @@ export default function QuienesSomosPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "3rem 3.5rem 2.5rem",
-        maxWidth: "820px",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -45,7 +45,7 @@ export default function QuienesSomosPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "2.5rem 3.5rem",
-        maxWidth: "820px",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -86,7 +86,7 @@ export default function QuienesSomosPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "2.5rem 3.5rem",
-        maxWidth: "820px",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -141,7 +141,7 @@ export default function QuienesSomosPage() {
       {/* TODO: añadir foto cuando esté disponible */}
 
       {/* ── CTA ──────────────────────────────────────────────── */}
-      <section style={{ padding: "2.5rem 3.5rem", maxWidth: "820px" }}>
+      <section style={{ padding: "2.5rem 3.5rem", maxWidth: "860px" }}>
         <p style={{
           fontSize: "0.95rem", lineHeight: 1.8,
           color: "var(--muted)", margin: "0 0 1.5rem", textAlign: "justify",

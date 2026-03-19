@@ -31,7 +31,7 @@ export default async function ComunidadPage() {
   if (error) {
     console.error("[Comunidad] Error cargando perfiles:", error.message);
     return (
-      <div style={{ maxWidth: "900px", padding: "3rem" }}>
+      <div style={{ maxWidth: "1000px", padding: "3rem" }}>
         <div style={{ padding: "1.25rem", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.875rem" }}>
           No se pudo cargar el muro en este momento. Inténtalo de nuevo.
         </div>
@@ -49,7 +49,7 @@ export default async function ComunidadPage() {
   }));
 
   return (
-    <div style={{ maxWidth: "900px", padding: "3rem 3rem" }}>
+    <div style={{ maxWidth: "1000px", padding: "3rem 3rem" }}>
       {/* Header */}
       <div style={{ marginBottom: "2.5rem" }}>
         <div style={{
@@ -61,7 +61,7 @@ export default async function ComunidadPage() {
         <h1 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)", marginBottom: "0.75rem" }}>
           Los empresarios de la trinchera.
         </h1>
-        <p style={{ fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.7, maxWidth: "600px" }}>
+        <p style={{ fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.7, maxWidth: "780px" }}>
           Personas reales con negocios reales. Cada uno aquí por una razón distinta,
           pero todos con el mismo objetivo: que su empresa funcione mejor.
         </p>

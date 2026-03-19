@@ -21,7 +21,7 @@ export default async function ComoFuncionaPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "3rem 3.5rem 2.5rem",
-        maxWidth: "920px",
+        maxWidth: "1000px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -127,7 +127,7 @@ export default async function ComoFuncionaPage() {
           fontSize: "0.9rem",
           color: "var(--foreground)",
           lineHeight: 1.75,
-          maxWidth: "620px",
+          maxWidth: "780px",
           fontWeight: 500,
         }}>
           No se trata de encontrar tiempo, se trata de reservarlo. Tres horas a la semana
@@ -238,7 +238,7 @@ export default async function ComoFuncionaPage() {
           ))}
         </div>
 
-        <p style={{ fontSize: "0.925rem", color: "#333", lineHeight: 1.8, maxWidth: "640px" }}>
+        <p style={{ fontSize: "0.925rem", color: "#333", lineHeight: 1.8, maxWidth: "780px" }}>
           No son tareas para &laquo;entregarle al profe&raquo;. Es un cuaderno de trabajo vivo
           sobre tu empresa, que solo tú ves y que puedes revisar cuando quieras y que más adelante
           podrás descargar un informe con todo tu trabajo y tus decisiones clave.
@@ -283,7 +283,7 @@ export default async function ComoFuncionaPage() {
 
         <p style={{
           fontSize: "0.925rem", color: "#333", lineHeight: 1.8,
-          maxWidth: "620px", marginBottom: "2rem",
+          maxWidth: "780px", marginBottom: "2rem",
         }}>
           El Módulo 1 es para que tú decidas si estás preparado. Yo no voy a perseguirte.
           Si quieres cambiar, das el siguiente paso y desbloqueas el programa entero.
@@ -356,7 +356,7 @@ export default async function ComoFuncionaPage() {
           fontSize: "0.975rem",
           color: "var(--foreground)",
           lineHeight: 1.8,
-          maxWidth: "620px",
+          maxWidth: "780px",
           fontWeight: 500,
           marginBottom: "2.5rem",
         }}>

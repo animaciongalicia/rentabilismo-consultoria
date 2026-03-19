@@ -24,7 +24,7 @@ const MODULOS_9 = [
 
 export default function BienvenidaPage() {
   return (
-    <div style={{ padding: "3rem 3.5rem", maxWidth: "860px" }}>
+    <div style={{ padding: "3rem 3.5rem", maxWidth: "1000px" }}>
 
       {/* Eyebrow */}
       <div style={{
@@ -44,11 +44,11 @@ export default function BienvenidaPage() {
       </h1>
 
       {/* Mensaje directo */}
-      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "0.875rem", maxWidth: "600px" }}>
+      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "0.875rem", maxWidth: "780px" }}>
         Lo que acabas de abrir es un proceso de consultoría guiada. No hay vídeos de motivación,
         no hay teoría vacía, no hay promesas de hacerte rico rápido.
       </p>
-      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "600px" }}>
+      <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "780px" }}>
         Hay preguntas incómodas, ejercicios que obligan a pensar y un método que ha funcionado
         con empresarios reales. Lo que hagas con eso depende de ti.
       </p>
@@ -56,7 +56,7 @@ export default function BienvenidaPage() {
       {/* Lo que empieza ahora */}
       <div style={{
         border: "1px solid var(--border)", backgroundColor: "var(--card)",
-        padding: "1.5rem", marginBottom: "2rem", maxWidth: "600px",
+        padding: "1.5rem", marginBottom: "2rem", maxWidth: "780px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em",
@@ -88,7 +88,7 @@ export default function BienvenidaPage() {
         fontSize: "0.825rem",
         lineHeight: 1.6,
         color: "#7a5500",
-        maxWidth: "600px",
+        maxWidth: "780px",
       }}>
         <strong style={{ display: "block", marginBottom: "0.25rem" }}>
           Revisa tu email antes de entrar.

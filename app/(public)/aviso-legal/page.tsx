@@ -17,7 +17,7 @@ const Section = ({
   <section style={{
     borderBottom: last ? "none" : "1px solid var(--border)",
     padding: "2.5rem 3.5rem",
-    maxWidth: "820px",
+    maxWidth: "860px",
   }}>
     <div style={{
       fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
@@ -50,7 +50,7 @@ export default function AvisoLegalPage() {
       <section style={{
         borderBottom: "1px solid var(--border)",
         padding: "3rem 3.5rem 2.5rem",
-        maxWidth: "820px",
+        maxWidth: "860px",
       }}>
         <div style={{
           fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
