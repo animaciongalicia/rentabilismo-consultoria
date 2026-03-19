@@ -11,7 +11,12 @@ export const metadata = {
   description: "Tu arsenal de agentes de IA y herramientas para trabajar tu negocio.",
 };
 
-export default async function CuartelGeneralPage() {
+export default async function CuartelGeneralPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ pago?: string }>;
+}) {
+  const { pago } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/registro");
@@ -26,6 +31,23 @@ export default async function CuartelGeneralPage() {
 
   return (
     <div className="page-content" style={{ maxWidth: "1000px" }}>
+
+      {/* ── BANNER PAGO PROCESÁNDOSE ──────────────────────── */}
+      {pago === "ok" && !hasPaid && (
+        <div style={{
+          padding: "0.875rem 1.25rem",
+          border: "1px solid var(--border)",
+          backgroundColor: "var(--card)",
+          marginBottom: "1.5rem",
+          fontSize: "0.875rem",
+          lineHeight: 1.6,
+        }}>
+          <strong>Pago recibido.</strong> Estamos confirmando tu acceso — puede tardar unos segundos.{" "}
+          <a href="/app/cuartel-general" style={{ fontWeight: 600, color: "var(--foreground)" }}>
+            Recargar página
+          </a>
+        </div>
+      )}
 
       {/* ── CABECERA ─────────────────────────────────────── */}
       <div className="page-header-block">

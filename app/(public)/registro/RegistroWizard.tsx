@@ -134,7 +134,7 @@ export default function RegistroWizard() {
       }
     }
 
-    window.location.href = "/bienvenida";
+    window.location.href = "/app/modulos/modulo-1-mentalidad";
     return;
   };
 

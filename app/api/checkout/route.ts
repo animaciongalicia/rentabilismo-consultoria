@@ -17,7 +17,7 @@ export async function POST() {
     line_items: [{ price: process.env.STRIPE_PRICE_ID!, quantity: 1 }],
     client_reference_id: user.id,
     customer_email: user.email,
-    success_url: `${appUrl}/app?pago=ok`,
+    success_url: `${appUrl}/app/cuartel-general?pago=ok`,
     cancel_url: `${appUrl}/programa?pago=cancelado`,
     metadata: { supabase_user_id: user.id },
   })

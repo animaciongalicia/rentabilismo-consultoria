@@ -1,10 +1,9 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ExternalLink } from "lucide-react";
 import { AGENTES } from "@/config/agentes";
 import { hasFullAccess } from "@/config/roles";
-import AgenteForm from "../AgenteForm";
 
 // Genera las rutas estáticas en build para todos los agentes
 export async function generateStaticParams() {
@@ -92,11 +91,49 @@ export default async function AgentePage({
 
       <div style={{ borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
 
-      {/* ── FORMULARIO ────────────────────────────────────── */}
-      <AgenteForm
-        agenteSlug={agente.slug}
-        placeholder={agente.placeholder}
-      />
+      {/* ── CÓMO USARLO ───────────────────────────────────── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+
+        <div>
+          <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem" }}>
+            Cómo usarlo
+          </div>
+          <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: "var(--foreground)" }}>
+            {agente.instrucciones}
+          </p>
+        </div>
+
+        <div>
+          <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem" }}>
+            Preguntas para trabajar con él
+          </div>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "0.625rem", paddingLeft: 0, listStyle: "none" }}>
+            {agente.preguntasGuia.map((pregunta, i) => (
+              <li key={i} style={{ display: "flex", gap: "0.75rem", fontSize: "0.875rem", lineHeight: 1.6 }}>
+                <span style={{ color: "var(--muted)", flexShrink: 0, fontWeight: 700 }}>{String(i + 1).padStart(2, "0")}.</span>
+                <span>{pregunta}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {agente.chatgptUrl ? (
+          <a
+            href={agente.chatgptUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", alignSelf: "flex-start" }}
+          >
+            Abrir en ChatGPT <ExternalLink size={14} />
+          </a>
+        ) : (
+          <div style={{ padding: "1rem 1.25rem", border: "1px solid var(--border)", fontSize: "0.875rem", color: "var(--muted)" }}>
+            Agente en preparación — disponible próximamente en ChatGPT.
+          </div>
+        )}
+
+      </div>
 
       {/* ── NAVEGACIÓN ENTRE AGENTES ──────────────────────── */}
       <div style={{
